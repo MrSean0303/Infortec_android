@@ -1,1 +1,0 @@
-Infortec_android
