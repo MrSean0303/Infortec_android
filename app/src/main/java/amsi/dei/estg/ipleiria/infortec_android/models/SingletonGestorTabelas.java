@@ -16,12 +16,16 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 
-public class SingletonGestorTabelas extends Application{
+import amsi.dei.estg.ipleiria.infortec_android.listeners.ApiCallBack;
+import amsi.dei.estg.ipleiria.infortec_android.utils.ProdutoJsonParser;
+
+public class SingletonGestorTabelas extends Application implements ApiCallBack {
 
     private ArrayList<Produto> produtos;
     private static RequestQueue volleyQueue = null;
-    private static String mUrlAPILivros = "http://amsi.dei.estg.ipleiria.pt/api/livros";
-    private String tokenAPI = "AMSI-TOKEN";
+    private BDHelper bdHelper;
+    private static String mUrlApiProdutos = "http://188.81.12.51/Infortec/infortec_site/frontend/web/api/produto";
+    private ApiCallBack listener;
 
     private static SingletonGestorTabelas INSTANCE = null;
 
@@ -35,43 +39,66 @@ public class SingletonGestorTabelas extends Application{
 
     private SingletonGestorTabelas(Context context) {
         produtos = new ArrayList<>();
-
+        bdHelper = new BDHelper(context);
     }
 
-    public void getAllProdutosAPI(final Context context, boolean isConnected)
-    {
+    public void getAllProdutosAPI(final Context context, boolean isConnected) {
         Toast.makeText(context, "IS CONNECTED: " + isConnected, Toast.LENGTH_SHORT);
-
-        if(!isConnected)
-        {
-            produtos = livroBDHelper.getAllKivrosDB();
-        }
-        else{
-            JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, mUrlAPILivros, null, new Response.Listener<JSONArray>() {
+        System.out.println("---> IS CONNECTED: " + isConnected);
+        if (!isConnected) {
+            produtos = bdHelper.getAllProdutosDB();
+            System.out.println("---> produtosREEE: " + produtos);
+        } else {
+            System.out.println("---> TEST");
+            JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, mUrlApiProdutos, null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
                     try {
-                        produtos = LivroJsonParser.parserJsonLivros(response, context);
-                        System.out.println("---> RESPOSTA: " + livros);
+                        produtos = ProdutoJsonParser.ProdutoJsonParser(response, context);
+                        System.out.println("---> RESPOSTA: " + produtos);
 
-                        adicionarLivrosBD(livros);
+                        adicionarProdutosBD(produtos);
 
-                        if(livrosListener != null)
-                        {
-                            livrosListener.onRefreshListaLivros(livros);
+                        if (listener != null) {
+                            listener.onRefreshProdutos(produtos);
                         }
 
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        System.out.println("---> ERRO: " + e.getMessage());
                     }
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    System.out.println("---> ERRO: GETALLLIVROSAPI: " + error.getMessage());
+                    System.out.println("---> ERRO: GetAllProdutosAPI: " + error.getMessage());
                 }
             });
             volleyQueue.add(req);
+        }
+    }
+
+    public ArrayList<Produto> getProdutosBD(){
+        produtos = bdHelper.getAllProdutosDB();
+        return produtos;
+    }
+
+    public void setListener(ApiCallBack listener)
+    {
+        this.listener = listener;
+    }
+
+    @Override
+    public void onRefreshProdutos(ArrayList<Produto> produtos) {
+
+    }
+
+    public void adicionarProdutosBD(ArrayList<Produto> listaProdutos)
+    {
+        bdHelper.removerAllProdutosDB();
+        for(Produto produto:listaProdutos)
+        {
+            bdHelper.adicionarProdutoBD(produto);
         }
     }
 }

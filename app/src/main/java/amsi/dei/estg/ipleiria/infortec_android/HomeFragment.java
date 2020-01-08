@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,20 +15,25 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import amsi.dei.estg.ipleiria.infortec_android.Adapters.ListProductAdapter;
+import amsi.dei.estg.ipleiria.infortec_android.listeners.ApiCallBack;
 import amsi.dei.estg.ipleiria.infortec_android.models.Produto;
+import amsi.dei.estg.ipleiria.infortec_android.models.SingletonGestorTabelas;
+import amsi.dei.estg.ipleiria.infortec_android.utils.ProdutoJsonParser;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, ApiCallBack {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
+    private ArrayList<Produto> produtos;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
 
     public HomeFragment() {
-        // Required empty public constructor
+        produtos = new ArrayList<>();
     }
 
 
@@ -35,12 +41,15 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View viewRoot = inflater.inflate(R.layout.fragment_home, container, false);
+        swipeRefreshLayout = viewRoot.findViewById(R.id.swipe);
 
-        ArrayList<Produto> produtos = new ArrayList<>();
+        /*ArrayList<Produto> produtos = new ArrayList<>();
         produtos.add(new Produto(1, 2, 3, 1, 1, "TESTE", "NSEI", "É FIXE", "É FIXE, MESMO BACANO", 123.12, 0));
-        produtos.add(new Produto(2, 2, 3, 1, 1, "Ree", "NSEI", "É FIXE", "É FIXE, MESMO BACANO", 123.12, 0));
+        produtos.add(new Produto(2, 2, 3, 1, 1, "Ree", "NSEI", "É FIXE", "É FIXE, MESMO BACANO", 123.12, 0));*/
 
+        produtos = SingletonGestorTabelas.getInstance(getContext()).getProdutosBD();
 
+        System.out.println("---> REEEEEE: " + produtos);
 
         recyclerView = viewRoot.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -50,7 +59,34 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(mAdapter);
 
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(true);
+                SingletonGestorTabelas.getInstance(getContext()).getAllProdutosAPI(getContext(), ProdutoJsonParser.isConnectionInternet(getContext()));
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+        SingletonGestorTabelas.getInstance(getContext()).setListener(this);
+        SingletonGestorTabelas.getInstance(getContext()).getAllProdutosAPI(getContext(), ProdutoJsonParser.isConnectionInternet(getContext()));
+        System.out.println("--> epahyah: " + produtos);
         return viewRoot;
     }
 
+
+    @Override
+    public void onRefresh() {
+        SingletonGestorTabelas.getInstance(getContext()).getProdutosBD();
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void onRefreshProdutos(ArrayList<Produto> produtos) {
+        System.out.println("--> onRefreshListaLivros: " + produtos);
+
+        mAdapter = (new ListProductAdapter(getContext(), produtos));
+        recyclerView.setAdapter(mAdapter);
+    }
 }

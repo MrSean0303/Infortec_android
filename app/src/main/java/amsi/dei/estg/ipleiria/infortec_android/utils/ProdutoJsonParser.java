@@ -16,16 +16,16 @@ public class ProdutoJsonParser {
 
     public static ArrayList<Produto> ProdutoJsonParser(JSONArray response, Context context) throws JSONException
     {
-        System.out.println("--> PARSER LISTA LIVROS: "+ response);
+        System.out.println("--> PARSER LISTA PRODUTOS: "+ response);
         ArrayList<Produto> tempListaProdutos = new ArrayList<Produto>();
 
         Produto auxProduto = null;
 
         for(int i = 0; i < response.length(); i++)
         {
-            JSONObject produto = (JSONObject) response.get(i);
+            JSONObject produto = response.getJSONObject(i);
 
-            int id = produto.getInt("id");
+            int idProduto = produto.getInt("idProduto");
             String nome = produto.getString("nome");
             String descricaoGeral = produto.getString("descricaoGeral");
             String descricao = produto.getString("descricao");
@@ -37,14 +37,14 @@ public class ProdutoJsonParser {
             double preco = produto.getDouble("preco");
             double valorDesconto = produto.getDouble("valorDesconto");
 
-            auxProduto = new Produto(id, quantStock, pontos, subcategoria_id, iva_id, nome, fotoProduto, descricao, descricaoGeral, preco, valorDesconto);
+            auxProduto = new Produto(idProduto, quantStock, pontos, subcategoria_id, iva_id, nome, fotoProduto, descricao, descricaoGeral, preco, valorDesconto);
             tempListaProdutos.add(auxProduto);
         }
 
         return tempListaProdutos;
     }
 
-    public static Produto parserJsonProdutos(String response, Context context) throws JSONException {
+    /*public static Produto parserJsonProdutos(String response, Context context) throws JSONException {
         System.out.println("--> PARSER ADICIONAR: " + response);
         Produto auxProduto = null;
 
@@ -64,7 +64,7 @@ public class ProdutoJsonParser {
 
         auxProduto = new Produto(id, quantStock, pontos, subcategoria_id, iva_id, nome, fotoProduto, descricao, descricaoGeral, preco, valorDesconto);
         return auxProduto;
-    }
+    }*/
 
     public static boolean isConnectionInternet(Context context)
     {

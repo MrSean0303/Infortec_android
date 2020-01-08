@@ -1,5 +1,6 @@
 package amsi.dei.estg.ipleiria.infortec_android.models;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -56,9 +57,36 @@ public class BDHelper extends SQLiteOpenHelper {
             do{
                 Produto auxProduto = new Produto(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2), cursor.getInt(3), cursor.getInt(4), cursor.getString(5), cursor.getString(6), cursor.getString(7), cursor.getString(8), cursor.getDouble(9), cursor.getDouble(10));
                 auxProduto.setId(cursor.getInt(0));
+                System.out.println("---> Ree1 (auxProduto): " + auxProduto);
                 produtos.add(auxProduto);
             }while(cursor.moveToNext());
         }
+        System.out.println("---> Ree2 (cursor): " + cursor);
+        System.out.println("---> Ree3 (produtos): " + produtos);
         return produtos;
+    }
+
+    public void adicionarProdutoBD(Produto produto)
+    {
+        ContentValues values = new ContentValues();
+        values.put(ID_PRODUTO, produto.getId());
+        values.put(NOME_PRODUTO, produto.getNome());
+        values.put(DESCRICAO_PRODUTO, produto.getDescricao());
+        values.put(DESCRICAO_GERAL_PRODUTO, produto.getDescricaoGeral());
+        values.put(FOTO_PRODUTO, produto.getFotoProduto());
+        values.put(QUANTSTOCK_PRODUTO, produto.getQuantStock());
+        values.put(PONTOS_PRODUTO, produto.getPontos());
+        values.put(SUBCATEGORIA_ID_PRODUTO, produto.getSubCategoria_id());
+        values.put(PRECO_PRODUTO, produto.getPreco());
+        values.put(VALOR_DESCONTO_PRODUTO, produto.getValorDesconto());
+        values.put(IVA_ID_PRODUTO, produto.getIva_id());
+
+
+        this.database.insert(TABLE_PRODUTO_NAME, null, values);
+    }
+
+    public void removerAllProdutosDB()
+    {
+        this.database.delete(TABLE_PRODUTO_NAME, null, null);
     }
 }
