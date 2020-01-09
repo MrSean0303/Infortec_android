@@ -51,7 +51,7 @@ public class LoginFragment extends Fragment {
         return viewRoot;
     }
 
-    public void onClickLogin(View view) throws UnsupportedEncodingException {
+    /*public void onClickLogin(View view) throws UnsupportedEncodingException {
         String userName = editTextUserName.getText().toString();
         String password = editTextPassword.getText().toString();
 
@@ -81,6 +81,6 @@ public class LoginFragment extends Fragment {
                 }
             });
         volleyQueue.add(req);
-        }
-    }
+
+    }*/
 }

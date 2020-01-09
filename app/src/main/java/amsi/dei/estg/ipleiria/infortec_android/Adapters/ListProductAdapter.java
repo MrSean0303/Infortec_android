@@ -19,10 +19,12 @@ import amsi.dei.estg.ipleiria.infortec_android.models.Produto;
 public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.ViewHolder> {
     private LayoutInflater inflater;
     private ArrayList<Produto> produtos;
+    private OnProdutoListener mOnProdutoListener;
 
-    public ListProductAdapter(Context context, ArrayList<Produto> produtos) {
+    public ListProductAdapter(Context context, ArrayList<Produto> produtos, OnProdutoListener onProdutoListener) {
         this.inflater = inflater.from(context);
         this.produtos = produtos;
+        this.mOnProdutoListener = onProdutoListener;
     }
 
     @NonNull
@@ -30,7 +32,7 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.from(parent.getContext()).inflate(R.layout.item_layout, parent, false);
 
-        return new ViewHolder(view);
+        return new ViewHolder(view, mOnProdutoListener);
     }
 
     @Override
@@ -38,6 +40,7 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
         Produto produto = produtos.get(position);
         holder.nome.setText(produto.getNome());
         holder.preco.setText(String.valueOf(produto.getPreco()));
+        holder.id = produto.getId();
     }
 
     @Override
@@ -45,14 +48,28 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
         return produtos.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView nome, preco;
         private ImageView img;
+        private int id;
+        OnProdutoListener onProdutoListener;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView, OnProdutoListener onProdutoListener) {
             super(itemView);
             nome = itemView.findViewById(R.id.textNome);
             preco = itemView.findViewById(R.id.textPreco);
+            this.onProdutoListener = onProdutoListener;
+
+            itemView.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View v) {
+            onProdutoListener.onProdutoClick(id);
+        }
+    }
+
+    public interface OnProdutoListener{
+        void onProdutoClick(int id);
     }
 }

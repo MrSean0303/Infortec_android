@@ -31,5 +31,6 @@ dependencies {
     implementation 'com.android.support:cardview-v7:+'
     implementation 'com.android.volley:volley:1.1.1'
     implementation 'com.github.bumptech.glide:glide:4.10.0'
+    implementation fileTree(dir: 'E:\\Documentos\\Infortec_android\\app\\libs', include: ['*.aar', '*.jar'], exclude: [])
 
 }

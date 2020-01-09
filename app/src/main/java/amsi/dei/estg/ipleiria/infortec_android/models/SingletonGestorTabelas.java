@@ -2,6 +2,7 @@ package amsi.dei.estg.ipleiria.infortec_android.models;
 
 import android.app.Application;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -24,7 +25,7 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
     private ArrayList<Produto> produtos;
     private static RequestQueue volleyQueue = null;
     private BDHelper bdHelper;
-    private static String mUrlApiProdutos = "http://188.81.12.51/Infortec/infortec_site/frontend/web/api/produto";
+    private static String mUrlApiProdutos = "http://127.0.0.1/Infortec/infortec_site/frontend/web/api/produto";
     private ApiCallBack listener;
 
     private static SingletonGestorTabelas INSTANCE = null;
@@ -78,13 +79,12 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
         }
     }
 
-    public ArrayList<Produto> getProdutosBD(){
+    public ArrayList<Produto> getProdutosBD() {
         produtos = bdHelper.getAllProdutosDB();
         return produtos;
     }
 
-    public void setListener(ApiCallBack listener)
-    {
+    public void setListener(ApiCallBack listener) {
         this.listener = listener;
     }
 
@@ -93,12 +93,20 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
 
     }
 
-    public void adicionarProdutosBD(ArrayList<Produto> listaProdutos)
-    {
+    public void adicionarProdutosBD(ArrayList<Produto> listaProdutos) {
         bdHelper.removerAllProdutosDB();
-        for(Produto produto:listaProdutos)
-        {
+        for (Produto produto : listaProdutos) {
             bdHelper.adicionarProdutoBD(produto);
         }
+    }
+
+    public Produto getProdutoById(int id) {
+        ArrayList<Produto> produtosLista = getProdutosBD();
+        for (Produto produto : produtosLista) {
+            if (produto.getId() == id) {
+                return produto;
+            }
+        }
+        return null;
     }
 }
