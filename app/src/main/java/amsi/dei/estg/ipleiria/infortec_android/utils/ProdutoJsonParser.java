@@ -31,13 +31,13 @@ public class ProdutoJsonParser {
             String descricao = produto.getString("descricao");
             int quantStock = produto.getInt("quantStock");
             int pontos = produto.getInt("pontos");
-            int subcategoria_id = produto.getInt("subcategoria_id");
+            int subCategoria_id = produto.getInt("subCategoria_id");
             int iva_id = produto.getInt("iva_id");
             String fotoProduto = produto.getString("fotoProduto");
             double preco = produto.getDouble("preco");
             double valorDesconto = produto.getDouble("valorDesconto");
 
-            auxProduto = new Produto(idProduto, quantStock, pontos, subcategoria_id, iva_id, nome, fotoProduto, descricao, descricaoGeral, preco, valorDesconto);
+            auxProduto = new Produto(idProduto, quantStock, pontos, subCategoria_id, iva_id, nome, fotoProduto, descricao, descricaoGeral, preco, valorDesconto);
             tempListaProdutos.add(auxProduto);
         }
 

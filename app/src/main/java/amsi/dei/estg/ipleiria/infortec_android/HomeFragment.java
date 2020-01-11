@@ -52,11 +52,11 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         View viewRoot = inflater.inflate(R.layout.fragment_home, container, false);
         swipeRefreshLayout = viewRoot.findViewById(R.id.swipe);
 
-        ArrayList<Produto> produtos = new ArrayList<>();
+        /*ArrayList<Produto> produtos = new ArrayList<>();
         produtos.add(new Produto(1, 2, 3, 1, 1, "TESTE", "NSEI", "É FIXE", "É FIXE, MESMO BACANO", 123.12, 0));
         produtos.add(new Produto(2, 2, 3, 1, 1, "Ree", "NSEI", "É FIXE", "É FIXE, MESMO BACANO", 123.12, 0));
-
-        //produtos = SingletonGestorTabelas.getInstance(getContext()).getProdutosBD();
+           */
+        produtos = SingletonGestorTabelas.getInstance(getContext()).getProdutosBD();
 
         System.out.println("---> REEEEEE: " + produtos);
 
@@ -78,9 +78,9 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             }
         });
 
-        MqttClient client = null;
+        /*MqttClient client = null;
         try {
-            client = new MqttClient("tcp://127.0.0.1:1883", MqttClient.generateClientId());
+            client = new MqttClient("tcp://188.81.5.22:1883", MqttClient.generateClientId());
             client.connect();
             MqttMessage message = new MqttMessage();
             message.setPayload("teste...".getBytes());
@@ -88,7 +88,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         } catch (MqttException e) {
             e.printStackTrace();
             System.out.println("--> erro mosquitto: " + e);
-        }
+        }*/
 
 
         SingletonGestorTabelas.getInstance(getContext()).setListener(this);
