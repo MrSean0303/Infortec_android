@@ -39,7 +39,7 @@ public class ProdutoActivity extends AppCompatActivity {
         txtPreco = findViewById(R.id.txtPreco);
 
         //produtos = SingletonGestorTabelas.getInstance(getContext()).getProdutosBD();
-
+/*
         final MqttAndroidClient client;
 
         client = new MqttAndroidClient(this, "tcp://127.0.0.1:1883", MqttClient.generateClientId());
@@ -91,19 +91,20 @@ public class ProdutoActivity extends AppCompatActivity {
                 message.setRetained(true);
 
                 noticiasTopic.publish(message);*/
+            //}
+
+
+            id = getIntent().getIntExtra("ID_PRODUTO", 0);
+            produto = SingletonGestorTabelas.getInstance(getApplicationContext()).getProdutoById(id);
+
+            txtTitulo.setText(produto.getNome());
+            System.out.println("getNome:" + produto.getNome());
+            System.out.println("getId:" + produto.getId());
+            System.out.println("getDescricao:" + produto.getDescricao());
+            System.out.println("getQuantStock:" + produto.getQuantStock());
+            System.out.println("getValorDesconto:" + produto.getValorDesconto());
+
+            txtPreco.setText(String.valueOf(produto.getPreco()));
         //}
-
-
-        id = getIntent().getIntExtra("ID_PRODUTO", 0);
-        produto = SingletonGestorTabelas.getInstance(getApplicationContext()).getProdutoById(id);
-
-        txtTitulo.setText(produto.getNome());
-        System.out.println("getNome:" + produto.getNome());
-        System.out.println("getId:" + produto.getId());
-        System.out.println("getDescricao:" + produto.getDescricao());
-        System.out.println("getQuantStock:" + produto.getQuantStock());
-        System.out.println("getValorDesconto:" + produto.getValorDesconto());
-
-        txtPreco.setText(String.valueOf(produto.getPreco()));
     }
 }

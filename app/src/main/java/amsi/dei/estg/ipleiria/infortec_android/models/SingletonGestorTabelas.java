@@ -25,7 +25,7 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
     private ArrayList<Produto> produtos;
     private static RequestQueue volleyQueue = null;
     private BDHelper bdHelper;
-    private static String mUrlApiProdutos = "http://188.81.5.22/Infortec/infortec_site/frontend/web/api/produto";
+    private static String mUrlApiProdutos = "http://188.81.10.135/Infortec/infortec_site/frontend/web/api/produto";
     private ApiCallBack listener;
 
     private static SingletonGestorTabelas INSTANCE = null;

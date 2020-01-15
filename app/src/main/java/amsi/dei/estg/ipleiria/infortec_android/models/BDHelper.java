@@ -50,11 +50,12 @@ public class BDHelper extends SQLiteOpenHelper {
         ArrayList<Produto> produtos = new ArrayList<>();
 
         Cursor cursor = this.database.query(TABLE_PRODUTO_NAME, new String[]{
-                ID_PRODUTO, NOME_PRODUTO, DESCRICAO_GERAL_PRODUTO, DESCRICAO_PRODUTO, FOTO_PRODUTO, PONTOS_PRODUTO, SUBCATEGORIA_ID_PRODUTO, IVA_ID_PRODUTO, VALOR_DESCONTO_PRODUTO, PRECO_PRODUTO, QUANTSTOCK_PRODUTO
+                ID_PRODUTO, QUANTSTOCK_PRODUTO, PONTOS_PRODUTO, SUBCATEGORIA_ID_PRODUTO, IVA_ID_PRODUTO, NOME_PRODUTO, FOTO_PRODUTO, DESCRICAO_PRODUTO, DESCRICAO_GERAL_PRODUTO, PRECO_PRODUTO, VALOR_DESCONTO_PRODUTO
         }, null, null, null, null, null);
 
         if(cursor.moveToFirst()){
             do{
+                //Produto auxProduto = new Produto(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2), cursor.getInt(3), cursor.getInt(4), cursor.getString(5), cursor.getString(6), cursor.getString(7), cursor.getString(8), cursor.getDouble(9), cursor.getDouble(10));
                 Produto auxProduto = new Produto(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2), cursor.getInt(3), cursor.getInt(4), cursor.getString(5), cursor.getString(6), cursor.getString(7), cursor.getString(8), cursor.getDouble(9), cursor.getDouble(10));
                 auxProduto.setId(cursor.getInt(0));
                 System.out.println("---> Ree1 (auxProduto): " + auxProduto);
