@@ -14,8 +14,11 @@ public class BDHelper extends SQLiteOpenHelper {
     private final SQLiteDatabase database;
     private static final int DB_VERSION = 1;
     private static final String DB_NAME = "InfortecDB";
-    private static final String TABLE_PRODUTO_NAME = "Produto";
 
+    /*
+        Elementos para a tabela Produtos
+     */
+    private static final String TABLE_PRODUTO_NAME = "Produto";
     private static final String ID_PRODUTO = "id";
     private static final String NOME_PRODUTO = "nome";
     private static final String DESCRICAO_PRODUTO = "descricao";
@@ -28,6 +31,22 @@ public class BDHelper extends SQLiteOpenHelper {
     private static final String VALOR_DESCONTO_PRODUTO = "valorDesconto";
     private static final String IVA_ID_PRODUTO = "iva_id";
 
+    /*
+        Elementos para a tabela User
+     */
+    private static final String TABLE_USER_NAME = "User";
+    private static final String ID_USER = "id";
+    private static final String USERNAME = "username";
+    private static final String AUTH_KEY = "auth_key";
+    private static final String PASSWORD_HASH = "password_hash";
+    private static final String PASSWORD_RESET_TOKEN = "password_reset_token";
+    private static final String EMAIL = "email";
+    private static final String STATUS = "status";
+    private static final String ROLE = "role";
+    private static final String CREATED_AT = "created_at";
+    private static final String UPDATED_AT = "updated_at";
+    private static final String VERIFICATION_TOKEN = "verification_token";
+
     public BDHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
         this.database = this.getWritableDatabase();
@@ -36,12 +55,15 @@ public class BDHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createProdutoTable = "CREATE TABLE " + TABLE_PRODUTO_NAME + " (" + ID_PRODUTO + " INTEGER PRIMARY KEY AUTOINCREMENT, " + NOME_PRODUTO + " TEXT NOT NULL, " + DESCRICAO_PRODUTO + " TEXT NOT NULL, " + DESCRICAO_GERAL_PRODUTO + " TEXT NOT NULL, " + FOTO_PRODUTO + " TEXT NOT NULL, " + QUANTSTOCK_PRODUTO + " INTEGER NOT NULL," + PONTOS_PRODUTO + " INTEGER," + VALOR_DESCONTO_PRODUTO + " DECIMAL," + PRECO_PRODUTO + " DECIMAL NOT NULL," + SUBCATEGORIA_ID_PRODUTO + " INTEGER NOT NULL," + IVA_ID_PRODUTO + " INTEGER NOT NULL" +");";
+        String createUserTable = "CREATE TABLE " + TABLE_USER_NAME + " (" + ID_USER + " INTEGER PRIMARY KEY AUTOINCREMENT, " + USERNAME + " TEXT NOT NULL, " + AUTH_KEY + " TEXT NOT NULL, " + PASSWORD_HASH + " TEXT NOT NULL, " + PASSWORD_RESET_TOKEN + " TEXT NOT NULL, " + EMAIL + " TEXT NOT NULL, " + STATUS + " INTEGER," + ROLE + " INTEGER NOT NULL, " + CREATED_AT + " INTEGER NOT NULL, " + UPDATED_AT + " INTEGER NOT NULL, " + VERIFICATION_TOKEN + " TEXT"  +");";
         db.execSQL(createProdutoTable);
+        db.execSQL(createUserTable);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUTO_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER_NAME);
         this.onCreate(db);
     }
 
