@@ -62,11 +62,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_sistag:
                 fragment = new SistagFragment();
                 setTitle(menuItem.getTitle());
-                break;
-            case R.id.nav_email:
-                fragment = new EmailFragment();
-                setTitle(menuItem.getTitle());
                 break;*/
+            case R.id.nav_login:
+                fragment = new LoginFragment();
+                setTitle(menuItem.getTitle());
+                break;
         }
         if (fragment != null)
             fragmentManager.beginTransaction().replace(R.id.contentFragment,
