@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ProdutoActivity"></activity>
+        <activity android:name=".ProdutoActivity" />
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

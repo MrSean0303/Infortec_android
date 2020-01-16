@@ -8,14 +8,14 @@
             android:id="@+id/nav_home"
             android:title="Home" />
         <item
-            android:id="@+id/nav_computadores"
-            android:title="Computadores" />
+            android:id="@+id/nav_promocoes"
+            android:title="Promoções" />
         <item
-            android:id="@+id/nav_componentes"
-            android:title="Componentes" />
+            android:id="@+id/nav_categorias"
+            android:title="Categorias" />
         <item
-            android:id="@+id/nav_telemoveis"
-            android:title="Telemóveis" />
+            android:id="@+id/nav_favoritos"
+            android:title="Favoritos" />
         <item
         android:id="@+id/nav_login"
         android:title="Login" />

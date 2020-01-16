@@ -4,6 +4,7 @@ package amsi.dei.estg.ipleiria.infortec_android;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,9 +12,13 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -40,6 +45,8 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private ArrayList<Produto> produtos;
     private SwipeRefreshLayout swipeRefreshLayout;
 
+    private SearchView searchView;
+
 
     public HomeFragment() {
         produtos = new ArrayList<>();
@@ -49,6 +56,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         View viewRoot = inflater.inflate(R.layout.fragment_home, container, false);
         swipeRefreshLayout = viewRoot.findViewById(R.id.swipe);
 
@@ -117,5 +125,38 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         Intent intent = new Intent(getContext(), ProdutoActivity.class);
         intent.putExtra("ID_PRODUTO", id);
         startActivity(intent);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_pesquisa_produtos, menu);
+
+        MenuItem itemPesquisa = menu.findItem(R.id.prodPesquisa);
+        searchView = (SearchView) itemPesquisa.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+
+                ArrayList<Produto> listaProdutos = new ArrayList<>();
+
+                for (Produto tempProduto : SingletonGestorTabelas.getInstance(getContext() ).getProdutosBD()){
+                    if (tempProduto.getNome().toLowerCase().contains(s.toLowerCase())){
+                        listaProdutos.add(tempProduto);
+                    }
+                }
+
+                recyclerView.setAdapter(new ListProductAdapter(getContext(), listaProdutos, HomeFragment.this));
+
+                return true;
+            }
+        });
+
+        super.onCreateOptionsMenu(menu, inflater);
     }
 }

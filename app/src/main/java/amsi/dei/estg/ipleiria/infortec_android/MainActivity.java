@@ -9,6 +9,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -58,11 +59,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             /*case R.id.nav_ead:
                 fragment = new EadFragment();
                 setTitle(menuItem.getTitle());
-                break;
-            case R.id.nav_sistag:
-                fragment = new SistagFragment();
-                setTitle(menuItem.getTitle());
                 break;*/
+            case R.id.nav_promocoes:
+                fragment = new PromocoesFragment();
+                setTitle(menuItem.getTitle());
+                break;
             case R.id.nav_login:
                 fragment = new LoginFragment();
                 setTitle(menuItem.getTitle());
