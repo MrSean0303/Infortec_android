@@ -1,10 +1,15 @@
+
 package amsi.dei.estg.ipleiria.infortec_android;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -26,7 +31,9 @@ public class ProdutoActivity extends AppCompatActivity {
     private int id;
     private Produto produto;
     private SingletonGestorTabelas singletonGestorTabelas;
-    private TextView txtPreco, txtTitulo;
+    private TextView txtPreco, txtTitulo, txtDescGeral, txtDescricao;
+    private ImageView ivFoto;
+    private String urlImg = "http://188.81.13.176/Infortec/infortec_site/frontend/web/imagens/";;
 
     public ProdutoActivity() {
     }
@@ -37,7 +44,9 @@ public class ProdutoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_produto);
         txtTitulo = findViewById(R.id.txtTitulo);
         txtPreco = findViewById(R.id.txtPreco);
-
+        ivFoto = findViewById(R.id.ivFotoProduto);
+        txtDescGeral = findViewById(R.id.txtDescGeral);
+        txtDescricao = findViewById(R.id.txtDesc);
         //produtos = SingletonGestorTabelas.getInstance(getContext()).getProdutosBD();
 /*
         final MqttAndroidClient client;
@@ -91,20 +100,30 @@ public class ProdutoActivity extends AppCompatActivity {
                 message.setRetained(true);
 
                 noticiasTopic.publish(message);*/
-            //}
-
-
-            id = getIntent().getIntExtra("ID_PRODUTO", 0);
-            produto = SingletonGestorTabelas.getInstance(getApplicationContext()).getProdutoById(id);
-
-            txtTitulo.setText(produto.getNome());
-            System.out.println("getNome:" + produto.getNome());
-            System.out.println("getId:" + produto.getId());
-            System.out.println("getDescricao:" + produto.getDescricao());
-            System.out.println("getQuantStock:" + produto.getQuantStock());
-            System.out.println("getValorDesconto:" + produto.getValorDesconto());
-
-            txtPreco.setText(String.valueOf(produto.getPreco()));
         //}
+        //}
+        //#008577, #00574B
+        id = getIntent().getIntExtra("ID_PRODUTO", 0);
+        produto = SingletonGestorTabelas.getInstance(getApplicationContext()).getProdutoById(id);
+
+        txtTitulo.setText(produto.getNome());
+        System.out.println("getNome:" + produto.getNome());
+        System.out.println("getId:" + produto.getId());
+        System.out.println("getDescricao:" + produto.getDescricao());
+        System.out.println("getQuantStock:" + produto.getQuantStock());
+        System.out.println("getValorDesconto:" + produto.getValorDesconto());
+
+        txtPreco.setText(String.valueOf(produto.getPreco()) + "€");
+
+        Glide.with(this)
+                .load(urlImg + produto.getFotoProduto())
+                .placeholder(R.drawable.imginfortec)
+                .thumbnail(0f)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(ivFoto);
+
+        txtDescGeral.setText(produto.getDescricaoGeral());
+        txtDescricao.setText(produto.getDescricao());
+
     }
 }

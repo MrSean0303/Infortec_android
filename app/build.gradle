@@ -17,8 +17,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    repositories{
-        maven{
+    repositories {
+        maven {
             url "https://repo.eclipse.org/content/repositories/paho-releases/"
         }
     }
@@ -38,4 +38,5 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.10.0'
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
     implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
+    implementation 'com.github.bumptech.glide:glide:4.10.0'
 }

@@ -11,6 +11,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import java.util.ArrayList;
 
 import amsi.dei.estg.ipleiria.infortec_android.R;
@@ -20,11 +23,14 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
     private LayoutInflater inflater;
     private ArrayList<Produto> produtos;
     private OnProdutoListener mOnProdutoListener;
+    private Context context;
+    private String urlImg = "http://188.81.13.176/Infortec/infortec_site/frontend/web/imagens/";
 
     public ListProductAdapter(Context context, ArrayList<Produto> produtos, OnProdutoListener onProdutoListener) {
         this.inflater = inflater.from(context);
         this.produtos = produtos;
         this.mOnProdutoListener = onProdutoListener;
+        this.context = context;
     }
 
     @NonNull
@@ -39,8 +45,14 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Produto produto = produtos.get(position);
         holder.nome.setText(produto.getNome());
-        holder.preco.setText(String.valueOf(produto.getPreco()));
+        holder.preco.setText(String.valueOf(produto.getPreco())+"€");
         holder.id = produto.getId();
+        Glide.with(context)
+                .load(urlImg + produto.getFotoProduto())
+                .placeholder(R.drawable.imginfortec)
+                .thumbnail(0f)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(holder.imgProd);
     }
 
     @Override
@@ -50,7 +62,7 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView nome, preco;
-        private ImageView img;
+        private ImageView imgProd;
         private int id;
         OnProdutoListener onProdutoListener;
 
@@ -58,6 +70,7 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
             super(itemView);
             nome = itemView.findViewById(R.id.textNome);
             preco = itemView.findViewById(R.id.textPreco);
+            imgProd = itemView.findViewById(R.id.fotoProduto);
             this.onProdutoListener = onProdutoListener;
 
             itemView.setOnClickListener(this);
