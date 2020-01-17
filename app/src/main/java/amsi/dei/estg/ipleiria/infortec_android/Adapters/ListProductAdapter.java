@@ -17,6 +17,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.ArrayList;
 
 import amsi.dei.estg.ipleiria.infortec_android.R;
+import amsi.dei.estg.ipleiria.infortec_android.listeners.ApiCallBack;
 import amsi.dei.estg.ipleiria.infortec_android.models.Produto;
 
 public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.ViewHolder> {
@@ -24,7 +25,8 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
     private ArrayList<Produto> produtos;
     private OnProdutoListener mOnProdutoListener;
     private Context context;
-    private String urlImg = "http://188.81.13.176/Infortec/infortec_site/frontend/web/imagens/";
+
+    public String urlImg = "http://188.81.8.115/Infortec/infortec_site/frontend/web/imagens/";
 
     public ListProductAdapter(Context context, ArrayList<Produto> produtos, OnProdutoListener onProdutoListener) {
         this.inflater = inflater.from(context);
