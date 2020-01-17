@@ -16,6 +16,8 @@ public class activity_signup extends AppCompatActivity {
     private EditText editTextEmail;
     private EditText editTextPassword;
     private EditText editTextConfirmPassword;
+    private EditText editTextNome;
+    private EditText editTextNif;
 
 
     @Override
@@ -27,12 +29,18 @@ public class activity_signup extends AppCompatActivity {
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextPassword = findViewById(R.id.editTextPassword);
         editTextConfirmPassword = findViewById(R.id.editTextConfirmPassword);
+        editTextNome = findViewById(R.id.editTextNome);
+        editTextNif = findViewById(R.id.editTextNif);
+
     }
 
     public void onClickSignup() {
+        String nome = editTextNome.getText().toString();
+        String username = editTextUsername.getText().toString();
         String email = editTextEmail.getText().toString();
         String passord = editTextPassword.getText().toString();
         String confirmPassword = editTextConfirmPassword.getText().toString();
+        String nif =  editTextNif.getText().toString();
 
         if (!isEmailValido(email)){
             return;
@@ -42,10 +50,23 @@ public class activity_signup extends AppCompatActivity {
             return;
         }
 
+        if (!isNifValido(nif)){
+            return;
+        }
 
 
 
 
+
+    }
+
+    public boolean isNifValido(String nif){
+        if (nif.length() != 9){
+            editTextNif.setError("Nif invalido");
+            return false;
+        }
+
+        return true;
     }
 
     public boolean isEmailValido(String email){

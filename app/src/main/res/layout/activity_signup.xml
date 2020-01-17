@@ -23,6 +23,14 @@
         android:layout_height="10dp" />
 
     <EditText
+        android:id="@+id/editTextNome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Nome Proprio"
+        android:inputType="textPersonName" />
+
+    <EditText
         android:id="@+id/editTextUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,6 +45,14 @@
         android:ems="10"
         android:hint="Email"
         android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/editTextNif"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="NIF"
+        android:inputType="numberSigned" />
 
     <EditText
         android:id="@+id/editTextPassword"
