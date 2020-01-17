@@ -10,12 +10,15 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import amsi.dei.estg.ipleiria.infortec_android.listeners.ApiCallBack;
 import amsi.dei.estg.ipleiria.infortec_android.utils.ProdutoJsonParser;
@@ -25,7 +28,8 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
     private ArrayList<Produto> produtos;
     private static RequestQueue volleyQueue = null;
     private BDHelper bdHelper;
-    private static String mUrlApiProdutos = "http://188.81.8.115/Infortec/infortec_site/frontend/web/api/produto";
+    private static String mUrlApiProdutos = "http://188.81.13.176/Infortec/infortec_site/frontend/web/api/produto";
+    private static String mUrlApiUsers = "http://188.81.13.176/Infortec/infortec_site/frontend/web/api/user";
     private ApiCallBack listener;
 
     private static SingletonGestorTabelas INSTANCE = null;
@@ -108,5 +112,41 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
             }
         }
         return null;
+    }
+
+    public void adicionarUserAPI (final User user, final Context context)
+    {
+        StringRequest req = new StringRequest(Request.Method.POST, mUrlApiUsers+"/registar", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("--> RESPOSTA ADD POST: " + response);
+                if(listener != null)
+                {
+                    /*try {
+
+                        listener.onUpdateListaLivrosBD(LivroJsonParser.parserJsonLivros(response, context), 1);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }*/
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("--> ERRO ADD LIVRO: " + error.getMessage());
+            }
+        }){protected Map<String, String> getParams(){
+            Map<String, String> params = new HashMap<>();
+            //params.put("nome", user.get);
+            params.put("username", user.getUsername());
+            params.put("email", user.getEmail());
+            /*params.put("morada", "" + livro.getAno());
+            params.put("nif", livro.getCapa());*/
+            params.put("password", user.getPassword_hash());
+
+            return params;
+        }
+        };
+        volleyQueue.add(req);
     }
 }
