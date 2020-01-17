@@ -28,8 +28,8 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
     private ArrayList<Produto> produtos;
     private static RequestQueue volleyQueue = null;
     private BDHelper bdHelper;
-    private static String mUrlApiProdutos = "http://188.81.13.176/Infortec/infortec_site/frontend/web/api/produto";
-    private static String mUrlApiUsers = "http://188.81.13.176/Infortec/infortec_site/frontend/web/api/user";
+    private static String mUrlApiProdutos = "http://188.81.8.115/Infortec/infortec_site/frontend/web/api/produto";
+    private static String mUrlApiUsers = "http://188.81.8.115/Infortec/infortec_site/frontend/web/api/user";
     private ApiCallBack listener;
 
     private static SingletonGestorTabelas INSTANCE = null;
@@ -114,7 +114,8 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
         return null;
     }
 
-    public void adicionarUserAPI (final User user, final Context context)
+    //User
+    public void adicionarUserAPI (final User user,final Utilizador utilizador, final Context context)
     {
         StringRequest req = new StringRequest(Request.Method.POST, mUrlApiUsers+"/registar", new Response.Listener<String>() {
             @Override
@@ -137,16 +138,39 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
             }
         }){protected Map<String, String> getParams(){
             Map<String, String> params = new HashMap<>();
-            //params.put("nome", user.get);
+            params.put("nome", utilizador.getNome());
             params.put("username", user.getUsername());
             params.put("email", user.getEmail());
-            /*params.put("morada", "" + livro.getAno());
-            params.put("nif", livro.getCapa());*/
+            params.put("morada", "" + utilizador.getMorada());
+            params.put("nif", utilizador.getNif());
             params.put("password", user.getPassword_hash());
 
             return params;
         }
         };
         volleyQueue.add(req);
+    }
+
+    public void cheakUsername(final String username){
+
+        StringRequest req = new StringRequest(Request.Method.POST, mUrlApiUsers+"/cheakusername", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){protected Map<String, String> getParams(){
+            Map<String, String> params = new HashMap<>();
+            params.put("username", username);
+
+            return params;
+        }
+        };
+        volleyQueue.add(req);
+
     }
 }

@@ -2,12 +2,14 @@ package amsi.dei.estg.ipleiria.infortec_android;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 
+import amsi.dei.estg.ipleiria.infortec_android.models.SingletonGestorTabelas;
 import amsi.dei.estg.ipleiria.infortec_android.models.User;
 
 public class activity_signup extends AppCompatActivity {
@@ -54,7 +56,7 @@ public class activity_signup extends AppCompatActivity {
             return;
         }
 
-
+        if (!is)
 
 
 
@@ -90,5 +92,12 @@ public class activity_signup extends AppCompatActivity {
         }
 
         return password.length() > 4;
+    }
+
+    public boolean isUsername(String username, final Context context){
+
+        SingletonGestorTabelas.getInstance(context).cheakUsername(username);
+
+        return true;
     }
 }
