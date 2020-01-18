@@ -31,7 +31,7 @@ public class ProdutoActivity extends AppCompatActivity {
     private int id;
     private Produto produto;
     private SingletonGestorTabelas singletonGestorTabelas;
-    private TextView txtPreco, txtTitulo, txtDescGeral, txtDescricao;
+    private TextView txtPreco, txtTitulo, txtDescGeral, txtDescricao, txtValorDesconto;
     private ImageView ivFoto;
     private String urlImg = "http://188.81.8.49/Infortec/infortec_site/frontend/web/imagens/";
 
@@ -47,6 +47,7 @@ public class ProdutoActivity extends AppCompatActivity {
         ivFoto = findViewById(R.id.ivFotoProduto);
         txtDescGeral = findViewById(R.id.txtDescGeral);
         txtDescricao = findViewById(R.id.txtDesc);
+        txtValorDesconto = findViewById(R.id.txtValorDesconto);
         //produtos = SingletonGestorTabelas.getInstance(getContext()).getProdutosBD();
 /*
         final MqttAndroidClient client;
@@ -107,13 +108,15 @@ public class ProdutoActivity extends AppCompatActivity {
         produto = SingletonGestorTabelas.getInstance(getApplicationContext()).getProdutoById(id);
 
         txtTitulo.setText(produto.getNome());
-        System.out.println("getNome:" + produto.getNome());
-        System.out.println("getId:" + produto.getId());
-        System.out.println("getDescricao:" + produto.getDescricao());
-        System.out.println("getQuantStock:" + produto.getQuantStock());
-        System.out.println("getValorDesconto:" + produto.getValorDesconto());
+        if(produto.getValorDesconto() != 0)
+            txtValorDesconto.setText("- " + produto.getValorDesconto() + "€");
+        else
+            txtValorDesconto.setText("");
 
-        txtPreco.setText(String.valueOf(produto.getPreco()) + "€");
+        double preco = produto.getPreco()-produto.getValorDesconto();
+        String precoFinal = String.format("%.2f", preco);
+
+        txtPreco.setText(precoFinal + "€");
 
         Glide.with(this)
                 .load(urlImg + produto.getFotoProduto())

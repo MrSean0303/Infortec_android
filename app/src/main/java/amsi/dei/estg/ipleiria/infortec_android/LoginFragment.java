@@ -14,16 +14,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import amsi.dei.estg.ipleiria.infortec_android.utils.ProdutoJsonParser;
 
@@ -31,12 +36,14 @@ import amsi.dei.estg.ipleiria.infortec_android.utils.ProdutoJsonParser;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class LoginFragment extends Fragment {
+public class LoginFragment extends Fragment implements View.OnClickListener{
 
+    Button buttonLogin;
     private EditText editTextUserName;
     private EditText editTextPassword;
-    private Button regist;
-    private ArrayList<JsonArrayRequest> volleyQueue;
+    private static RequestQueue volleyQueue = null;
+    private String mUrlApiLogin = "http://188.81.0.111/Infortec/infortec_site/frontend/web/api/user";
+    private String mUrlApiProdutos = "http://188.81.0.111/Infortec/infortec_site/frontend/web/api/produto";
 
     public LoginFragment() {
     }
@@ -47,6 +54,10 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View viewRoot = inflater.inflate(R.layout.fragment_login, container, false);
+
+        buttonLogin = (Button) viewRoot.findViewById(R.id.buttonlogin);
+        buttonLogin.setOnClickListener(this);
+
         editTextUserName = viewRoot.findViewById(R.id.editTextUserName);
         editTextPassword = viewRoot.findViewById(R.id.editTextPassword);
 
@@ -65,37 +76,47 @@ public class LoginFragment extends Fragment {
         return viewRoot;
     }
 
+    @Override
+    public void onClick(View v) {
 
-    /*public void onClickLogin(View view) throws UnsupportedEncodingException {
-        String userName = editTextUserName.getText().toString();
-        String password = editTextPassword.getText().toString();
+        final String userName = editTextUserName.getText().toString();
+        final String password = editTextPassword.getText().toString();
 
-        byte[] data = userName.getBytes("UTF-8");
-        String base64User = Base64.encodeToString(data, Base64.DEFAULT);
+        byte[] data = new byte[0];
+        try {
+            data = userName.getBytes("UTF-8");
+            String base64User = Base64.encodeToString(data, Base64.DEFAULT);
 
-        data = password.getBytes("UTF-8");
-        String base64Pass = Base64.encodeToString(data, Base64.DEFAULT);
+            data = password.getBytes("UTF-8");
+            String base64Pass = Base64.encodeToString(data, Base64.DEFAULT);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
-
-
-            JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, mUrlApiProdutos, null, new Response.Listener<JSONArray>() {
-                @Override
-                public void onResponse(JSONArray response) {
-                    try {
-
-
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        System.out.println("---> ERRO: " + e.getMessage());
-                    }
+        /*JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, mUrlApiLogin, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                if (!response.equals(null)) {
+                    System.out.println("Your Array Response: " + response);
+                } else {
+                    System.out.println("Your Array Response: " + "Data Null");
                 }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                }
-            });
-        volleyQueue.add(req);
 
-    }*/
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("ERRRRO: " + error);
+            }
+        }){    @Override
+        public Map<String, String> getHeaders() {
+            HashMap<String, String> headers = new HashMap<>();
+            String credentials = userName + ":" + password;
+            String base64EncodedCredentials = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+            headers.put("Authorization", "Basic" + base64EncodedCredentials);
+            return headers;
+        }
+        };volleyQueue.add(req);*/
+
+    }
 }
