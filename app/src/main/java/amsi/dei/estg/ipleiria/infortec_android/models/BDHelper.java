@@ -138,26 +138,21 @@ public class BDHelper extends SQLiteOpenHelper {
     }
 
     //USER
-    public ArrayList<User> getUser(){
+    public User getUser(){
 
-        ArrayList<User> users = new ArrayList<>();
+        User user = new User(0,"","","",0,"","",0);
 
         Cursor cursor = this.database.query(TABLE_USER_NAME, new String[]{
                 ID_USER, NOME,USERNAME, EMAIL, STATUS, MORADA, NIF, NUMPONTOS,
         }, null, null, null, null, null);
 
         if(cursor.moveToFirst()){
-            do{
-                //Produto user = new Produto(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2), cursor.getInt(3), cursor.getInt(4), cursor.getString(5), cursor.getString(6), cursor.getString(7), cursor.getString(8), cursor.getDouble(9), cursor.getDouble(10));
-                User auxUser = new User(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getInt(4), cursor.getString(5), cursor.getInt(6), cursor.getInt(7));
-                auxUser.setId(cursor.getInt(0));
-                System.out.println("---> Ree1 (auxUser): " + auxUser);
-                users.add(auxUser);
-            }while(cursor.moveToNext());
+            user = new User(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getInt(4), cursor.getString(5), cursor.getString(6), cursor.getInt(7));
+            user.setId(cursor.getInt(0));
         }
         System.out.println("---> Ree2 (cursor): " + cursor);
-        System.out.println("---> Ree3 (users): " + users);
-        return users;
+        System.out.println("---> Ree3 (users): " + user.getUsername());
+        return user;
     }
 
     public void adicionarUserBD(User user)
