@@ -1,21 +1,54 @@
 package amsi.dei.estg.ipleiria.infortec_android.models;
 
 public class User {
-    private int id, status, role, created_at, updated_at;
-    private String username, auth_key, password_hash, password_reset_token, email, verification_token;
+    private int id, status;
+    private String username, auth_key, password_hash, email;
+    private String nome, morada, nif;
+    private int numPontos;
 
-    public User(int id,String username, String auth_key, String password_hash, String password_reset_token, String email, int status, int role, int created_at, int updated_at,  String verification_token) {
+    public User(int id,String nome, String username,String auth_key, String password_hash, String email, int status, String morada, String nif, int numPontos) {
         this.id = id;
         this.status = status;
-        this.role = role;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
         this.username = username;
         this.auth_key = auth_key;
         this.password_hash = password_hash;
-        this.password_reset_token = password_reset_token;
         this.email = email;
-        this.verification_token = verification_token;
+        this.nome = nome;
+        this.morada = morada;
+        this.nif = nif;
+        this.numPontos = numPontos;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getMorada() {
+        return morada;
+    }
+
+    public void setMorada(String morada) {
+        this.morada = morada;
+    }
+
+    public String getNif() {
+        return nif;
+    }
+
+    public void setNif(String nif) {
+        this.nif = nif;
+    }
+
+    public int getNumPontos() {
+        return numPontos;
+    }
+
+    public void setNumPontos(int numPontos) {
+        this.numPontos = numPontos;
     }
 
     public int getId() {
@@ -34,29 +67,7 @@ public class User {
         this.status = status;
     }
 
-    public int getRole() {
-        return role;
-    }
 
-    public void setRole(int role) {
-        this.role = role;
-    }
-
-    public int getCreated_at() {
-        return created_at;
-    }
-
-    public void setCreated_at(int created_at) {
-        this.created_at = created_at;
-    }
-
-    public int getUpdated_at() {
-        return updated_at;
-    }
-
-    public void setUpdated_at(int updated_at) {
-        this.updated_at = updated_at;
-    }
 
     public String getUsername() {
         return username;
@@ -82,13 +93,6 @@ public class User {
         this.password_hash = password_hash;
     }
 
-    public String getPassword_reset_token() {
-        return password_reset_token;
-    }
-
-    public void setPassword_reset_token(String password_reset_token) {
-        this.password_reset_token = password_reset_token;
-    }
 
     public String getEmail() {
         return email;
@@ -98,11 +102,5 @@ public class User {
         this.email = email;
     }
 
-    public String getVerification_token() {
-        return verification_token;
-    }
 
-    public void setVerification_token(String verification_token) {
-        this.verification_token = verification_token;
-    }
 }

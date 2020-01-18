@@ -8,7 +8,6 @@ import amsi.dei.estg.ipleiria.infortec_android.models.User;
 
 public interface ApiCallBack {
     void onRefreshProdutos(ArrayList<Produto> produtos);
-    void onAddUser(User user);
 
 
 }

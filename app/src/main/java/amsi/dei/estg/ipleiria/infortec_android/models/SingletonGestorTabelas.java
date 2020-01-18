@@ -202,7 +202,7 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
 
     }
 
-    public void onAddUser(User user){
+    public void adicionarUser(User user){
         bdHelper.adicionarUserBD(user);
         System.out.println("---> Depois do Sn: ");
     }
@@ -240,7 +240,7 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
     }
 
     //User
-    public void adicionarUserAPI (final User user,final Utilizador utilizador, final Context context)
+    public void adicionarUserAPI (final User user, final Context context)
     {
         StringRequest req = new StringRequest(Request.Method.POST, mUrlApiUsers+"/registar", new Response.Listener<String>() {
             @Override
@@ -251,9 +251,10 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
                     try {
                         User auxUser= null;
 
+
                         auxUser = UserJsonParser.parserJsonUser(response, context);
                         System.out.println("--> Sai do parser: " + auxUser);
-                        listener.onAddUser(auxUser);
+                        adicionarUser(auxUser);
                         System.out.println("--> Sai do listener: " + auxUser);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -267,11 +268,11 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
             }
         }){protected Map<String, String> getParams(){
             Map<String, String> params = new HashMap<>();
-            params.put("nome", utilizador.getNome());
+            params.put("nome", user.getNome());
             params.put("username", user.getUsername());
             params.put("email", user.getEmail());
-            params.put("morada", "" + utilizador.getMorada());
-            params.put("nif", utilizador.getNif());
+            params.put("morada", "" + user.getMorada());
+            params.put("nif", user.getNif());
             params.put("password", user.getPassword_hash());
 
             return params;

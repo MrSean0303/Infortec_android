@@ -117,9 +117,6 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         recyclerView.setAdapter(mAdapter);
     }
 
-    public void onAddUser(User user){
-
-    }
 
     @Override
     public void onProdutoClick(int id) {

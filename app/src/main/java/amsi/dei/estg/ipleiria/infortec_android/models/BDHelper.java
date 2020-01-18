@@ -36,16 +36,17 @@ public class BDHelper extends SQLiteOpenHelper {
      */
     private static final String TABLE_USER_NAME = "User";
     private static final String ID_USER = "id";
+    private static final String NOME = "nome";
     private static final String USERNAME = "username";
     private static final String AUTH_KEY = "auth_key";
     private static final String PASSWORD_HASH = "password_hash";
-    private static final String PASSWORD_RESET_TOKEN = "password_reset_token";
     private static final String EMAIL = "email";
     private static final String STATUS = "status";
-    private static final String ROLE = "role";
-    private static final String CREATED_AT = "created_at";
-    private static final String UPDATED_AT = "updated_at";
-    private static final String VERIFICATION_TOKEN = "verification_token";
+    private static final String NIF = "nif";
+    private static final String MORADA = "morada";
+    private static final String NUMPONTOS = "numPontos";
+
+
 
     /*
         Elementos para a tabela Venda
@@ -77,7 +78,7 @@ public class BDHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createProdutoTable = "CREATE TABLE " + TABLE_PRODUTO_NAME + " (" + ID_PRODUTO + " INTEGER PRIMARY KEY AUTOINCREMENT, " + NOME_PRODUTO + " TEXT NOT NULL, " + DESCRICAO_PRODUTO + " TEXT NOT NULL, " + DESCRICAO_GERAL_PRODUTO + " TEXT NOT NULL, " + FOTO_PRODUTO + " TEXT NOT NULL, " + QUANTSTOCK_PRODUTO + " INTEGER NOT NULL," + PONTOS_PRODUTO + " INTEGER," + VALOR_DESCONTO_PRODUTO + " DECIMAL(10,2)," + PRECO_PRODUTO + " DECIMAL(10,2) NOT NULL," + SUBCATEGORIA_ID_PRODUTO + " INTEGER NOT NULL," + IVA_ID_PRODUTO + " INTEGER NOT NULL" +");";
-        String createUserTable = "CREATE TABLE " + TABLE_USER_NAME + " (" + ID_USER + " INTEGER PRIMARY KEY AUTOINCREMENT, " + USERNAME + " TEXT NOT NULL, " + AUTH_KEY + " TEXT NOT NULL, " + PASSWORD_HASH + " TEXT NOT NULL, " + PASSWORD_RESET_TOKEN + " TEXT NOT NULL, " + EMAIL + " TEXT NOT NULL, " + STATUS + " INTEGER," + ROLE + " INTEGER NOT NULL, " + CREATED_AT + " INTEGER NOT NULL, " + UPDATED_AT + " INTEGER NOT NULL, " + VERIFICATION_TOKEN + " TEXT"  +");";
+        String createUserTable = "CREATE TABLE " + TABLE_USER_NAME + " (" + ID_USER + " INTEGER PRIMARY KEY AUTOINCREMENT, " + NOME + " TEXT NOT NULL, " + USERNAME + " TEXT NOT NULL, " + AUTH_KEY + " TEXT NOT NULL, " + PASSWORD_HASH + " TEXT NOT NULL, " + EMAIL + " TEXT NOT NULL, " + STATUS + " INTEGER," + NIF + " INTEGER NOT NULL, " + NUMPONTOS + " INTEGER NOT NULL, " + MORADA + " TEXT"  +");";
         String createVendaTable = "CREATE TABLE " + TABLE_VENDA_NAME + " (" + ID_VENDA + " INTEGER PRIMARY KEY AUTOINCREMENT, "+ TOTAL + " DECIMAL NOT NULL, "+ DATA + " TEXT NOT NULL, "  + USER_ID + " INTEGER NOT NULL" +");";
         String createLinhaVendaTable = "CREATE TABLE " + TABLE_LINHAVENDA_NAME + " (" + ID_LINHAVENDA + " INTEGER PRIMARY KEY AUTOINCREMENT, "+ QUANTIDADE + " INTEGER NOT NULL, "+ ISPONTOS + " INTEGER, "  + PRECO + " DECIMAL NOT NULL, " + VENDA_ID + " INTEGER NOT NULL, "+ PRODUTO_ID + " INTEGER NOT NULL" +");";
 
@@ -144,13 +145,13 @@ public class BDHelper extends SQLiteOpenHelper {
         ArrayList<User> users = new ArrayList<>();
 
         Cursor cursor = this.database.query(TABLE_USER_NAME, new String[]{
-                ID_USER, USERNAME, AUTH_KEY, PASSWORD_HASH, PASSWORD_RESET_TOKEN, EMAIL, STATUS, ROLE, CREATED_AT, UPDATED_AT, VERIFICATION_TOKEN
+                ID_USER, NOME,USERNAME, AUTH_KEY, PASSWORD_HASH, EMAIL, STATUS, MORADA, NIF, NUMPONTOS,
         }, null, null, null, null, null);
 
         if(cursor.moveToFirst()){
             do{
                 //Produto user = new Produto(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2), cursor.getInt(3), cursor.getInt(4), cursor.getString(5), cursor.getString(6), cursor.getString(7), cursor.getString(8), cursor.getDouble(9), cursor.getDouble(10));
-                User auxUser = new User(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getInt(6), cursor.getInt(7), cursor.getInt(8), cursor.getInt(9), cursor.getString(10));
+                User auxUser = new User(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getInt(6), cursor.getString(7), cursor.getString(8), cursor.getInt(9));
                 auxUser.setId(cursor.getInt(0));
                 System.out.println("---> Ree1 (auxUser): " + auxUser);
                 users.add(auxUser);
@@ -165,16 +166,15 @@ public class BDHelper extends SQLiteOpenHelper {
     {
         ContentValues values = new ContentValues();
         values.put(ID_USER, user.getId());
+        values.put(NOME, user.getNome());
         values.put(USERNAME, user.getUsername());
         values.put(AUTH_KEY, user.getAuth_key());
         values.put(PASSWORD_HASH, user.getPassword_hash());
-        values.put(PASSWORD_RESET_TOKEN, user.getPassword_reset_token());
         values.put(EMAIL, user.getEmail());
         values.put(STATUS, user.getStatus());
-        values.put(ROLE, user.getRole());
-        values.put(CREATED_AT, user.getCreated_at());
-        values.put(UPDATED_AT, user.getUpdated_at());
-        values.put(VERIFICATION_TOKEN, user.getVerification_token());
+        values.put(NIF, user.getNif());
+        values.put(MORADA, user.getMorada());
+        values.put(NUMPONTOS, user.getNumPontos());
 
         this.database.insert(TABLE_USER_NAME, null, values);
     }
