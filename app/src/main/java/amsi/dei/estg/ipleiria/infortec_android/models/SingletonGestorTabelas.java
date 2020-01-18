@@ -35,6 +35,7 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
     private static String mUrlApiProdutos = "http://188.81.8.49/Infortec/infortec_site/frontend/web/api/produto";
     private static String mUrlApiUsers = "http://188.81.8.49/Infortec/infortec_site/frontend/web/api/user";
     private ApiCallBack listener;
+    private Object USER;
 
 
     private static SingletonGestorTabelas INSTANCE = null;
@@ -49,6 +50,7 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
 
     private SingletonGestorTabelas(Context context) {
         produtos = new ArrayList<>();
+        USER = new ArrayList<>();
         bdHelper = new BDHelper(context);
     }
 
@@ -86,8 +88,7 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
             volleyQueue.add(req);
         }
     }
-
-
+    
 
     public void getUserAPI(final Context context, boolean isConnected, String username, String password) {
         final String user = username;
@@ -101,6 +102,14 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
             JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, mUrlApiUsers, null, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
+
+                    try {
+                        USER = UserJsonParser.parserJsonUserObject(response, context);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
                     Toast toast = Toast.makeText(context, "Login Efetuado", Toast.LENGTH_LONG);
                     toast.show();
                     if (!response.equals(null)) {
