@@ -2,10 +2,10 @@ package amsi.dei.estg.ipleiria.infortec_android.models;
 
 public class Utilizador {
 
-    private int id, nif, numPontos, user_id;
-    private String nome, morada;
+    private int id, numPontos, user_id;
+    private String nome, morada,nif;
 
-    public Utilizador(int id, String nome, int nif,String morada, int numPontos, int user_id) {
+    public Utilizador(int id, String nome, String nif, String morada, int numPontos, int user_id) {
         this.id = id;
         this.nif = nif;
         this.numPontos = numPontos;
@@ -22,11 +22,11 @@ public class Utilizador {
         this.id = id;
     }
 
-    public int getNif() {
+    public String getNif() {
         return nif;
     }
 
-    public void setNif(int nif) {
+    public void setNif(String nif) {
         this.nif = nif;
     }
 
