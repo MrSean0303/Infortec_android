@@ -28,8 +28,8 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
     private ArrayList<Produto> produtos;
     private static RequestQueue volleyQueue = null;
     private BDHelper bdHelper;
-    private static String mUrlApiProdutos = "http://188.81.13.176/Infortec/infortec_site/frontend/web/api/produto";
-    private static String mUrlApiUsers = "http://188.81.13.176/Infortec/infortec_site/frontend/web/api/user";
+    private static String mUrlApiProdutos = "http://188.81.0.111/Infortec/infortec_site/frontend/web/api/produto";
+    private static String mUrlApiUsers = "http://188.81.0.111/Infortec/infortec_site/frontend/web/api/user";
     private ApiCallBack listener;
 
     private static SingletonGestorTabelas INSTANCE = null;
@@ -48,19 +48,18 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
     }
 
     public void getAllProdutosAPI(final Context context, boolean isConnected) {
-        Toast.makeText(context, "IS CONNECTED: " + isConnected, Toast.LENGTH_SHORT);
-        System.out.println("---> IS CONNECTED: " + isConnected);
         if (!isConnected) {
-            produtos = bdHelper.getAllProdutosDB();
-            System.out.println("---> produtosREEE: " + produtos);
+            produtos = getProdutosBD();
+            Toast toast = Toast.makeText(context, "No Internet Available", Toast.LENGTH_LONG);
+            toast.show();
         } else {
-            System.out.println("---> TEST");
             JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, mUrlApiProdutos, null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
                     try {
+                        Toast toast = Toast.makeText(context, "Products Refreshed", Toast.LENGTH_LONG);
+                        toast.show();
                         produtos = ProdutoJsonParser.ProdutoJsonParser(response, context);
-                        System.out.println("---> RESPOSTA: " + produtos);
 
                         adicionarProdutosBD(produtos);
 
@@ -85,8 +84,55 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
 
     public ArrayList<Produto> getProdutosBD() {
         produtos = bdHelper.getAllProdutosDB();
+
         return produtos;
     }
+
+    public ArrayList<Produto> getProdutosPromocoesBD() {
+        ArrayList<Produto> produtosPromocoes = new ArrayList<>();
+        produtos = bdHelper.getAllProdutosDB();
+
+        for (Produto produto: produtos) {
+            if(produto.getValorDesconto() > 0)
+            {
+                produtosPromocoes.add(produto);
+            }
+        }
+        return produtosPromocoes;
+    }
+
+
+    public void getAllProdutosPromocoesAPI(final Context context, boolean isConnected) {
+        if (!isConnected) {
+            produtos = getProdutosPromocoesBD();
+        } else {
+            JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, mUrlApiProdutos, null, new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    try {
+                        produtos = ProdutoJsonParser.ProdutoJsonParser(response, context);
+
+                        adicionarProdutosBD(produtos);
+
+                        if (listener != null) {
+                            listener.onRefreshProdutos(getProdutosPromocoesBD());
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        System.out.println("---> ERRO: " + e.getMessage());
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    System.out.println("---> ERRO: GetAllProdutosAPI: " + error.getMessage());
+                }
+            });
+            volleyQueue.add(req);
+        }
+    }
+
 
     public void setListener(ApiCallBack listener) {
         this.listener = listener;

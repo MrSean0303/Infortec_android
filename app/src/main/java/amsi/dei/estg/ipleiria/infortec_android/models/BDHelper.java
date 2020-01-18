@@ -76,7 +76,7 @@ public class BDHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createProdutoTable = "CREATE TABLE " + TABLE_PRODUTO_NAME + " (" + ID_PRODUTO + " INTEGER PRIMARY KEY AUTOINCREMENT, " + NOME_PRODUTO + " TEXT NOT NULL, " + DESCRICAO_PRODUTO + " TEXT NOT NULL, " + DESCRICAO_GERAL_PRODUTO + " TEXT NOT NULL, " + FOTO_PRODUTO + " TEXT NOT NULL, " + QUANTSTOCK_PRODUTO + " INTEGER NOT NULL," + PONTOS_PRODUTO + " INTEGER," + VALOR_DESCONTO_PRODUTO + " DECIMAL," + PRECO_PRODUTO + " DECIMAL NOT NULL," + SUBCATEGORIA_ID_PRODUTO + " INTEGER NOT NULL," + IVA_ID_PRODUTO + " INTEGER NOT NULL" +");";
+        String createProdutoTable = "CREATE TABLE " + TABLE_PRODUTO_NAME + " (" + ID_PRODUTO + " INTEGER PRIMARY KEY AUTOINCREMENT, " + NOME_PRODUTO + " TEXT NOT NULL, " + DESCRICAO_PRODUTO + " TEXT NOT NULL, " + DESCRICAO_GERAL_PRODUTO + " TEXT NOT NULL, " + FOTO_PRODUTO + " TEXT NOT NULL, " + QUANTSTOCK_PRODUTO + " INTEGER NOT NULL," + PONTOS_PRODUTO + " INTEGER," + VALOR_DESCONTO_PRODUTO + " DECIMAL(10,2)," + PRECO_PRODUTO + " DECIMAL(10,2) NOT NULL," + SUBCATEGORIA_ID_PRODUTO + " INTEGER NOT NULL," + IVA_ID_PRODUTO + " INTEGER NOT NULL" +");";
         String createUserTable = "CREATE TABLE " + TABLE_USER_NAME + " (" + ID_USER + " INTEGER PRIMARY KEY AUTOINCREMENT, " + USERNAME + " TEXT NOT NULL, " + AUTH_KEY + " TEXT NOT NULL, " + PASSWORD_HASH + " TEXT NOT NULL, " + PASSWORD_RESET_TOKEN + " TEXT NOT NULL, " + EMAIL + " TEXT NOT NULL, " + STATUS + " INTEGER," + ROLE + " INTEGER NOT NULL, " + CREATED_AT + " INTEGER NOT NULL, " + UPDATED_AT + " INTEGER NOT NULL, " + VERIFICATION_TOKEN + " TEXT"  +");";
         String createVendaTable = "CREATE TABLE " + TABLE_VENDA_NAME + " (" + ID_VENDA + " INTEGER PRIMARY KEY AUTOINCREMENT, "+ TOTAL + " DECIMAL NOT NULL, "+ DATA + " TEXT NOT NULL, "  + USER_ID + " INTEGER NOT NULL" +");";
         String createLinhaVendaTable = "CREATE TABLE " + TABLE_LINHAVENDA_NAME + " (" + ID_LINHAVENDA + " INTEGER PRIMARY KEY AUTOINCREMENT, "+ QUANTIDADE + " INTEGER NOT NULL, "+ ISPONTOS + " INTEGER, "  + PRECO + " DECIMAL NOT NULL, " + VENDA_ID + " INTEGER NOT NULL, "+ PRODUTO_ID + " INTEGER NOT NULL" +");";
@@ -106,15 +106,11 @@ public class BDHelper extends SQLiteOpenHelper {
 
         if(cursor.moveToFirst()){
             do{
-                //Produto auxProduto = new Produto(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2), cursor.getInt(3), cursor.getInt(4), cursor.getString(5), cursor.getString(6), cursor.getString(7), cursor.getString(8), cursor.getDouble(9), cursor.getDouble(10));
                 Produto auxProduto = new Produto(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2), cursor.getInt(3), cursor.getInt(4), cursor.getString(5), cursor.getString(6), cursor.getString(7), cursor.getString(8), cursor.getDouble(9), cursor.getDouble(10));
                 auxProduto.setId(cursor.getInt(0));
-                System.out.println("---> Ree1 (auxProduto): " + auxProduto);
                 produtos.add(auxProduto);
             }while(cursor.moveToNext());
         }
-        System.out.println("---> Ree2 (cursor): " + cursor);
-        System.out.println("---> Ree3 (produtos): " + produtos);
         return produtos;
     }
 

@@ -60,10 +60,6 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         View viewRoot = inflater.inflate(R.layout.fragment_home, container, false);
         swipeRefreshLayout = viewRoot.findViewById(R.id.swipe);
 
-        /*ArrayList<Produto> produtos = new ArrayList<>();
-        produtos.add(new Produto(1, 2, 3, 1, 1, "TESTE", "NSEI", "É FIXE", "É FIXE, MESMO BACANO", 123.12, 0));
-        produtos.add(new Produto(2, 2, 3, 1, 1, "Ree", "NSEI", "É FIXE", "É FIXE, MESMO BACANO", 123.12, 0));
-           */
         produtos = SingletonGestorTabelas.getInstance(getContext()).getProdutosBD();
 
         System.out.println("---> REEEEEE: " + produtos);
@@ -108,7 +104,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onRefresh() {
-        SingletonGestorTabelas.getInstance(getContext()).getProdutosBD();
+        SingletonGestorTabelas.getInstance(getContext()).getAllProdutosAPI(getContext(), ProdutoJsonParser.isConnectionInternet(getContext()));
         swipeRefreshLayout.setRefreshing(false);
     }
 

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,7 +17,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.ArrayList;
 
 import amsi.dei.estg.ipleiria.infortec_android.R;
-import amsi.dei.estg.ipleiria.infortec_android.listeners.ApiCallBack;
 import amsi.dei.estg.ipleiria.infortec_android.models.Produto;
 
 public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.ViewHolder> {
@@ -26,7 +25,7 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
     private OnProdutoListener mOnProdutoListener;
     private Context context;
 
-    public String urlImg = "http://188.81.8.115/Infortec/infortec_site/frontend/web/imagens/";
+    private String urlImg = "http://188.81.0.111/Infortec/infortec_site/frontend/web/imagens/";
 
     public ListProductAdapter(Context context, ArrayList<Produto> produtos, OnProdutoListener onProdutoListener) {
         this.inflater = inflater.from(context);
@@ -47,7 +46,12 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Produto produto = produtos.get(position);
         holder.nome.setText(produto.getNome());
-        holder.preco.setText(String.valueOf(produto.getPreco())+"€");
+        String precoFinal = String.format("%.2f", produto.getPreco()-produto.getValorDesconto());
+        holder.preco.setText(precoFinal + "€");
+        if(produto.getValorDesconto() != 0)
+            holder.valorDesconto.setText("- "+produto.getValorDesconto()+"€");
+        else
+            holder.valorDesconto.setText("");
         holder.id = produto.getId();
         Glide.with(context)
                 .load(urlImg + produto.getFotoProduto())
@@ -63,16 +67,17 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        private TextView nome, preco;
+        private TextView nome, preco, valorDesconto;
         private ImageView imgProd;
         private int id;
         OnProdutoListener onProdutoListener;
 
-        public ViewHolder(@NonNull View itemView, OnProdutoListener onProdutoListener) {
+        private ViewHolder(@NonNull View itemView, OnProdutoListener onProdutoListener) {
             super(itemView);
             nome = itemView.findViewById(R.id.textNome);
             preco = itemView.findViewById(R.id.textPreco);
             imgProd = itemView.findViewById(R.id.fotoProduto);
+            valorDesconto = itemView.findViewById(R.id.valorDesconto);
             this.onProdutoListener = onProdutoListener;
 
             itemView.setOnClickListener(this);
