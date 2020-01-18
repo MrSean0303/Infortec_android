@@ -112,12 +112,6 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
 
                     Toast toast = Toast.makeText(context, "Login Efetuado", Toast.LENGTH_LONG);
                     toast.show();
-                    if (!response.equals(null)) {
-                        System.out.println("Your Array Response: " + response);
-                    } else {
-                        System.out.println("Your Array Response: " + "Data Null");
-                    }
-
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -207,6 +201,13 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
         System.out.println("---> Depois do Sn: ");
     }
 
+    public void adicionarUserBD(ArrayList<User> user) {
+        bdHelper.removerAllUsersDB();
+        for (User user1 : user) {
+            bdHelper.adicionarUserBD(user1);
+        }
+    }
+
     public void adicionarProdutosBD(ArrayList<Produto> listaProdutos) {
         bdHelper.removerAllProdutosDB();
         for (Produto produto : listaProdutos) {
@@ -242,7 +243,7 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
     //User
     public void adicionarUserAPI (final User user, final Context context)
     {
-        StringRequest req = new StringRequest(Request.Method.POST, mUrlApiUsers+"/registar", new Response.Listener<String>() {
+        /*StringRequest req = new StringRequest(Request.Method.POST, mUrlApiUsers+"/registar", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 System.out.println("--> RESPOSTA ADD POST: " + response);
@@ -250,7 +251,6 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
                 {
                     try {
                         User auxUser= null;
-
 
                         auxUser = UserJsonParser.parserJsonUser(response, context);
                         System.out.println("--> Sai do parser: " + auxUser);
@@ -278,7 +278,7 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
             return params;
         }
         };
-        volleyQueue.add(req);
+        volleyQueue.add(req);*/
     }
 
 

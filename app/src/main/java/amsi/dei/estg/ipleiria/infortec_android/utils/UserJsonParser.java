@@ -25,18 +25,16 @@ public class UserJsonParser {
         User auxUser = null;
 
         int id = response.getInt("id");
+        String nome = response.getString("nome");
         String username = response.getString("username");
-        String auth_key = response.getString("auth_key");
-        String password_hash = response.getString("password_hash");
-        String password_reset_token = "";
         String email = response.getString("email");
         int status = response.getInt("status");
-        int role = response.getInt("role");
-        int created_at = response.getInt("created_at");
-        int updated_at = response.getInt("updated_at");
-        String verification_token = response.getString("verification_token");
+        String morada = response.getString("morada");
+        int numPontos = response.getInt("numPontos");
+        int nif = response.getInt("nif");
 
-        auxUser = new User(id,username,auth_key,password_hash,password_reset_token,email,status,role,created_at,updated_at,verification_token);
+
+        auxUser = new User(id, nome, username,email,status, morada, nif, numPontos);
 
         System.out.println("--> PARSER Adicionado: " + auxUser);
         return auxUser;

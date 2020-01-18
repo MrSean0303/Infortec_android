@@ -2,16 +2,14 @@ package amsi.dei.estg.ipleiria.infortec_android.models;
 
 public class User {
     private int id, status;
-    private String username, auth_key, password_hash, email;
-    private String nome, morada, nif;
-    private int numPontos;
+    private String username, email;
+    private String nome, morada;
+    private int numPontos, nif;
 
-    public User(int id,String nome, String username,String auth_key, String password_hash, String email, int status, String morada, String nif, int numPontos) {
+    public User(int id,String nome, String username, String email, int status, String morada, int nif, int numPontos) {
         this.id = id;
         this.status = status;
         this.username = username;
-        this.auth_key = auth_key;
-        this.password_hash = password_hash;
         this.email = email;
         this.nome = nome;
         this.morada = morada;
@@ -35,11 +33,11 @@ public class User {
         this.morada = morada;
     }
 
-    public String getNif() {
+    public int getNif() {
         return nif;
     }
 
-    public void setNif(String nif) {
+    public void setNif(int nif) {
         this.nif = nif;
     }
 
@@ -75,22 +73,6 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getAuth_key() {
-        return auth_key;
-    }
-
-    public void setAuth_key(String auth_key) {
-        this.auth_key = auth_key;
-    }
-
-    public String getPassword_hash() {
-        return password_hash;
-    }
-
-    public void setPassword_hash(String password_hash) {
-        this.password_hash = password_hash;
     }
 
 
