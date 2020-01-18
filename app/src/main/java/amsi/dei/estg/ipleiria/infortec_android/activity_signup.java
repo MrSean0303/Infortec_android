@@ -55,11 +55,6 @@ public class activity_signup extends AppCompatActivity {
         if (!isNifValido(nif)){
             return;
         }
-
-        if (!is)
-
-
-
     }
 
     public boolean isNifValido(String nif){
