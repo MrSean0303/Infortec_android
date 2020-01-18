@@ -9,11 +9,16 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
+
+import amsi.dei.estg.ipleiria.infortec_android.models.SingletonGestorTabelas;
+import amsi.dei.estg.ipleiria.infortec_android.models.User;
+import amsi.dei.estg.ipleiria.infortec_android.utils.UserJsonParser;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -41,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         navigationView.setNavigationItemSelectedListener(this);
         carregarFragmentoInicial();
+
     }
     private void carregarFragmentoInicial(){
         navigationView.setCheckedItem(R.id.nav_home);

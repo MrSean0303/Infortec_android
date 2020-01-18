@@ -5,11 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -33,7 +35,8 @@ public class ProdutoActivity extends AppCompatActivity {
     private SingletonGestorTabelas singletonGestorTabelas;
     private TextView txtPreco, txtTitulo, txtDescGeral, txtDescricao, txtValorDesconto;
     private ImageView ivFoto;
-    private String urlImg = "http://188.81.8.49/Infortec/infortec_site/frontend/web/imagens/";
+    private String urlImg = "http://188.81.6.107/Infortec/infortec_site/frontend/web/imagens/";
+    private FloatingActionButton fabFav;
 
     public ProdutoActivity() {
     }
@@ -48,6 +51,7 @@ public class ProdutoActivity extends AppCompatActivity {
         txtDescGeral = findViewById(R.id.txtDescGeral);
         txtDescricao = findViewById(R.id.txtDesc);
         txtValorDesconto = findViewById(R.id.txtValorDesconto);
+        fabFav = findViewById(R.id.favFlb);
         //produtos = SingletonGestorTabelas.getInstance(getContext()).getProdutosBD();
 /*
         final MqttAndroidClient client;
@@ -103,7 +107,6 @@ public class ProdutoActivity extends AppCompatActivity {
                 noticiasTopic.publish(message);*/
         //}
         //}
-        //#008577, #00574B
         id = getIntent().getIntExtra("ID_PRODUTO", 0);
         produto = SingletonGestorTabelas.getInstance(getApplicationContext()).getProdutoById(id);
 
@@ -127,6 +130,22 @@ public class ProdutoActivity extends AppCompatActivity {
 
         txtDescGeral.setText(produto.getDescricaoGeral());
         txtDescricao.setText(produto.getDescricao());
+
+        fabFav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*if(id == -1)
+                {
+                    SingletonGestorTabelas.getInstance(getApplicationContext()).adicionarLivroAPI(criarLivro(), getApplicationContext());
+                    finish();
+                }
+                else
+                {
+                    SingletonGestorLivros.getInstance(getApplicationContext()).editarLivro(editarLivro(), getApplicationContext());
+                    finish();
+                }*/
+            }
+        });
 
     }
 }

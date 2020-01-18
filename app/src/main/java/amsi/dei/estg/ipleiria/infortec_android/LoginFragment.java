@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -21,6 +22,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,7 +33,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import amsi.dei.estg.ipleiria.infortec_android.models.SingletonGestorTabelas;
+import amsi.dei.estg.ipleiria.infortec_android.models.User;
 import amsi.dei.estg.ipleiria.infortec_android.utils.ProdutoJsonParser;
+import amsi.dei.estg.ipleiria.infortec_android.utils.UserJsonParser;
 
 
 /**
@@ -39,10 +43,12 @@ import amsi.dei.estg.ipleiria.infortec_android.utils.ProdutoJsonParser;
  */
 public class LoginFragment extends Fragment implements View.OnClickListener{
 
-    Button buttonLogin;
+    private Button buttonLogin;
     private EditText editTextUserName;
     private EditText editTextPassword;
+    private NavigationView navigationView;
     private static RequestQueue volleyQueue = null;
+    private User user;
     private String mUrlApiLogin = "http://188.81.0.111/Infortec/infortec_site/frontend/web/api/user";
 
     public LoginFragment() {
@@ -54,6 +60,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View viewRoot = inflater.inflate(R.layout.fragment_login, container, false);
+        View view = inflater.inflate(R.layout.activity_main, container, false);
+        navigationView = view.findViewById(R.id.nav_view);
 
         buttonLogin = (Button) viewRoot.findViewById(R.id.buttonlogin);
         buttonLogin.setOnClickListener(this);
@@ -82,42 +90,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         String username = editTextUserName.getText().toString();
         String password = editTextPassword.getText().toString();
 
-        SingletonGestorTabelas.getInstance(getContext()).getUserAPI(getContext(), ProdutoJsonParser.isConnectionInternet(getContext()), username, password);
-        /*byte[] data = new byte[0];
-        try {
-            data = userName.getBytes("UTF-8");
-            String base64User = Base64.encodeToString(data, Base64.DEFAULT);
-
-            data = password.getBytes("UTF-8");
-            String base64Pass = Base64.encodeToString(data, Base64.DEFAULT);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }*/
-
-        /*JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, mUrlApiLogin, null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                if (!response.equals(null)) {
-                    System.out.println("Your Array Response: " + response);
-                } else {
-                    System.out.println("Your Array Response: " + "Data Null");
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                System.out.println("ERRRRO: " + error);
-            }
-        }){    @Override
-        public Map<String, String> getHeaders() {
-            HashMap<String, String> headers = new HashMap<>();
-            String credentials = userName + ":" + password;
-            String base64EncodedCredentials = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
-            headers.put("Authorization", "Basic" + base64EncodedCredentials);
-            return headers;
-        }
-        };volleyQueue.add(req);*/
+        SingletonGestorTabelas.getInstance(getContext()).getUserAPI(getContext(), UserJsonParser.isConnectionInternet(getContext()), username, password);
 
     }
 }

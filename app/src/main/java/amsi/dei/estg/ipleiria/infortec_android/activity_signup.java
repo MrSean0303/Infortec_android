@@ -55,7 +55,7 @@ public class activity_signup extends AppCompatActivity implements View.OnClickLi
         if (!isNifValido(nif)) {
             return;
         }
-
+/*
         //Cria user incompleto com os dados introduzidos.
         User user = new User(0, nome, username, "", passord,  email, 0, "", "", 0);
 
@@ -70,7 +70,7 @@ public class activity_signup extends AppCompatActivity implements View.OnClickLi
         user = SingletonGestorTabelas.getInstance(this.getBaseContext()).getUserByUsername(user.getUsername());
 
         System.out.println("--> Até aqui tudo bem: " + user);
-
+*/
     }
 
 
