@@ -147,8 +147,8 @@ public class BDHelper extends SQLiteOpenHelper {
 
         ArrayList<User> users = new ArrayList<>();
 
-        Cursor cursor = this.database.query(TABLE_VENDA_NAME, new String[]{
-                ID_VENDA, USERNAME, AUTH_KEY, PASSWORD_HASH, PASSWORD_RESET_TOKEN, EMAIL, STATUS, ROLE, CREATED_AT, UPDATED_AT, VERIFICATION_TOKEN
+        Cursor cursor = this.database.query(TABLE_USER_NAME, new String[]{
+                ID_USER, USERNAME, AUTH_KEY, PASSWORD_HASH, PASSWORD_RESET_TOKEN, EMAIL, STATUS, ROLE, CREATED_AT, UPDATED_AT, VERIFICATION_TOKEN
         }, null, null, null, null, null);
 
         if(cursor.moveToFirst()){

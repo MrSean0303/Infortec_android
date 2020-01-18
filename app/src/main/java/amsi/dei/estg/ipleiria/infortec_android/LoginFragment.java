@@ -10,6 +10,7 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -34,6 +35,7 @@ public class LoginFragment extends Fragment {
 
     private EditText editTextUserName;
     private EditText editTextPassword;
+    private Button regist;
     private ArrayList<JsonArrayRequest> volleyQueue;
 
     public LoginFragment() {
@@ -48,8 +50,21 @@ public class LoginFragment extends Fragment {
         editTextUserName = viewRoot.findViewById(R.id.editTextUserName);
         editTextPassword = viewRoot.findViewById(R.id.editTextPassword);
 
+        final View buttonRegist = viewRoot.findViewById(R.id.buttonRegist);
+        buttonRegist.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getContext(), activity_signup.class);
+                        startActivity(intent);
+                    }
+                }
+        );
+
+
         return viewRoot;
     }
+
 
     /*public void onClickLogin(View view) throws UnsupportedEncodingException {
         String userName = editTextUserName.getText().toString();

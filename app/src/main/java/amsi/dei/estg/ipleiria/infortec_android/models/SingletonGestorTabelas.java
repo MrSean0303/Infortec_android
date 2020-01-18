@@ -22,15 +22,17 @@ import java.util.Map;
 
 import amsi.dei.estg.ipleiria.infortec_android.listeners.ApiCallBack;
 import amsi.dei.estg.ipleiria.infortec_android.utils.ProdutoJsonParser;
+import amsi.dei.estg.ipleiria.infortec_android.utils.UserJsonParser;
 
 public class SingletonGestorTabelas extends Application implements ApiCallBack {
 
     private ArrayList<Produto> produtos;
     private static RequestQueue volleyQueue = null;
     private BDHelper bdHelper;
-    private static String mUrlApiProdutos = "http://188.81.8.115/Infortec/infortec_site/frontend/web/api/produto";
-    private static String mUrlApiUsers = "http://188.81.8.115/Infortec/infortec_site/frontend/web/api/user";
+    private static String mUrlApiProdutos = "http://188.81.8.49/Infortec/infortec_site/frontend/web/api/produto";
+    private static String mUrlApiUsers = "http://188.81.8.49/Infortec/infortec_site/frontend/web/api/user";
     private ApiCallBack listener;
+
 
     private static SingletonGestorTabelas INSTANCE = null;
 
@@ -97,6 +99,11 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
 
     }
 
+    public void onAddUser(User user){
+        bdHelper.adicionarUserBD(user);
+        System.out.println("---> Depois do Sn: ");
+    }
+
     public void adicionarProdutosBD(ArrayList<Produto> listaProdutos) {
         bdHelper.removerAllProdutosDB();
         for (Produto produto : listaProdutos) {
@@ -114,6 +121,21 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
         return null;
     }
 
+    public User getUserByUsername(String username){
+        System.out.println("---> a: " + username);
+       ArrayList<User> users = bdHelper.getUser();
+        System.out.println("---> b: " + users);
+       for (User user : users){
+           if (user.getUsername().equals(username)){
+               System.out.println("---> c " + user);
+               return user;
+           }
+       }
+        System.out.println("---> abc: ");
+        return null;
+
+    }
+
     //User
     public void adicionarUserAPI (final User user,final Utilizador utilizador, final Context context)
     {
@@ -123,18 +145,22 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
                 System.out.println("--> RESPOSTA ADD POST: " + response);
                 if(listener != null)
                 {
-                    /*try {
+                    try {
+                        User auxUser= null;
 
-                        listener.onUpdateListaLivrosBD(LivroJsonParser.parserJsonLivros(response, context), 1);
+                        auxUser = UserJsonParser.parserJsonUser(response, context);
+                        System.out.println("--> Sai do parser: " + auxUser);
+                        listener.onAddUser(auxUser);
+                        System.out.println("--> Sai do listener: " + auxUser);
                     } catch (JSONException e) {
                         e.printStackTrace();
-                    }*/
+                    }
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                System.out.println("--> ERRO ADD LIVRO: " + error.getMessage());
+                System.out.println("--> ERRO ADD User: " + error.getMessage());
             }
         }){protected Map<String, String> getParams(){
             Map<String, String> params = new HashMap<>();
@@ -151,26 +177,5 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
         volleyQueue.add(req);
     }
 
-    public void cheakUsername(final String username){
 
-        StringRequest req = new StringRequest(Request.Method.POST, mUrlApiUsers+"/cheakusername", new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        }){protected Map<String, String> getParams(){
-            Map<String, String> params = new HashMap<>();
-            params.put("username", username);
-
-            return params;
-        }
-        };
-        volleyQueue.add(req);
-
-    }
 }

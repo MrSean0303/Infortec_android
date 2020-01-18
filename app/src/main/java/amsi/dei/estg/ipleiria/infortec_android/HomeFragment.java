@@ -32,6 +32,7 @@ import amsi.dei.estg.ipleiria.infortec_android.Adapters.ListProductAdapter;
 import amsi.dei.estg.ipleiria.infortec_android.listeners.ApiCallBack;
 import amsi.dei.estg.ipleiria.infortec_android.models.Produto;
 import amsi.dei.estg.ipleiria.infortec_android.models.SingletonGestorTabelas;
+import amsi.dei.estg.ipleiria.infortec_android.models.User;
 import amsi.dei.estg.ipleiria.infortec_android.utils.ProdutoJsonParser;
 
 
@@ -118,6 +119,10 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         mAdapter = (new ListProductAdapter(getContext(), produtos, this));
         recyclerView.setAdapter(mAdapter);
+    }
+
+    public void onAddUser(User user){
+
     }
 
     @Override

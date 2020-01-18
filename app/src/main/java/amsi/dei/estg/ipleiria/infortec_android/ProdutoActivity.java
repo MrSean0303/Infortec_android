@@ -33,7 +33,7 @@ public class ProdutoActivity extends AppCompatActivity {
     private SingletonGestorTabelas singletonGestorTabelas;
     private TextView txtPreco, txtTitulo, txtDescGeral, txtDescricao;
     private ImageView ivFoto;
-    private String urlImg = "http://188.81.8.115/Infortec/infortec_site/frontend/web/imagens/";;
+    private String urlImg = "http://188.81.8.49/Infortec/infortec_site/frontend/web/imagens/";
 
     public ProdutoActivity() {
     }

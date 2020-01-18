@@ -8,11 +8,14 @@ import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import amsi.dei.estg.ipleiria.infortec_android.models.BDHelper;
 import amsi.dei.estg.ipleiria.infortec_android.models.SingletonGestorTabelas;
 import amsi.dei.estg.ipleiria.infortec_android.models.User;
+import amsi.dei.estg.ipleiria.infortec_android.models.Utilizador;
 
-public class activity_signup extends AppCompatActivity {
+public class activity_signup extends AppCompatActivity implements View.OnClickListener {
 
     private EditText editTextUsername;
     private EditText editTextEmail;
@@ -36,31 +39,6 @@ public class activity_signup extends AppCompatActivity {
 
     }
 
-    public void onClickSignup() {
-        String nome = editTextNome.getText().toString();
-        String username = editTextUsername.getText().toString();
-        String email = editTextEmail.getText().toString();
-        String passord = editTextPassword.getText().toString();
-        String confirmPassword = editTextConfirmPassword.getText().toString();
-        String nif =  editTextNif.getText().toString();
-
-        if (!isEmailValido(email)){
-            return;
-        }
-
-        if (!isPasswordValida(passord, confirmPassword)) {
-            return;
-        }
-
-        if (!isNifValido(nif)){
-            return;
-        }
-
-        if (!is)
-
-
-
-    }
 
     public boolean isNifValido(String nif){
         if (nif.length() != 9){
@@ -94,10 +72,43 @@ public class activity_signup extends AppCompatActivity {
         return password.length() > 4;
     }
 
-    public boolean isUsername(String username, final Context context){
 
-        SingletonGestorTabelas.getInstance(context).cheakUsername(username);
+    @Override
+    public void onClick(View v) {
+       String nome = editTextNome.getText().toString();
+        String username = editTextUsername.getText().toString();
+        String email = editTextEmail.getText().toString();
+        String passord = editTextPassword.getText().toString();
+        String confirmPassword = editTextConfirmPassword.getText().toString();
+        String nif =  editTextNif.getText().toString();
 
-        return true;
+        System.out.println("---> Hello: ");
+
+        if (!isEmailValido(email)){
+            return;
+        }
+
+        if (!isPasswordValida(passord, confirmPassword)) {
+            return;
+        }
+
+        if (!isNifValido(nif)){
+            return;
+        }
+
+
+        User user = new User(0, username,"",passord,"",email,0,0,0,0,"");
+        Utilizador utilizador = new Utilizador(0,nome,nif,"",0,0);
+
+        System.out.println("---> Antes do Singleton: " + user);
+
+        SingletonGestorTabelas.getInstance(this.getBaseContext()).adicionarUserAPI(user,utilizador,getBaseContext());
+
+        System.out.println("---> Depois do Singleton: ");
+
+        user = SingletonGestorTabelas.getInstance(this.getBaseContext()).getUserByUsername(user.getUsername());
+
+        System.out.println("--> Até aqui tudo bem: "+ user);
+
     }
 }
