@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import amsi.dei.estg.ipleiria.infortec_android.models.SingletonGestorTabelas;
 import amsi.dei.estg.ipleiria.infortec_android.utils.ProdutoJsonParser;
 
 
@@ -43,7 +44,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     private EditText editTextPassword;
     private static RequestQueue volleyQueue = null;
     private String mUrlApiLogin = "http://188.81.0.111/Infortec/infortec_site/frontend/web/api/user";
-    private String mUrlApiProdutos = "http://188.81.0.111/Infortec/infortec_site/frontend/web/api/produto";
 
     public LoginFragment() {
     }
@@ -79,10 +79,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
 
-        final String userName = editTextUserName.getText().toString();
-        final String password = editTextPassword.getText().toString();
+        String username = editTextUserName.getText().toString();
+        String password = editTextPassword.getText().toString();
 
-        byte[] data = new byte[0];
+        SingletonGestorTabelas.getInstance(getContext()).getUserAPI(getContext(), ProdutoJsonParser.isConnectionInternet(getContext()), username, password);
+        /*byte[] data = new byte[0];
         try {
             data = userName.getBytes("UTF-8");
             String base64User = Base64.encodeToString(data, Base64.DEFAULT);
@@ -91,7 +92,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
             String base64Pass = Base64.encodeToString(data, Base64.DEFAULT);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-        }
+        }*/
 
         /*JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, mUrlApiLogin, null, new Response.Listener<JSONArray>() {
             @Override

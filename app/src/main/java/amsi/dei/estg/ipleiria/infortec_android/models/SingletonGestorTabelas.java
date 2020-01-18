@@ -3,6 +3,7 @@ package amsi.dei.estg.ipleiria.infortec_android.models;
 import android.app.Application;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Base64;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -10,11 +11,13 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -83,6 +86,51 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
             volleyQueue.add(req);
         }
     }
+
+
+
+    public void getUserAPI(final Context context, boolean isConnected, String username, String password) {
+        final String user = username;
+        final String pass = password;
+
+        if (!isConnected) {
+            produtos = getProdutosBD();
+            Toast toast = Toast.makeText(context, "No Internet Available", Toast.LENGTH_LONG);
+            toast.show();
+        } else {
+            JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, mUrlApiUsers, null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    Toast toast = Toast.makeText(context, "Login Efetuado", Toast.LENGTH_LONG);
+                    toast.show();
+                    if (!response.equals(null)) {
+                        System.out.println("Your Array Response: " + response);
+                    } else {
+                        System.out.println("Your Array Response: " + "Data Null");
+                    }
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    System.out.println("ERRRRO: " + error);
+                    Toast toast = Toast.makeText(context, "Nome ou Palavra-Pass Incorretos", Toast.LENGTH_LONG);
+                    toast.show();
+
+                }
+            }){    @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                String credentials = user + ":" + pass;
+                String base64EncodedCredentials = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                headers.put("Authorization", "Basic " + base64EncodedCredentials);
+                return headers;
+            }
+            };volleyQueue.add(req);
+        }
+    }
+
+
 
     public ArrayList<Produto> getProdutosBD() {
         produtos = bdHelper.getAllProdutosDB();

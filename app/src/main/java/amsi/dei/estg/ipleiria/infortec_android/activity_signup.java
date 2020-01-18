@@ -40,6 +40,19 @@ public class activity_signup extends AppCompatActivity implements View.OnClickLi
     }
 
 
+        if (!isEmailValido(email)){
+            return;
+        }
+
+        if (!isPasswordValida(passord, confirmPassword)) {
+            return;
+        }
+
+        if (!isNifValido(nif)){
+            return;
+        }
+    }
+
     public boolean isNifValido(String nif){
         if (nif.length() != 9){
             editTextNif.setError("Nif invalido");
