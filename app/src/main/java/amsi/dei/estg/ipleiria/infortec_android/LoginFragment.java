@@ -2,11 +2,11 @@ package amsi.dei.estg.ipleiria.infortec_android;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,22 +15,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.navigation.NavigationView;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import amsi.dei.estg.ipleiria.infortec_android.models.SingletonGestorTabelas;
 import amsi.dei.estg.ipleiria.infortec_android.models.User;
@@ -74,7 +64,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(getContext(), activity_signup.class);
+                        Intent intent = new Intent(getContext(), SignupActivity.class);
                         startActivity(intent);
                     }
                 }
@@ -82,6 +72,19 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
 
 
         return viewRoot;
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+
+        SharedPreferences pref = getActivity().getSharedPreferences("MyPref", 0);
+
+        String username = pref.getString("username", null);
+        String password = pref.getString("password", null);
+
+        editTextUserName.setText(username);
+        editTextPassword.setText(password);
     }
 
     @Override

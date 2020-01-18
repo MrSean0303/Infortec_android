@@ -7,13 +7,14 @@
 
     <application
         android:allowBackup="true"
-        android:label="@string/app_name"
         android:icon="@mipmap/icon_infortec"
+        android:label="@string/app_name"
         android:roundIcon="@mipmap/icon_infortec_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity_signup"></activity>
+        <activity android:name=".UserProfileActivity"></activity>
+        <activity android:name=".SignupActivity" />
         <activity android:name=".ProdutoActivity" />
         <activity
             android:name=".MainActivity"

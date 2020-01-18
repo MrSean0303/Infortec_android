@@ -2,15 +2,19 @@ package amsi.dei.estg.ipleiria.infortec_android;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import amsi.dei.estg.ipleiria.infortec_android.models.SingletonGestorTabelas;
 import amsi.dei.estg.ipleiria.infortec_android.models.User;
 
-public class activity_signup extends AppCompatActivity implements View.OnClickListener {
+public class SignupActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText editTextUsername;
     private EditText editTextEmail;
@@ -39,7 +43,7 @@ public class activity_signup extends AppCompatActivity implements View.OnClickLi
         String nome = editTextNome.getText().toString();
         String username = editTextUsername.getText().toString();
         String email = editTextEmail.getText().toString();
-        String passord = editTextPassword.getText().toString();
+        String password = editTextPassword.getText().toString();
         String confirmPassword = editTextConfirmPassword.getText().toString();
         String nif = editTextNif.getText().toString();
 
@@ -48,32 +52,50 @@ public class activity_signup extends AppCompatActivity implements View.OnClickLi
             return;
         }
 
-        if (!isPasswordValida(passord, confirmPassword)) {
+        if (!isPasswordValida(password, confirmPassword)) {
             return;
         }
 
         if (!isNifValido(nif)) {
             return;
         }
+<<<<<<< HEAD:app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/activity_signup.java
 /*
         //Cria user incompleto com os dados introduzidos.
         User user = new User(0, nome, username, "", passord,  email, 0, "", "", 0);
 
         System.out.println("---> Antes do Singleton: " + user);
+=======
+
+        //Cria array chave valor com os dados introduzidos.
+        Map<String, String> auxuser = new HashMap<>();
+        auxuser.put("nome", nome);
+        auxuser.put("username", username);
+        auxuser.put("email", email);
+        auxuser.put("password", password);
+        auxuser.put("nif", nif);
+>>>>>>> master:app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/SignupActivity.java
 
         //Envia o user para ser registado e adiciona-o a base de dados local
-        SingletonGestorTabelas.getInstance(this.getBaseContext()).adicionarUserAPI(user, getBaseContext());
+        SingletonGestorTabelas.getInstance(this.getBaseContext()).adicionarUserAPI(auxuser, getBaseContext());
 
-        System.out.println("---> Depois do Singleton: ");
-
+<<<<<<< HEAD:app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/activity_signup.java
         //Vai buscar o user colocado na base de dados local
         user = SingletonGestorTabelas.getInstance(this.getBaseContext()).getUserByUsername(user.getUsername());
 
         System.out.println("--> Até aqui tudo bem: " + user);
 */
+=======
+        //Guardar o nome e password do user nas SharedPreferences.
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("username", username);
+        editor.putString("password", password);
+        editor.commit();
+
+        finish();
+>>>>>>> master:app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/SignupActivity.java
     }
-
-
 
     public boolean isNifValido(String nif){
         if (nif.length() != 9){

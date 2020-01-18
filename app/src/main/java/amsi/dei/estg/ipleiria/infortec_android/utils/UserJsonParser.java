@@ -13,14 +13,6 @@ import amsi.dei.estg.ipleiria.infortec_android.models.User;
 
 public class UserJsonParser {
 
-    public static User parserJsonUser(String response, Context context) throws JSONException {
-        System.out.println("--> PARSER ADICIONAR: " + response);
-        User auxUser = null;
-
-
-        return auxUser;
-    }
-
     public static User parserJsonUserObject (JSONObject response, Context context) throws JSONException
     {
         System.out.println("--> PARSER ADICIONAR: " + response);
