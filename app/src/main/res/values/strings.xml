@@ -9,4 +9,23 @@
     <string name="title_activity_test">test</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
+    <string name="LoginPasswordText">Password</string>
+    <string name="loginButtonText">Login</string>
+    <string name="loginRegistarText">Registar</string>
+    <string name="Login_loginUtilizadorText">Login de Utilizador</string>
+    <string name="LoginUsernameText">Username</string>
+    <string name="SignupRegistarText">Registar</string>
+    <string name="Signup_nomeProprioText">Nome Proprio</string>
+    <string name="SignupUsername">Username</string>
+    <string name="SignupEmail">Email</string>
+    <string name="SignupNif">NIF</string>
+    <string name="SignupPasswordText">Inserir Password</string>
+    <string name="SignupConfPasswordText">Confirmar palavra passe</string>
+    <string name="SignupRegistarButton">Registar</string>
+    <string name="UserProfileTituloText">User Profile</string>
+    <string name="UserProfilenomeText">Nome Proprio</string>
+    <string name="UserProfileEmailText">Email</string>
+    <string name="UserProfilemoradaText">Morada</string>
+    <string name="UserProfileNifText">NIF</string>
+    <string name="UserProfilesalvarButton">Salvar Dados</string>
 </resources>

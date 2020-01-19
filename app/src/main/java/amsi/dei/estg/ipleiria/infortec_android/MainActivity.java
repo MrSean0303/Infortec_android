@@ -9,6 +9,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         Fragment fragment = null;
+        Activity activity = null;
         switch (menuItem.getItemId()) {
             case R.id.nav_home:
                 fragment = new HomeFragment();
@@ -68,10 +70,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 fragment = new LoginFragment();
                 setTitle(menuItem.getTitle());
                 break;
+            case R.id.nav_Perfil:
+                activity = new Activity();
+                setTitle(menuItem.getTitle());
         }
-        if (fragment != null)
+        if (fragment != null) {
             fragmentManager.beginTransaction().replace(R.id.contentFragment,
                     fragment).commit();
+        }
+
+        if (activity != null){
+            Intent intent = new Intent(getBaseContext(), UserProfileActivity.class);
+            startActivity(intent);
+        }
 
         drawer.closeDrawer(GravityCompat.START);
         return true;

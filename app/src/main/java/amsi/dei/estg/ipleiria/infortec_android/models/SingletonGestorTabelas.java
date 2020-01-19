@@ -196,16 +196,10 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
 
     }
 
-    public void adicionarUser(User user){
-        bdHelper.adicionarUserBD(user);
-        System.out.println("---> Depois do Sn: ");
-    }
-
-    public void adicionarUserBD(ArrayList<User> user) {
+    public void adicionarUserBD(User user){
         bdHelper.removerAllUsersDB();
-        for (User user1 : user) {
-            bdHelper.adicionarUserBD(user1);
-        }
+        System.out.println("---> Depois do Sn: ");
+        bdHelper.adicionarUserBD(user);
     }
 
     public void adicionarProdutosBD(ArrayList<Produto> listaProdutos) {
@@ -226,9 +220,9 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
     }
 
     public User getUser(){
-        User users = bdHelper.getUser();
+        User user = bdHelper.getUser();
 
-        return users;
+        return user;
 
     }
 
@@ -248,7 +242,7 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
 
                         auxUser = UserJsonParser.parserJsonUserObject(resp, context);
                         System.out.println("--> Sai do parser: " + auxUser);
-                        adicionarUser(auxUser);
+                        adicionarUserBD(auxUser);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -272,6 +266,50 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
         };
         volleyQueue.add(req);
     }
+
+    public void editUserAPI(final Map<String, String> user, final Context context) throws JSONException {
+
+        JSONObject body = new JSONObject();
+        body.put("nome", user.get("nome"));
+        body.put("morada",user.get("morada"));
+        body.put("email", user.get("email"));
+        body.put("nif", user.get("nif"));
+
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.PUT, mUrlApiUsers + "/edit", body,new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                System.out.println("--> RESPOSTA Edit PUT: " + response);
+                if (listener != null) {
+                    try {
+                        User auxUser = null;
+
+                        auxUser = UserJsonParser.parserJsonUserObject(response, context);
+                        System.out.println("--> Sai do parser: " + auxUser);
+                        adicionarUserBD(auxUser);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("--> ERRO Editar User: " + error.getMessage());
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                String credentials = user.get("username") + ":" + user.get("password");
+                String base64EncodedCredentials = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                headers.put("Authorization", "Basic " + base64EncodedCredentials);
+                headers.put("content-type", "application/json; charset=UTF-8");
+                return headers;
+            }
+        };
+        volleyQueue.add(req);
+    }
+
 
 
 }

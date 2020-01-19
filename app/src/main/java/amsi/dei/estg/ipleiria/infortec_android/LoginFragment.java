@@ -46,6 +46,16 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         editTextUserName = viewRoot.findViewById(R.id.editTextUserName);
         editTextPassword = viewRoot.findViewById(R.id.editTextPassword);
 
+        SharedPreferences pref = getActivity().getSharedPreferences("MyPref", 0);
+
+        String username = pref.getString("username", null);
+        String password = pref.getString("password", null);
+
+        editTextUserName.setText(username);
+        editTextPassword.setText(password);
+
+
+
         final View buttonRegist = viewRoot.findViewById(R.id.buttonRegist);
         buttonRegist.setOnClickListener(
                 new View.OnClickListener() {
@@ -72,6 +82,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
 
         editTextUserName.setText(username);
         editTextPassword.setText(password);
+
     }
 
     @Override

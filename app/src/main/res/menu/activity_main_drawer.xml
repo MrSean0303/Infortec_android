@@ -19,5 +19,8 @@
         <item
         android:id="@+id/nav_login"
         android:title="Login" />
+        <item
+            android:id="@+id/nav_Perfil"
+            android:title="Perfil" />
     </group>
 </menu>
