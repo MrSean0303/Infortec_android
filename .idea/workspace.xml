@@ -6,6 +6,7 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="ERRR" />
     <option name="TOOL_WINDOW_LOG_LEVEL" value="info" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
@@ -27,6 +28,9 @@
         <projects_view />
       </state>
     </system>
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="Infortec_android" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
@@ -79,7 +83,7 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/utils/UserJsonParser.java">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="697">
               <caret line="41" column="50" lean-forward="true" selection-start-line="41" selection-start-column="50" selection-end-line="41" selection-end-column="50" />
@@ -90,8 +94,8 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/utils/ProdutoJsonParser.java">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/HomeFragment.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="588">
               <caret line="98" column="35" selection-start-line="98" selection-start-column="35" selection-end-line="98" selection-end-column="35" />
@@ -106,7 +110,6 @@
               <caret line="88" column="13" selection-start-line="88" selection-start-column="13" selection-end-line="88" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#623#632#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -146,11 +149,9 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/app_bar_main.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/nav_header_main.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/menu/activity_main_drawer.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/models/BDHelperx.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/models/Favorito.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/utils/FavoritosJsonParser.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/listeners/MosquittoCallBack.java" />
         <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/loadingImg_background.xml" />
@@ -158,16 +159,11 @@
         <option value="$PROJECT_DIR$/app/src/main/res/values/colors.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/styles.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout-v23/activity_produto.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/MainActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/PromocoesFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/item_layout.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_produto.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/models/Produto.java" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_login.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/LoginFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/ProdutoActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/Adapters/ListProductAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/listeners/ApiCallBack.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/HomeFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/activity_signup.java" />
@@ -179,10 +175,11 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-7" />
-    <option name="width" value="426" />
-    <option name="height" value="775" />
+  <component name="ProjectFrameBounds" extendedState="7">
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1382" />
+    <option name="height" value="784" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -228,6 +225,8 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="Nexus_5X_API_29_x86" />
+    <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2020-01-18T18:28:21.743Z" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="android.sdk.path" value="E:/AppData/Android" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../AndroidProjects/Books" />
@@ -353,7 +352,7 @@
     <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
-      <window_info content_ui="combo" id="Project" order="1" sideWeight="0.49838188" visible="true" weight="0.24583964" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" sideWeight="0.7664" visible="true" weight="0.13993949" />
       <window_info id="Structure" order="2" sideWeight="0.50161815" side_tool="true" weight="0.13113007" />
       <window_info id="Favorites" order="3" sideWeight="0.2336" side_tool="true" weight="0.1401919" />
       <window_info id="Build Variants" order="4" side_tool="true" />
@@ -423,28 +422,64 @@
           <option name="timeStamp" value="47" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/LoginFragment.java</url>
-          <line>69</line>
+          <url>file://$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/models/SingletonGestorTabelas.java</url>
+          <line>129</line>
           <properties />
-          <option name="timeStamp" value="52" />
+          <option name="timeStamp" value="68" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/LoginFragment.java</url>
-          <line>84</line>
+          <url>file://$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/models/BDHelper.java</url>
+          <line>151</line>
           <properties />
-          <option name="timeStamp" value="53" />
+          <option name="timeStamp" value="69" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/models/BDHelper.java</url>
+          <line>161</line>
+          <properties />
+          <option name="timeStamp" value="70" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/models/SingletonGestorTabelas.java</url>
+          <line>253</line>
+          <properties />
+          <option name="timeStamp" value="75" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/models/BDHelper.java</url>
+          <line>148</line>
+          <properties />
+          <option name="timeStamp" value="78" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/models/SingletonGestorTabelas.java</url>
+          <line>213</line>
+          <properties />
+          <option name="timeStamp" value="87" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/models/SingletonGestorTabelas.java</url>
+          <line>233</line>
+          <properties />
+          <option name="timeStamp" value="92" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/models/SingletonGestorTabelas.java</url>
+          <line>210</line>
+          <properties />
+          <option name="timeStamp" value="93" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/LoginFragment.java</url>
-          <line>86</line>
-          <properties class="amsi.dei.estg.ipleiria.infortec_android.LoginFragment" />
-          <option name="timeStamp" value="54" />
+          <url>file://$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/models/SingletonGestorTabelas.java</url>
+          <line>223</line>
+          <properties />
+          <option name="timeStamp" value="84" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/LoginFragment.java</url>
-          <line>100</line>
-          <properties class="amsi.dei.estg.ipleiria.infortec_android.LoginFragment" />
-          <option name="timeStamp" value="55" />
+          <url>file://$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/models/SingletonGestorTabelas.java</url>
+          <line>230</line>
+          <properties />
+          <option name="timeStamp" value="85" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -455,60 +490,12 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/models/Favorito.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/utils/FavoritosJsonParser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="23" column="31" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.appcompat/appcompat/1.1.0/9865019bbd2d95e41dede3d8ebf964aa93f97766/appcompat-1.1.0-sources.jar!/androidx/appcompat/app/AppCompatActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="100" selection-start-line="100" selection-end-line="100" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="23" column="41" selection-start-line="23" selection-start-column="41" selection-end-line="23" selection-end-column="41" />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="android-designer2" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/app_bar_main.xml">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="31" column="54" selection-start-line="31" selection-start-column="54" selection-end-line="31" selection-end-column="54" />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="android-designer2" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="368">
           <caret line="28" column="55" selection-start-line="28" selection-start-column="55" selection-end-line="28" selection-end-column="55" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/nav_header_main.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="20" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="20" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/loadingImg_foreground.png" />
     <entry file="file://$PROJECT_DIR$/app/src/main/res/mipmap-anydpi-v26/loadingImg.xml" />
@@ -653,10 +640,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_signup.xml">
-      <provider editor-type-id="text-editor" />
-      <provider selected="true" editor-type-id="android-designer2" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_login.xml">
       <provider editor-type-id="text-editor">
         <state relative-caret-position="969">
@@ -672,14 +655,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_produto.xml">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="61" column="16" selection-start-line="61" selection-start-column="16" selection-end-line="61" selection-end-column="16" />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="android-designer2" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/item_layout.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="655">
@@ -688,17 +663,17 @@
       </provider>
       <provider editor-type-id="android-designer2" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/LoginFragment.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/listeners/ApiCallBack.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="901">
-          <caret line="77" selection-start-line="77" selection-end-line="77" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="102">
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/ProdutoActivity.java">
+    <entry file="file://E:/AppData/Android/sources/android-29/android/view/LayoutInflater.java" />
+    <entry file="file://E:/AppData/Android/sources/android-29/org/json/JSONObject.java" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/activity_signup.java" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/Adapters/ListProductAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="214">
           <caret line="228" selection-start-line="228" selection-end-line="228" />
@@ -723,69 +698,48 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/listeners/ApiCallBack.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="9" column="56" selection-start-line="9" selection-start-column="56" selection-end-line="9" selection-end-column="56" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="23" column="41" selection-start-line="23" selection-start-column="41" selection-end-line="23" selection-end-column="41" />
         </state>
       </provider>
+      <provider selected="true" editor-type-id="android-designer2" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/MainActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/nav_header_main.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1002">
-          <caret line="73" column="32" selection-start-line="73" selection-start-column="32" selection-end-line="73" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/HomeFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="118" selection-start-line="118" selection-end-line="118" />
+        <state relative-caret-position="374">
+          <caret line="22" column="39" lean-forward="true" selection-start-line="22" selection-start-column="39" selection-end-line="22" selection-end-column="39" />
           <folding>
-            <element signature="e#5140#5141#0" expanded="true" />
-            <element signature="e#5184#5185#0" expanded="true" />
+            <element signature="e#820#838#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_signup.xml">
+      <provider editor-type-id="text-editor" />
+      <provider selected="true" editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_produto.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="544">
+          <caret line="56" column="59" lean-forward="true" selection-start-line="56" selection-start-column="59" selection-end-line="56" selection-end-column="59" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/utils/UserJsonParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="612">
+          <caret line="36" selection-start-line="36" selection-end-line="41" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/models/User.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1768">
-          <caret line="104" selection-start-line="104" selection-end-line="104" />
-          <folding>
-            <element signature="e#1130#1131#0" expanded="true" />
-            <element signature="e#1157#1158#0" expanded="true" />
-            <element signature="e#1197#1198#0" expanded="true" />
-            <element signature="e#1229#1230#0" expanded="true" />
-            <element signature="e#1262#1263#0" expanded="true" />
-            <element signature="e#1291#1292#0" expanded="true" />
-            <element signature="e#1335#1336#0" expanded="true" />
-            <element signature="e#1371#1372#0" expanded="true" />
-            <element signature="e#1401#1402#0" expanded="true" />
-            <element signature="e#1427#1428#0" expanded="true" />
-            <element signature="e#1465#1466#0" expanded="true" />
-            <element signature="e#1495#1496#0" expanded="true" />
-            <element signature="e#1528#1529#0" expanded="true" />
-            <element signature="e#1560#1561#0" expanded="true" />
-            <element signature="e#1607#1608#0" expanded="true" />
-            <element signature="e#1649#1650#0" expanded="true" />
-            <element signature="e#1306#1307#0" expanded="true" />
-            <element signature="e#1367#1368#0" expanded="true" />
-            <element signature="e#1426#1427#0" expanded="true" />
-            <element signature="e#1503#1504#0" expanded="true" />
-            <element signature="e#1575#1576#0" expanded="true" />
-            <element signature="e#1663#1664#0" expanded="true" />
-            <element signature="e#1729#1730#0" expanded="true" />
-            <element signature="e#1817#1818#0" expanded="true" />
-            <element signature="e#1893#1894#0" expanded="true" />
-            <element signature="e#2001#2002#0" expanded="true" />
-            <element signature="e#2066#2067#0" expanded="true" />
-            <element signature="e#2142#2143#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/models/BDHelper.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/utils/FavoritosJsonParser.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="11" column="45" lean-forward="true" selection-start-line="11" selection-start-column="45" selection-end-line="11" selection-end-column="45" />
@@ -859,7 +813,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/models/SingletonGestorTabelas.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/HomeFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="714">
           <caret line="42" column="61" selection-start-line="42" selection-start-column="61" selection-end-line="42" selection-end-column="61" />
@@ -876,6 +830,24 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/menu/activity_main_drawer.xml">
+      <provider editor-type-id="text-editor" />
+      <provider selected="true" editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/ProdutoActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2074">
+          <caret line="157" column="1" selection-start-line="157" selection-start-column="1" selection-end-line="157" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/LoginFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="302">
+          <caret line="108" selection-start-line="108" selection-end-line="108" />
         </state>
       </provider>
     </entry>
