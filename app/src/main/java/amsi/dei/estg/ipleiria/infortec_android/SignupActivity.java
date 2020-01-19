@@ -59,13 +59,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         if (!isNifValido(nif)) {
             return;
         }
-<<<<<<< HEAD:app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/activity_signup.java
-/*
-        //Cria user incompleto com os dados introduzidos.
-        User user = new User(0, nome, username, "", passord,  email, 0, "", "", 0);
-
-        System.out.println("---> Antes do Singleton: " + user);
-=======
 
         //Cria array chave valor com os dados introduzidos.
         Map<String, String> auxuser = new HashMap<>();
@@ -74,18 +67,10 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         auxuser.put("email", email);
         auxuser.put("password", password);
         auxuser.put("nif", nif);
->>>>>>> master:app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/SignupActivity.java
 
         //Envia o user para ser registado e adiciona-o a base de dados local
         SingletonGestorTabelas.getInstance(this.getBaseContext()).adicionarUserAPI(auxuser, getBaseContext());
 
-<<<<<<< HEAD:app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/activity_signup.java
-        //Vai buscar o user colocado na base de dados local
-        user = SingletonGestorTabelas.getInstance(this.getBaseContext()).getUserByUsername(user.getUsername());
-
-        System.out.println("--> Até aqui tudo bem: " + user);
-*/
-=======
         //Guardar o nome e password do user nas SharedPreferences.
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
         SharedPreferences.Editor editor = pref.edit();
@@ -94,7 +79,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         editor.commit();
 
         finish();
->>>>>>> master:app/src/main/java/amsi/dei/estg/ipleiria/infortec_android/SignupActivity.java
     }
 
     public boolean isNifValido(String nif){

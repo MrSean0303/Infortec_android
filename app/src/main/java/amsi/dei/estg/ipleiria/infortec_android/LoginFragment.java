@@ -38,6 +38,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     private EditText editTextPassword;
     private NavigationView navigationView;
     private static RequestQueue volleyQueue = null;
+    private SharedPreferences pref;
     private User user;
     private String mUrlApiLogin = "http://188.81.0.111/Infortec/infortec_site/frontend/web/api/user";
 
@@ -78,7 +79,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     public void onStart(){
         super.onStart();
 
-        SharedPreferences pref = getActivity().getSharedPreferences("MyPref", 0);
+        pref = getActivity().getSharedPreferences("MyPref", 0);
 
         String username = pref.getString("username", null);
         String password = pref.getString("password", null);
@@ -89,9 +90,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-
         String username = editTextUserName.getText().toString();
         String password = editTextPassword.getText().toString();
+
+        SingletonGestorTabelas.getInstance(getContext()).writePreferences("username", username);
+        SingletonGestorTabelas.getInstance(getContext()).writePreferences("password", password);
 
         SingletonGestorTabelas.getInstance(getContext()).getUserAPI(getContext(), UserJsonParser.isConnectionInternet(getContext()), username, password);
 

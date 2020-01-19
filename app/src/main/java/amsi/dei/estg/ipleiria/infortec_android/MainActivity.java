@@ -47,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
         carregarFragmentoInicial();
 
+        SingletonGestorTabelas.getInstance(getApplicationContext()).initialize(this);
+
     }
     private void carregarFragmentoInicial(){
         navigationView.setCheckedItem(R.id.nav_home);

@@ -3,6 +3,8 @@ package amsi.dei.estg.ipleiria.infortec_android;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,13 +23,17 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.MqttTopic;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 
 import amsi.dei.estg.ipleiria.infortec_android.listeners.MosquittoCallBack;
+import amsi.dei.estg.ipleiria.infortec_android.models.Favorito;
 import amsi.dei.estg.ipleiria.infortec_android.models.Produto;
 import amsi.dei.estg.ipleiria.infortec_android.models.SingletonGestorTabelas;
+import amsi.dei.estg.ipleiria.infortec_android.utils.FavoritosJsonParser;
 import amsi.dei.estg.ipleiria.infortec_android.utils.ProdutoJsonParser;
+import amsi.dei.estg.ipleiria.infortec_android.utils.UserJsonParser;
 
 public class ProdutoActivity extends AppCompatActivity {
     private int id;
@@ -134,16 +140,17 @@ public class ProdutoActivity extends AppCompatActivity {
         fabFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*if(id == -1)
-                {
-                    SingletonGestorTabelas.getInstance(getApplicationContext()).adicionarLivroAPI(criarLivro(), getApplicationContext());
-                    finish();
+                SharedPreferences pref = SingletonGestorTabelas.getInstance(getApplicationContext()).readPreferences(getApplicationContext());
+
+                String username = pref.getString("username", null);
+                String password = pref.getString("password", null);
+
+
+                try {
+                    SingletonGestorTabelas.getInstance(getApplicationContext()).postNovoFavorito(getApplicationContext(), FavoritosJsonParser.isConnectionInternet(getApplicationContext()), produto.getId());
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                else
-                {
-                    SingletonGestorLivros.getInstance(getApplicationContext()).editarLivro(editarLivro(), getApplicationContext());
-                    finish();
-                }*/
             }
         });
 
