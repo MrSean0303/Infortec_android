@@ -1,6 +1,8 @@
 package amsi.dei.estg.ipleiria.infortec_android.utils;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import androidx.core.content.ContextCompat;
 
@@ -30,5 +32,12 @@ public class UserJsonParser {
 
         System.out.println("--> PARSER Adicionado: " + auxUser);
         return auxUser;
+    }
+
+    public static boolean isConnectionInternet(Context context)
+    {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
     }
 }

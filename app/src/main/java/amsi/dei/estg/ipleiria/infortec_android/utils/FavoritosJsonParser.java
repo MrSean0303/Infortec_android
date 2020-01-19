@@ -1,6 +1,8 @@
 package amsi.dei.estg.ipleiria.infortec_android.utils;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,5 +34,11 @@ public class FavoritosJsonParser {
         }
 
         return tempListaProdutos;
+    }
+    public static boolean isConnectionInternet(Context context)
+    {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
     }
 }

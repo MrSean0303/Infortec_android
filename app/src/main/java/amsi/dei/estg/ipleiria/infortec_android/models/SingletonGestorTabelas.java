@@ -2,9 +2,12 @@ package amsi.dei.estg.ipleiria.infortec_android.models;
 
 import android.app.Application;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Base64;
 import android.widget.Toast;
+
+import androidx.core.content.ContextCompat;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -19,10 +22,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import amsi.dei.estg.ipleiria.infortec_android.LoginFragment;
+import amsi.dei.estg.ipleiria.infortec_android.R;
 import amsi.dei.estg.ipleiria.infortec_android.listeners.ApiCallBack;
 import amsi.dei.estg.ipleiria.infortec_android.utils.ProdutoJsonParser;
 import amsi.dei.estg.ipleiria.infortec_android.utils.UserJsonParser;
@@ -34,9 +41,14 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
     private BDHelper bdHelper;
     private static String mUrlApiProdutos = "http://188.81.6.107/Infortec/infortec_site/frontend/web/api/produto";
     private static String mUrlApiUsers = "http://188.81.6.107/Infortec/infortec_site/frontend/web/api/user";
-    private ApiCallBack listener;
-    private Object USER;
+    private static String mUrlApiFavoritos = "http://188.81.6.107/Infortec/infortec_site/frontend/web/api/favorito/add";
+    private SingletonGestorTabelas mInstance;
+    //
+    private SharedPreferences mMyPreferences;
 
+    private ApiCallBack listener;
+    private User USER;
+    private SharedPreferences pref;
 
     private static SingletonGestorTabelas INSTANCE = null;
 
@@ -50,7 +62,6 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
 
     private SingletonGestorTabelas(Context context) {
         produtos = new ArrayList<>();
-        USER = new ArrayList<>();
         bdHelper = new BDHelper(context);
     }
 
@@ -88,14 +99,13 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
             volleyQueue.add(req);
         }
     }
-    
+
 
     public void getUserAPI(final Context context, boolean isConnected, String username, String password) {
         final String user = username;
         final String pass = password;
 
         if (!isConnected) {
-            produtos = getProdutosBD();
             Toast toast = Toast.makeText(context, "No Internet Available", Toast.LENGTH_LONG);
             toast.show();
         } else {
@@ -105,10 +115,11 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
 
                     try {
                         USER = UserJsonParser.parserJsonUserObject(response, context);
+
+                        adicionarUserBD(USER);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
 
                     Toast toast = Toast.makeText(context, "Login Efetuado", Toast.LENGTH_LONG);
                     toast.show();
@@ -121,19 +132,69 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
                     toast.show();
 
                 }
-            }){    @Override
-            public Map<String, String> getHeaders() {
-                HashMap<String, String> headers = new HashMap<>();
-                String credentials = user + ":" + pass;
-                String base64EncodedCredentials = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
-                headers.put("Authorization", "Basic " + base64EncodedCredentials);
-                return headers;
-            }
-            };volleyQueue.add(req);
+            }) {
+                @Override
+                public Map<String, String> getHeaders() {
+                    HashMap<String, String> headers = new HashMap<>();
+                    String credentials = user + ":" + pass;
+                    String base64EncodedCredentials = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                    headers.put("Authorization", "Basic " + base64EncodedCredentials);
+                    return headers;
+                }
+            };
+            volleyQueue.add(req);
         }
     }
 
+    public void postNovoFavorito(final Context context, boolean isConnected, int id_prod) throws JSONException {
+        pref = readPreferences(context);
+        final String id_produto = String.valueOf(id_prod);
 
+        final String username = pref.getString("username", null);
+        final String password = pref.getString("password", null);
+        if (!isConnected) {
+            Toast toast = Toast.makeText(context, "No Internet Available", Toast.LENGTH_LONG);
+            toast.show();
+        } else {
+            JSONObject body = new JSONObject();
+            body.put("idProduto", id_produto);
+
+            JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, mUrlApiFavoritos, body, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+
+                    Toast toast = Toast.makeText(context, "Favorito Adicionado", Toast.LENGTH_LONG);
+                    toast.show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    String erro = new String(error.networkResponse.data, StandardCharsets.UTF_8);
+                    System.out.println("ERRRRO: " + erro);
+                    Toast toast = Toast.makeText(context, "Favorito não adicionado", Toast.LENGTH_LONG);
+                    toast.show();
+
+                }
+            }) {
+                @Override
+                public Map<String, String> getHeaders() {
+                    HashMap<String, String> headers = new HashMap<>();
+                    String credentials = username + ":" + password;
+                    String base64EncodedCredentials = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                    headers.put("Authorization", "Basic " + base64EncodedCredentials);
+                    headers.put("Content-Type", "application/json; charset=UTF-8");
+                    return headers;
+                }
+            };
+            volleyQueue.add(req);
+        }
+    }
+
+    public User getUserBD() {
+        USER = bdHelper.getUserBD();
+
+        return USER;
+    }
 
     public ArrayList<Produto> getProdutosBD() {
         produtos = bdHelper.getAllProdutosDB();
@@ -145,9 +206,8 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
         ArrayList<Produto> produtosPromocoes = new ArrayList<>();
         produtos = bdHelper.getAllProdutosDB();
 
-        for (Produto produto: produtos) {
-            if(produto.getValorDesconto() > 0)
-            {
+        for (Produto produto : produtos) {
+            if (produto.getValorDesconto() > 0) {
                 produtosPromocoes.add(produto);
             }
         }
@@ -196,9 +256,8 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
 
     }
 
-    public void adicionarUserBD(User user){
+    public void adicionarUserBD(User user) {
         bdHelper.removerAllUsersDB();
-        System.out.println("---> Depois do Sn: ");
         bdHelper.adicionarUserBD(user);
     }
 
@@ -219,16 +278,15 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
         return null;
     }
 
-    public User getUser(){
-        User user = bdHelper.getUser();
+    public User getUser() {
+        User users = bdHelper.getUserBD();
 
         return user;
 
     }
 
     //User
-    public void adicionarUserAPI (final  Map<String, String> user, final Context context)
-    {
+    public void adicionarUserAPI(final Map<String, String> user, final Context context) {
         StringRequest req = new StringRequest(Request.Method.POST, mUrlApiUsers+"/registar", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -313,3 +371,4 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
 
 
 }
+

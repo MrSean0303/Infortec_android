@@ -76,7 +76,7 @@ public class BDHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createProdutoTable = "CREATE TABLE " + TABLE_PRODUTO_NAME + " (" + ID_PRODUTO + " INTEGER PRIMARY KEY AUTOINCREMENT, " + NOME_PRODUTO + " TEXT NOT NULL, " + DESCRICAO_PRODUTO + " TEXT NOT NULL, " + DESCRICAO_GERAL_PRODUTO + " TEXT NOT NULL, " + FOTO_PRODUTO + " TEXT NOT NULL, " + QUANTSTOCK_PRODUTO + " INTEGER NOT NULL," + PONTOS_PRODUTO + " INTEGER," + VALOR_DESCONTO_PRODUTO + " DECIMAL(10,2)," + PRECO_PRODUTO + " DECIMAL(10,2) NOT NULL," + SUBCATEGORIA_ID_PRODUTO + " INTEGER NOT NULL," + IVA_ID_PRODUTO + " INTEGER NOT NULL" +");";
-        String createUserTable = "CREATE TABLE " + TABLE_USER_NAME + " (" + ID_USER + " INTEGER PRIMARY KEY AUTOINCREMENT, " + NOME + " TEXT NOT NULL, " + USERNAME + " TEXT NOT NULL, " + EMAIL + " TEXT NOT NULL, " + STATUS + " INTEGER," + NIF + " INTEGER NOT NULL, " + NUMPONTOS + " INTEGER NOT NULL, " + MORADA + " TEXT"  +");";
+        String createUserTable = "CREATE TABLE " + TABLE_USER_NAME + " (" + ID_USER + " INTEGER PRIMARY KEY AUTOINCREMENT, " + NOME + " TEXT NOT NULL, " + USERNAME + " TEXT NOT NULL, " + EMAIL + " TEXT NOT NULL, " + STATUS + " INTEGER," + NIF + " TEXT NOT NULL, " + NUMPONTOS + " INTEGER NOT NULL, " + MORADA + " TEXT"  +");";
         String createVendaTable = "CREATE TABLE " + TABLE_VENDA_NAME + " (" + ID_VENDA + " INTEGER PRIMARY KEY AUTOINCREMENT, "+ TOTAL + " DECIMAL NOT NULL, "+ DATA + " TEXT NOT NULL, "  + USER_ID + " INTEGER NOT NULL" +");";
         String createLinhaVendaTable = "CREATE TABLE " + TABLE_LINHAVENDA_NAME + " (" + ID_LINHAVENDA + " INTEGER PRIMARY KEY AUTOINCREMENT, "+ QUANTIDADE + " INTEGER NOT NULL, "+ ISPONTOS + " INTEGER, "  + PRECO + " DECIMAL NOT NULL, " + VENDA_ID + " INTEGER NOT NULL, "+ PRODUTO_ID + " INTEGER NOT NULL" +");";
 
@@ -138,21 +138,17 @@ public class BDHelper extends SQLiteOpenHelper {
     }
 
     //USER
-    public User getUser(){
-
-        User user = new User(0,"","","",0,"","",0);
-
+    public User getUserBD(){
+        User auxUser = new User(0,"","","",0,"","",0);;
         Cursor cursor = this.database.query(TABLE_USER_NAME, new String[]{
                 ID_USER, NOME,USERNAME, EMAIL, STATUS, MORADA, NIF, NUMPONTOS,
         }, null, null, null, null, null);
 
-        if(cursor.moveToFirst()){
-            user = new User(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getInt(4), cursor.getString(5), cursor.getString(6), cursor.getInt(7));
-            user.setId(cursor.getInt(0));
+        if(cursor.moveToFirst()) {
+            auxUser = new User(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getInt(4), cursor.getString(5), cursor.getString(6), cursor.getInt(7));
+            auxUser.setId(cursor.getInt(0));
         }
-        System.out.println("---> Ree2 (cursor): " + cursor);
-        System.out.println("---> Ree3 (users): " + user.getUsername());
-        return user;
+        return auxUser;
     }
 
     public void adicionarUserBD(User user)
