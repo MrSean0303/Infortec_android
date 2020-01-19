@@ -28,4 +28,5 @@
     <string name="UserProfilemoradaText">Morada</string>
     <string name="UserProfileNifText">NIF</string>
     <string name="UserProfilesalvarButton">Salvar Dados</string>
+    <string name="preference_file">MyPref</string>
 </resources>

@@ -14,26 +14,19 @@ import amsi.dei.estg.ipleiria.infortec_android.models.Favorito;
 
 public class FavoritosJsonParser {
 
-    public static ArrayList<Favorito> ProdutoJsonParser(JSONArray response, Context context) throws JSONException
+    public static Favorito FavoritoJsonParserObj(JSONObject response, Context context) throws JSONException
     {
         System.out.println("--> PARSER LISTA PRODUTOS: "+ response);
-        ArrayList<Favorito> tempListaProdutos = new ArrayList<Favorito>();
 
-        Favorito auxFavorito = null;
+        Favorito auxFavorito;
 
-        for(int i = 0; i < response.length(); i++)
-        {
-            JSONObject favorito = response.getJSONObject(i);
+        int produto_id = response.getInt("produto_id");
+        int idFavorito = response.getInt("idFavorito");
+        int utilizador_id = response.getInt("utilizador_id");
 
-            int produto_id = favorito.getInt("produto_id");
-            int idFavorito = favorito.getInt("idFavorito");
-            int utilizador_id = favorito.getInt("utilizador_id");
+        auxFavorito = new Favorito(idFavorito, produto_id, utilizador_id);
 
-            auxFavorito = new Favorito(idFavorito, produto_id, utilizador_id);
-            tempListaProdutos.add(auxFavorito);
-        }
-
-        return tempListaProdutos;
+        return auxFavorito;
     }
     public static boolean isConnectionInternet(Context context)
     {

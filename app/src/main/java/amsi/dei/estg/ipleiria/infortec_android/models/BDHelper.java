@@ -66,6 +66,13 @@ public class BDHelper extends SQLiteOpenHelper {
     private static final String VENDA_ID = "venda_id";
     private static final String PRODUTO_ID = "produto_id";
 
+    /*
+    Elementos para a tabela Favorito
+*/
+    private static final String TABLE_FAVORITO_NAME = "Favorito";
+    private static final String ID_FAVORITO = "idFavorito";
+    private static final String PRODUTO_ID_FAVORITO = "produto_id";
+    private static final String USER_ID_FAVORITO = "utilizador_id";
 
 
     public BDHelper(Context context) {
@@ -79,11 +86,14 @@ public class BDHelper extends SQLiteOpenHelper {
         String createUserTable = "CREATE TABLE " + TABLE_USER_NAME + " (" + ID_USER + " INTEGER PRIMARY KEY AUTOINCREMENT, " + NOME + " TEXT NOT NULL, " + USERNAME + " TEXT NOT NULL, " + EMAIL + " TEXT NOT NULL, " + STATUS + " INTEGER," + NIF + " TEXT NOT NULL, " + NUMPONTOS + " INTEGER NOT NULL, " + MORADA + " TEXT"  +");";
         String createVendaTable = "CREATE TABLE " + TABLE_VENDA_NAME + " (" + ID_VENDA + " INTEGER PRIMARY KEY AUTOINCREMENT, "+ TOTAL + " DECIMAL NOT NULL, "+ DATA + " TEXT NOT NULL, "  + USER_ID + " INTEGER NOT NULL" +");";
         String createLinhaVendaTable = "CREATE TABLE " + TABLE_LINHAVENDA_NAME + " (" + ID_LINHAVENDA + " INTEGER PRIMARY KEY AUTOINCREMENT, "+ QUANTIDADE + " INTEGER NOT NULL, "+ ISPONTOS + " INTEGER, "  + PRECO + " DECIMAL NOT NULL, " + VENDA_ID + " INTEGER NOT NULL, "+ PRODUTO_ID + " INTEGER NOT NULL" +");";
+        String createFavoritoTable = "CREATE TABLE " + TABLE_FAVORITO_NAME + " (" + ID_FAVORITO + " INTEGER PRIMARY KEY AUTOINCREMENT, " + PRODUTO_ID_FAVORITO + " INTEGER NOT NULL, " + USER_ID_FAVORITO + " INTEGER NOT NULL" + ");";
+
 
         db.execSQL(createProdutoTable);
         db.execSQL(createUserTable);
         db.execSQL(createVendaTable);
         db.execSQL(createLinhaVendaTable);
+        db.execSQL(createFavoritoTable);
     }
 
     @Override
@@ -130,6 +140,22 @@ public class BDHelper extends SQLiteOpenHelper {
 
 
         this.database.insert(TABLE_PRODUTO_NAME, null, values);
+    }
+
+
+    public void adicionarFavoritoBD(Favorito favorito)
+    {
+        ContentValues values = new ContentValues();
+        values.put(ID_FAVORITO, favorito.getIdFavorito());
+        values.put(PRODUTO_ID_FAVORITO, favorito.getProduto_id());
+        values.put(USER_ID_FAVORITO, favorito.getUtilizador_id());
+
+        this.database.insert(TABLE_FAVORITO_NAME, null, values);
+    }
+
+    public void removerFavoritoBD(String id_produto)
+    {
+        this.database.delete(TABLE_FAVORITO_NAME,PRODUTO_ID_FAVORITO+"=?",new String[]{id_produto});
     }
 
     public void removerAllProdutosDB()

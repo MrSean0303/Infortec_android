@@ -3,11 +3,9 @@ package amsi.dei.estg.ipleiria.infortec_android.models;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Base64;
 import android.widget.Toast;
 
-import androidx.core.content.ContextCompat;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -22,15 +20,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import amsi.dei.estg.ipleiria.infortec_android.LoginFragment;
 import amsi.dei.estg.ipleiria.infortec_android.R;
 import amsi.dei.estg.ipleiria.infortec_android.listeners.ApiCallBack;
+import amsi.dei.estg.ipleiria.infortec_android.utils.FavoritosJsonParser;
 import amsi.dei.estg.ipleiria.infortec_android.utils.ProdutoJsonParser;
 import amsi.dei.estg.ipleiria.infortec_android.utils.UserJsonParser;
 
@@ -41,14 +38,12 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
     private BDHelper bdHelper;
     private static String mUrlApiProdutos = "http://188.81.6.107/Infortec/infortec_site/frontend/web/api/produto";
     private static String mUrlApiUsers = "http://188.81.6.107/Infortec/infortec_site/frontend/web/api/user";
-    private static String mUrlApiFavoritos = "http://188.81.6.107/Infortec/infortec_site/frontend/web/api/favorito/add";
-    private SingletonGestorTabelas mInstance;
+    private static String mUrlApiFavoritos = "http://188.81.6.107/Infortec/infortec_site/frontend/web/api/favorito";
     //
     private SharedPreferences mMyPreferences;
 
     private ApiCallBack listener;
     private User USER;
-    private SharedPreferences pref;
 
     private static SingletonGestorTabelas INSTANCE = null;
 
@@ -147,7 +142,7 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
     }
 
     public void postNovoFavorito(final Context context, boolean isConnected, int id_prod) throws JSONException {
-        pref = readPreferences(context);
+        SharedPreferences pref = readPreferences(context);
         final String id_produto = String.valueOf(id_prod);
 
         final String username = pref.getString("username", null);
@@ -159,9 +154,17 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
             JSONObject body = new JSONObject();
             body.put("idProduto", id_produto);
 
-            JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, mUrlApiFavoritos, body, new Response.Listener<JSONObject>() {
+            JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, mUrlApiFavoritos + "/add", body, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
+
+                    try {
+                        Favorito fav = FavoritosJsonParser.FavoritoJsonParserObj(response, context);
+
+                        adicionarFavoritoDB(fav);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
                     Toast toast = Toast.makeText(context, "Favorito Adicionado", Toast.LENGTH_LONG);
                     toast.show();
@@ -190,10 +193,79 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
         }
     }
 
-    public User getUserBD() {
-        USER = bdHelper.getUserBD();
+    public void adicionarFavoritoDB(Favorito favorito)
+    {
+        bdHelper.adicionarFavoritoBD(favorito);
+    }
 
-        return USER;
+    public void removerFavoritoDB(int idProduto)
+    {
+        String id = String.valueOf(idProduto);
+
+        bdHelper.removerFavoritoBD(id);
+    }
+
+
+    public void removerFavorito(final Context context, boolean isConnected, int id_prod) throws JSONException {
+        SharedPreferences pref = readPreferences(context);
+        final String id_produto = String.valueOf(id_prod);
+
+        final String username = pref.getString("username", null);
+        final String password = pref.getString("password", null);
+
+        if (!isConnected) {
+            Toast toast = Toast.makeText(context, "No Internet Available", Toast.LENGTH_SHORT);
+            toast.show();
+        } else {
+            JSONObject body = new JSONObject();
+            body.put("idProduto", id_produto);
+
+            JsonObjectRequest req = new JsonObjectRequest(Request.Method.DELETE, mUrlApiFavoritos + "/remove", body, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+
+                    try {
+                        Favorito fav = FavoritosJsonParser.FavoritoJsonParserObj(response, context);
+
+                        removerFavoritoDB(fav.getProduto_id());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    Toast toast = Toast.makeText(context, "Favorito Removido", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    String erro = new String(error.networkResponse.data, StandardCharsets.UTF_8);
+                    System.out.println("ERRRRO: " + erro);
+                    Toast toast = Toast.makeText(context, "Favorito não removido", Toast.LENGTH_SHORT);
+                    toast.show();
+
+                }
+            }) {
+                @Override
+                public Map<String, String> getHeaders() {
+                    HashMap<String, String> headers = new HashMap<>();
+                    String credentials = username + ":" + password;
+                    String base64EncodedCredentials = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                    headers.put("Authorization", "Basic " + base64EncodedCredentials);
+                    headers.put("Content-Type", "application/json; charset=UTF-8");
+                    return headers;
+                }
+            };
+            volleyQueue.add(req);
+        }
+    }
+
+
+    public ArrayList<Favorito> getFavoritosDB()
+    {
+        ArrayList<Favorito> favoritos = new ArrayList<>();
+        //favoritos = bdHelper
+
+        return favoritos;
     }
 
     public ArrayList<Produto> getProdutosBD() {
@@ -279,10 +351,8 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
     }
 
     public User getUser() {
-        User users = bdHelper.getUserBD();
 
-        return user;
-
+        return bdHelper.getUserBD();
     }
 
     //User
@@ -294,7 +364,7 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
                 if(listener != null)
                 {
                     try {
-                        User auxUser= null;
+                        User auxUser;
 
                         JSONObject resp = new JSONObject(response);
 
@@ -339,7 +409,7 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
                 System.out.println("--> RESPOSTA Edit PUT: " + response);
                 if (listener != null) {
                     try {
-                        User auxUser = null;
+                        User auxUser;
 
                         auxUser = UserJsonParser.parserJsonUserObject(response, context);
                         System.out.println("--> Sai do parser: " + auxUser);
@@ -368,6 +438,26 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
         volleyQueue.add(req);
     }
 
+    public void initialize (Context context)
+    {
+        mMyPreferences = context.getSharedPreferences(context.getResources().getString(R.string.preference_file), Context.MODE_PRIVATE);
+    }
+
+    public void writePreferences(String key, String value)
+    {
+        SharedPreferences.Editor editor = mMyPreferences.edit();
+        editor.putString(key, value);
+        editor.apply();
+    }
+
+    public SharedPreferences readPreferences(Context context)
+    {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(context.getResources().getString(R.string.preference_file), Context.MODE_PRIVATE);
+        sharedPreferences.getString("username", null);
+        sharedPreferences.getString("password", null);
+
+        return sharedPreferences;
+    }
 
 
 }
