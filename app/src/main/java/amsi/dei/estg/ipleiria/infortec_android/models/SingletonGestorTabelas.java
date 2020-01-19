@@ -39,7 +39,7 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
     private static String mUrlApiProdutos = "http://188.81.6.107/Infortec/infortec_site/frontend/web/api/produto";
     private static String mUrlApiUsers = "http://188.81.6.107/Infortec/infortec_site/frontend/web/api/user";
     private static String mUrlApiFavoritos = "http://188.81.6.107/Infortec/infortec_site/frontend/web/api/favorito";
-    //
+
     private SharedPreferences mMyPreferences;
 
     private ApiCallBack listener;
@@ -63,14 +63,14 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
     public void getAllProdutosAPI(final Context context, boolean isConnected) {
         if (!isConnected) {
             produtos = getProdutosBD();
-            Toast toast = Toast.makeText(context, "No Internet Available", Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(context, "No Internet Available", Toast.LENGTH_SHORT);
             toast.show();
         } else {
             JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, mUrlApiProdutos, null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
                     try {
-                        Toast toast = Toast.makeText(context, "Products Refreshed", Toast.LENGTH_LONG);
+                        Toast toast = Toast.makeText(context, "Products Refreshed", Toast.LENGTH_SHORT);
                         toast.show();
                         produtos = ProdutoJsonParser.ProdutoJsonParser(response, context);
 
@@ -101,7 +101,7 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
         final String pass = password;
 
         if (!isConnected) {
-            Toast toast = Toast.makeText(context, "No Internet Available", Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(context, "No Internet Available", Toast.LENGTH_SHORT);
             toast.show();
         } else {
             JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, mUrlApiUsers, null, new Response.Listener<JSONObject>() {
@@ -116,14 +116,14 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
                         e.printStackTrace();
                     }
 
-                    Toast toast = Toast.makeText(context, "Login Efetuado", Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(context, "Login Efetuado", Toast.LENGTH_SHORT);
                     toast.show();
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     System.out.println("ERRRRO: " + error);
-                    Toast toast = Toast.makeText(context, "Nome ou Palavra-Pass Incorretos", Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(context, "Nome ou Palavra-Pass Incorretos", Toast.LENGTH_SHORT);
                     toast.show();
 
                 }
@@ -149,14 +149,14 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
 
         if (!isConnected) {
             getFavoritosDB();
-            Toast toast = Toast.makeText(context, "No Internet Available", Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(context, "No Internet Available", Toast.LENGTH_SHORT);
             toast.show();
         } else {
             JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, mUrlApiFavoritos, null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
                     try {
-                        Toast toast = Toast.makeText(context, "Products Refreshed", Toast.LENGTH_LONG);
+                        Toast toast = Toast.makeText(context, "Products Refreshed", Toast.LENGTH_SHORT);
                         toast.show();
                         ArrayList<Favorito> favoritos = FavoritosJsonParser.FavoritoJsonParser(response, context);
 
@@ -196,7 +196,7 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
         final String username = pref.getString("username", null);
         final String password = pref.getString("password", null);
         if (!isConnected) {
-            Toast toast = Toast.makeText(context, "No Internet Available", Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(context, "No Internet Available", Toast.LENGTH_SHORT);
             toast.show();
         } else {
             JSONObject body = new JSONObject();
@@ -214,7 +214,7 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
                         e.printStackTrace();
                     }
 
-                    Toast toast = Toast.makeText(context, "Favorito Adicionado", Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(context, "Favorito Adicionado", Toast.LENGTH_SHORT);
                     toast.show();
                 }
             }, new Response.ErrorListener() {
@@ -222,7 +222,7 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
                 public void onErrorResponse(VolleyError error) {
                     String erro = new String(error.networkResponse.data, StandardCharsets.UTF_8);
                     System.out.println("ERRRRO: " + erro);
-                    Toast toast = Toast.makeText(context, "Favorito não adicionado", Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(context, "Favorito não adicionado", Toast.LENGTH_SHORT);
                     toast.show();
 
                 }
@@ -513,7 +513,5 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
         editor.apply();
 
     }
-
-
 }
 

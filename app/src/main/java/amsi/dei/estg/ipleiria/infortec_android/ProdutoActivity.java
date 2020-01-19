@@ -3,10 +3,8 @@ package amsi.dei.estg.ipleiria.infortec_android;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,32 +13,17 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import org.eclipse.paho.android.service.MqttAndroidClient;
-import org.eclipse.paho.client.mqttv3.IMqttActionListener;
-import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
-import org.eclipse.paho.client.mqttv3.IMqttToken;
-import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.eclipse.paho.client.mqttv3.MqttTopic;
 import org.json.JSONException;
 
 import java.util.ArrayList;
 
-import amsi.dei.estg.ipleiria.infortec_android.listeners.MosquittoCallBack;
 import amsi.dei.estg.ipleiria.infortec_android.models.Favorito;
 import amsi.dei.estg.ipleiria.infortec_android.models.Produto;
 import amsi.dei.estg.ipleiria.infortec_android.models.SingletonGestorTabelas;
 import amsi.dei.estg.ipleiria.infortec_android.utils.FavoritosJsonParser;
-import amsi.dei.estg.ipleiria.infortec_android.utils.ProdutoJsonParser;
-import amsi.dei.estg.ipleiria.infortec_android.utils.UserJsonParser;
 
 public class ProdutoActivity extends AppCompatActivity {
-    private int id;
     private Produto produto;
-    private SingletonGestorTabelas singletonGestorTabelas;
-    private TextView txtPreco, txtTitulo, txtDescGeral, txtDescricao, txtValorDesconto;
-    private ImageView ivFoto;
     private String urlImg = "http://188.81.6.107/Infortec/infortec_site/frontend/web/imagens/";
     private FloatingActionButton fabFav;
     private boolean fav = false;
@@ -52,12 +35,12 @@ public class ProdutoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_produto);
-        txtTitulo = findViewById(R.id.txtTitulo);
-        txtPreco = findViewById(R.id.txtPreco);
-        ivFoto = findViewById(R.id.ivFotoProduto);
-        txtDescGeral = findViewById(R.id.txtDescGeral);
-        txtDescricao = findViewById(R.id.txtDesc);
-        txtValorDesconto = findViewById(R.id.txtValorDesconto);
+        TextView txtTitulo = findViewById(R.id.txtTitulo);
+        TextView txtPreco = findViewById(R.id.txtPreco);
+        ImageView ivFoto = findViewById(R.id.ivFotoProduto);
+        TextView txtDescGeral = findViewById(R.id.txtDescGeral);
+        TextView txtDescricao = findViewById(R.id.txtDesc);
+        TextView txtValorDesconto = findViewById(R.id.txtValorDesconto);
         fabFav = findViewById(R.id.favFlb);
         //produtos = SingletonGestorTabelas.getInstance(getContext()).getProdutosBD();
 /*
@@ -114,16 +97,16 @@ public class ProdutoActivity extends AppCompatActivity {
                 noticiasTopic.publish(message);*/
         //}
         //}
-        id = getIntent().getIntExtra("ID_PRODUTO", 0);
+        int id = getIntent().getIntExtra("ID_PRODUTO", 0);
         produto = SingletonGestorTabelas.getInstance(getApplicationContext()).getProdutoById(id);
 
         txtTitulo.setText(produto.getNome());
-        if(produto.getValorDesconto() != 0)
+        if (produto.getValorDesconto() != 0)
             txtValorDesconto.setText("- " + produto.getValorDesconto() + "€");
         else
             txtValorDesconto.setText("");
 
-        double preco = produto.getPreco()-produto.getValorDesconto();
+        double preco = produto.getPreco() - produto.getValorDesconto();
         String precoFinal = String.format("%.2f", preco);
 
         txtPreco.setText(precoFinal + "€");
@@ -142,19 +125,13 @@ public class ProdutoActivity extends AppCompatActivity {
         try {
             favoritos = SingletonGestorTabelas.getInstance(getApplicationContext()).getFavoritosDB();
 
-            for (Favorito favorito : favoritos)
-            {
-                if(id == favorito.getProduto_id())
-                {
+            for (Favorito favorito : favoritos) {
+                if (id == favorito.getProduto_id()) {
                     fav = true;
                     fabFav.setImageResource(R.drawable.ic_favorite_black_24dp);
                 }
             }
-        }
-
-        catch (Exception e)
-        {
-
+        } catch (Exception ignored) {
         }
 
         fabFav.setOnClickListener(new View.OnClickListener() {
@@ -162,19 +139,23 @@ public class ProdutoActivity extends AppCompatActivity {
             public void onClick(View view) {
                 SharedPreferences pref = SingletonGestorTabelas.getInstance(getApplicationContext()).readPreferences(getApplicationContext());
 
-                String username = pref.getString("username", null);
-                String password = pref.getString("password", null);
+                pref.getString("username", null);
+                pref.getString("password", null);
 
                 try {
-                        if(fav)
-                            SingletonGestorTabelas.getInstance(getApplicationContext()).removerFavorito(getApplicationContext(), FavoritosJsonParser.isConnectionInternet(getApplicationContext()), produto.getId());
-                        else
-                            SingletonGestorTabelas.getInstance(getApplicationContext()).postNovoFavorito(getApplicationContext(), FavoritosJsonParser.isConnectionInternet(getApplicationContext()), produto.getId());
+                    if (fav) {
+                        fabFav.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+                        SingletonGestorTabelas.getInstance(getApplicationContext()).removerFavorito(getApplicationContext(), FavoritosJsonParser.isConnectionInternet(getApplicationContext()), produto.getId());
+                        fav = false;
+                    } else {
+                        fabFav.setImageResource(R.drawable.ic_favorite_black_24dp);
+                        SingletonGestorTabelas.getInstance(getApplicationContext()).postNovoFavorito(getApplicationContext(), FavoritosJsonParser.isConnectionInternet(getApplicationContext()), produto.getId());
+                        fav = true;
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         });
-
     }
 }

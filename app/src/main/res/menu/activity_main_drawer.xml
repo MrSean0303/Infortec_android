@@ -3,29 +3,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_Perfil"
-            android:title="Perfil" />
+    <group android:checkableBehavior="single"
+        android:id="@+id/menu_top">
         <item
             android:id="@+id/nav_home"
-            android:title="Home" />
+            android:title="Home"
+            android:icon="@drawable/ic_home_black_24dp"/>
         <item
             android:id="@+id/nav_promocoes"
-            android:title="Promoções" />
-        <item
-            android:id="@+id/nav_categorias"
-            android:title="Categorias" />
+            android:title="Promoções"
+            android:icon="@drawable/ic_attach_money_black_24dp"/>
         <item
             android:id="@+id/nav_favoritos"
-            android:title="Favoritos" />
+            android:title="Favoritos"
+            android:icon="@drawable/ic_favorite_black_24dp"/>
+
+    </group>
+    <group android:checkableBehavior="single"
+        android:id="@+id/menu_bottom">
         <item
-        android:id="@+id/nav_login"
-        android:title="Login" />
+            android:id="@+id/nav_Perfil"
+            android:title="Perfil"
+            android:icon="@drawable/ic_person_black_24dp"/>
+
+        <item
+            android:id="@+id/nav_login"
+            android:title="Login"
+            android:icon="@drawable/ic_supervisor_account_black_24dp"/>
 
         <item
             android:id="@+id/nav_loginOut"
-            android:title="LoginOut" />
-
+            android:title="LogOut"
+            android:icon="@drawable/ic_person_outline_black_24dp"/>
     </group>
+
+    <item android:title="@string/sobre_title">
+        <menu>
+            <item
+                android:id="@+id/nav_sobre"
+                android:icon="@drawable/ic_info_black_24dp"
+                android:title="@string/sobre"
+                />
+        </menu>
+    </item>
 </menu>

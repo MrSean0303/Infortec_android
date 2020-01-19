@@ -22,11 +22,13 @@
     <string name="SignupPasswordText">Inserir Password</string>
     <string name="SignupConfPasswordText">Confirmar palavra passe</string>
     <string name="SignupRegistarButton">Registar</string>
-    <string name="UserProfileTituloText">User Profile</string>
-    <string name="UserProfilenomeText">Nome Proprio</string>
-    <string name="UserProfileEmailText">Email</string>
-    <string name="UserProfilemoradaText">Morada</string>
-    <string name="UserProfileNifText">NIF</string>
-    <string name="UserProfilesalvarButton">Salvar Dados</string>
+    <string name="UserProfileTituloText">Perfil De Utilizador</string>
+    <string name="UserProfilenomeText">Nome Próprio:</string>
+    <string name="UserProfileEmailText">Email:</string>
+    <string name="UserProfilemoradaText">Morada:</string>
+    <string name="UserProfileNifText">NIF:</string>
+    <string name="UserProfilesalvarButton">Guardar</string>
     <string name="preference_file">MyPref</string>
+    <string name="sobre">Sobre Nós</string>
+    <string name="sobre_title">Sobre</string>
 </resources>

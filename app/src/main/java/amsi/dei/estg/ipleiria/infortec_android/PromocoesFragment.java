@@ -13,10 +13,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SearchView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import amsi.dei.estg.ipleiria.infortec_android.Adapters.ListProductAdapter;
 import amsi.dei.estg.ipleiria.infortec_android.listeners.ApiCallBack;
@@ -33,11 +32,7 @@ public class PromocoesFragment extends Fragment implements SwipeRefreshLayout.On
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
-
-    private SearchView searchView;
-
 
     public PromocoesFragment() {
         produtos = new ArrayList<>();
@@ -53,11 +48,10 @@ public class PromocoesFragment extends Fragment implements SwipeRefreshLayout.On
 
         produtos = SingletonGestorTabelas.getInstance(getContext()).getProdutosPromocoesBD();
 
-        System.out.println("---> REEEEEE: " + produtos);
 
         recyclerView = viewRoot.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(getContext());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         mAdapter = new ListProductAdapter(getContext(), produtos, this);
 
         recyclerView.setLayoutManager(layoutManager);
@@ -68,22 +62,22 @@ public class PromocoesFragment extends Fragment implements SwipeRefreshLayout.On
             @Override
             public void run() {
                 swipeRefreshLayout.setRefreshing(true);
-                SingletonGestorTabelas.getInstance(getContext()).getAllProdutosPromocoesAPI(getContext(), ProdutoJsonParser.isConnectionInternet(getContext()));
+                SingletonGestorTabelas.getInstance(getContext()).getAllProdutosPromocoesAPI(getContext(), ProdutoJsonParser.isConnectionInternet(Objects.requireNonNull(getContext())));
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
 
         if(produtos.size() == 0)
         {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
             builder.setMessage("Sem Promoções disponíveis no momento, Desculpe o Incómodo.")
                     .setTitle("Atenção");
 
-            AlertDialog dialog = builder.show();
+            builder.show();
         }
 
         SingletonGestorTabelas.getInstance(getContext()).setListener(this);
-        SingletonGestorTabelas.getInstance(getContext()).getAllProdutosPromocoesAPI(getContext(), ProdutoJsonParser.isConnectionInternet(getContext()));
+        SingletonGestorTabelas.getInstance(getContext()).getAllProdutosPromocoesAPI(getContext(), ProdutoJsonParser.isConnectionInternet(Objects.requireNonNull(getContext())));
 
         return viewRoot;
     }
@@ -103,7 +97,7 @@ public class PromocoesFragment extends Fragment implements SwipeRefreshLayout.On
 
     @Override
     public void onRefresh() {
-        SingletonGestorTabelas.getInstance(getContext()).getAllProdutosPromocoesAPI(getContext(), ProdutoJsonParser.isConnectionInternet(getContext()));
+        SingletonGestorTabelas.getInstance(getContext()).getAllProdutosPromocoesAPI(getContext(), ProdutoJsonParser.isConnectionInternet(Objects.requireNonNull(getContext())));
         swipeRefreshLayout.setRefreshing(false);
     }
 }

@@ -1,7 +1,5 @@
 package amsi.dei.estg.ipleiria.infortec_android;
 
-
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -16,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import amsi.dei.estg.ipleiria.infortec_android.Adapters.ListProductAdapter;
 import amsi.dei.estg.ipleiria.infortec_android.listeners.ApiCallBack;
@@ -29,18 +28,16 @@ import amsi.dei.estg.ipleiria.infortec_android.utils.ProdutoJsonParser;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FavoritoFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, ApiCallBack, ListProductAdapter.OnProdutoListener{
+public class FavoritoFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, ApiCallBack, ListProductAdapter.OnProdutoListener {
     private ArrayList<Produto> produtos, produtosFav;
     private ArrayList<Favorito> favoritos;
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
 
     public FavoritoFragment() {
         produtos = new ArrayList<>();
-        produtosFav = new ArrayList<>();
     }
 
 
@@ -52,23 +49,11 @@ public class FavoritoFragment extends Fragment implements SwipeRefreshLayout.OnR
         View viewRoot = inflater.inflate(R.layout.fragment_favorito, container, false);
         swipeRefreshLayout = viewRoot.findViewById(R.id.swipe);
 
-        SingletonGestorTabelas.getInstance(getContext()).getAllProdutosAPI(getContext(), ProdutoJsonParser.isConnectionInternet(getContext()));
-        produtos = SingletonGestorTabelas.getInstance(getContext()).getProdutosBD();
+        produtosFav = produtosFavoritos();
 
-        SingletonGestorTabelas.getInstance(getContext()).getAllFavoritosAPI(getContext(), FavoritosJsonParser.isConnectionInternet(getContext()));
-        favoritos = SingletonGestorTabelas.getInstance(getContext()).getFavoritosDB();
-
-        for (Produto produto : produtos)
-        {
-            for (Favorito favorito : favoritos)
-            {
-                if(favorito.getProduto_id() == produto.getId())
-                    produtosFav.add(produto);
-            }
-        }
         recyclerView = viewRoot.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(getContext());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         mAdapter = new ListProductAdapter(getContext(), produtosFav, this);
 
         recyclerView.setLayoutManager(layoutManager);
@@ -79,7 +64,7 @@ public class FavoritoFragment extends Fragment implements SwipeRefreshLayout.OnR
             @Override
             public void run() {
                 swipeRefreshLayout.setRefreshing(true);
-                SingletonGestorTabelas.getInstance(getContext()).getAllProdutosAPI(getContext(), ProdutoJsonParser.isConnectionInternet(getContext()));
+                SingletonGestorTabelas.getInstance(getContext()).getAllProdutosAPI(getContext(), ProdutoJsonParser.isConnectionInternet(Objects.requireNonNull(getContext())));
                 favoritos = SingletonGestorTabelas.getInstance(getContext()).getFavoritosDB();
                 swipeRefreshLayout.setRefreshing(false);
             }
@@ -87,9 +72,8 @@ public class FavoritoFragment extends Fragment implements SwipeRefreshLayout.OnR
 
         SingletonGestorTabelas.getInstance(getContext()).setListener(this);
 
-        if(produtosFav.size() == 0)
-        {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        if (produtosFav.size() == 0) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
             builder.setMessage("Sem Favoritos Adicionados.")
                     .setTitle("Atenção");
 
@@ -112,8 +96,28 @@ public class FavoritoFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     @Override
     public void onRefresh() {
+        produtosFav = produtosFavoritos();
+        mAdapter = new ListProductAdapter(getContext(), produtosFav, this);
+        recyclerView.setAdapter(mAdapter);
+
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+    private ArrayList<Produto> produtosFavoritos() {
+        produtosFav = new ArrayList<>();
+        SingletonGestorTabelas.getInstance(getContext()).getAllProdutosAPI(getContext(), ProdutoJsonParser.isConnectionInternet(Objects.requireNonNull(getContext())));
+        produtos = SingletonGestorTabelas.getInstance(getContext()).getProdutosBD();
+
         SingletonGestorTabelas.getInstance(getContext()).getAllFavoritosAPI(getContext(), FavoritosJsonParser.isConnectionInternet(getContext()));
         favoritos = SingletonGestorTabelas.getInstance(getContext()).getFavoritosDB();
-        swipeRefreshLayout.setRefreshing(false);
+
+        for (Produto produto : produtos) {
+            for (Favorito favorito : favoritos) {
+                if (favorito.getProduto_id() == produto.getId())
+                    produtosFav.add(produto);
+            }
+        }
+
+        return produtosFav;
     }
 }

@@ -6,8 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import androidx.annotation.Nullable;
-
 import java.util.ArrayList;
 
 public class BDHelper extends SQLiteOpenHelper {
@@ -45,7 +43,6 @@ public class BDHelper extends SQLiteOpenHelper {
     private static final String NUMPONTOS = "numPontos";
 
 
-
     /*
         Elementos para a tabela Venda
     */
@@ -75,17 +72,17 @@ public class BDHelper extends SQLiteOpenHelper {
     private static final String USER_ID_FAVORITO = "utilizador_id";
 
 
-    public BDHelper(Context context) {
+    BDHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
         this.database = this.getWritableDatabase();
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createProdutoTable = "CREATE TABLE " + TABLE_PRODUTO_NAME + " (" + ID_PRODUTO + " INTEGER PRIMARY KEY AUTOINCREMENT, " + NOME_PRODUTO + " TEXT NOT NULL, " + DESCRICAO_PRODUTO + " TEXT NOT NULL, " + DESCRICAO_GERAL_PRODUTO + " TEXT NOT NULL, " + FOTO_PRODUTO + " TEXT NOT NULL, " + QUANTSTOCK_PRODUTO + " INTEGER NOT NULL," + PONTOS_PRODUTO + " INTEGER," + VALOR_DESCONTO_PRODUTO + " DECIMAL(10,2)," + PRECO_PRODUTO + " DECIMAL(10,2) NOT NULL," + SUBCATEGORIA_ID_PRODUTO + " INTEGER NOT NULL," + IVA_ID_PRODUTO + " INTEGER NOT NULL" +");";
-        String createUserTable = "CREATE TABLE " + TABLE_USER_NAME + " (" + ID_USER + " INTEGER PRIMARY KEY AUTOINCREMENT, " + NOME + " TEXT NOT NULL, " + USERNAME + " TEXT NOT NULL, " + EMAIL + " TEXT NOT NULL, " + STATUS + " INTEGER," + NIF + " TEXT NOT NULL, " + NUMPONTOS + " INTEGER NOT NULL, " + MORADA + " TEXT"  +");";
-        String createVendaTable = "CREATE TABLE " + TABLE_VENDA_NAME + " (" + ID_VENDA + " INTEGER PRIMARY KEY AUTOINCREMENT, "+ TOTAL + " DECIMAL NOT NULL, "+ DATA + " TEXT NOT NULL, "  + USER_ID + " INTEGER NOT NULL" +");";
-        String createLinhaVendaTable = "CREATE TABLE " + TABLE_LINHAVENDA_NAME + " (" + ID_LINHAVENDA + " INTEGER PRIMARY KEY AUTOINCREMENT, "+ QUANTIDADE + " INTEGER NOT NULL, "+ ISPONTOS + " INTEGER, "  + PRECO + " DECIMAL NOT NULL, " + VENDA_ID + " INTEGER NOT NULL, "+ PRODUTO_ID + " INTEGER NOT NULL" +");";
+        String createProdutoTable = "CREATE TABLE " + TABLE_PRODUTO_NAME + " (" + ID_PRODUTO + " INTEGER PRIMARY KEY AUTOINCREMENT, " + NOME_PRODUTO + " TEXT NOT NULL, " + DESCRICAO_PRODUTO + " TEXT NOT NULL, " + DESCRICAO_GERAL_PRODUTO + " TEXT NOT NULL, " + FOTO_PRODUTO + " TEXT NOT NULL, " + QUANTSTOCK_PRODUTO + " INTEGER NOT NULL," + PONTOS_PRODUTO + " INTEGER," + VALOR_DESCONTO_PRODUTO + " DECIMAL(10,2)," + PRECO_PRODUTO + " DECIMAL(10,2) NOT NULL," + SUBCATEGORIA_ID_PRODUTO + " INTEGER NOT NULL," + IVA_ID_PRODUTO + " INTEGER NOT NULL" + ");";
+        String createUserTable = "CREATE TABLE " + TABLE_USER_NAME + " (" + ID_USER + " INTEGER PRIMARY KEY AUTOINCREMENT, " + NOME + " TEXT NOT NULL, " + USERNAME + " TEXT NOT NULL, " + EMAIL + " TEXT NOT NULL, " + STATUS + " INTEGER," + NIF + " TEXT NOT NULL, " + NUMPONTOS + " INTEGER NOT NULL, " + MORADA + " TEXT" + ");";
+        String createVendaTable = "CREATE TABLE " + TABLE_VENDA_NAME + " (" + ID_VENDA + " INTEGER PRIMARY KEY AUTOINCREMENT, " + TOTAL + " DECIMAL NOT NULL, " + DATA + " TEXT NOT NULL, " + USER_ID + " INTEGER NOT NULL" + ");";
+        String createLinhaVendaTable = "CREATE TABLE " + TABLE_LINHAVENDA_NAME + " (" + ID_LINHAVENDA + " INTEGER PRIMARY KEY AUTOINCREMENT, " + QUANTIDADE + " INTEGER NOT NULL, " + ISPONTOS + " INTEGER, " + PRECO + " DECIMAL NOT NULL, " + VENDA_ID + " INTEGER NOT NULL, " + PRODUTO_ID + " INTEGER NOT NULL" + ");";
         String createFavoritoTable = "CREATE TABLE " + TABLE_FAVORITO_NAME + " (" + ID_FAVORITO + " INTEGER PRIMARY KEY AUTOINCREMENT, " + PRODUTO_ID_FAVORITO + " INTEGER NOT NULL, " + USER_ID_FAVORITO + " INTEGER NOT NULL" + ");";
 
         db.execSQL(createProdutoTable);
@@ -100,49 +97,46 @@ public class BDHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUTO_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_VENDA_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_LINHAVENDA_NAME );
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_FAVORITO_NAME );
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_LINHAVENDA_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_FAVORITO_NAME);
         this.onCreate(db);
     }
 
-    public ArrayList<Produto> getAllProdutosDB()
-    {
+    ArrayList<Produto> getAllProdutosDB() {
         ArrayList<Produto> produtos = new ArrayList<>();
 
         Cursor cursor = this.database.query(TABLE_PRODUTO_NAME, new String[]{
                 ID_PRODUTO, QUANTSTOCK_PRODUTO, PONTOS_PRODUTO, SUBCATEGORIA_ID_PRODUTO, IVA_ID_PRODUTO, NOME_PRODUTO, FOTO_PRODUTO, DESCRICAO_PRODUTO, DESCRICAO_GERAL_PRODUTO, PRECO_PRODUTO, VALOR_DESCONTO_PRODUTO
         }, null, null, null, null, null);
 
-        if(cursor.moveToFirst()){
-            do{
+        if (cursor.moveToFirst()) {
+            do {
                 Produto auxProduto = new Produto(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2), cursor.getInt(3), cursor.getInt(4), cursor.getString(5), cursor.getString(6), cursor.getString(7), cursor.getString(8), cursor.getDouble(9), cursor.getDouble(10));
                 auxProduto.setId(cursor.getInt(0));
                 produtos.add(auxProduto);
-            }while(cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
         return produtos;
     }
 
-    public ArrayList<Favorito> getAllFavoritosDB()
-    {
+    ArrayList<Favorito> getAllFavoritosDB() {
         ArrayList<Favorito> favoritos = new ArrayList<>();
 
         Cursor cursor = this.database.query(TABLE_FAVORITO_NAME, new String[]{
                 ID_FAVORITO, PRODUTO_ID_FAVORITO, USER_ID_FAVORITO
         }, null, null, null, null, null);
 
-        if(cursor.moveToFirst()){
-            do{
+        if (cursor.moveToFirst()) {
+            do {
                 Favorito auxFavorito = new Favorito(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2));
                 auxFavorito.setIdFavorito(cursor.getInt(0));
                 favoritos.add(auxFavorito);
-            }while(cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
         return favoritos;
     }
 
-    public void adicionarProdutoBD(Produto produto)
-    {
+    void adicionarProdutoBD(Produto produto) {
         ContentValues values = new ContentValues();
         values.put(ID_PRODUTO, produto.getId());
         values.put(NOME_PRODUTO, produto.getNome());
@@ -161,8 +155,7 @@ public class BDHelper extends SQLiteOpenHelper {
     }
 
 
-    public void adicionarFavoritoBD(Favorito favorito)
-    {
+    void adicionarFavoritoBD(Favorito favorito) {
         ContentValues values = new ContentValues();
         values.put(ID_FAVORITO, favorito.getIdFavorito());
         values.put(PRODUTO_ID_FAVORITO, favorito.getProduto_id());
@@ -171,37 +164,34 @@ public class BDHelper extends SQLiteOpenHelper {
         this.database.insert(TABLE_FAVORITO_NAME, null, values);
     }
 
-    public void removerFavoritoBD(String id_produto)
-    {
-        this.database.delete(TABLE_FAVORITO_NAME,PRODUTO_ID_FAVORITO+"=?",new String[]{id_produto});
+    void removerFavoritoBD(String id_produto) {
+        this.database.delete(TABLE_FAVORITO_NAME, PRODUTO_ID_FAVORITO + "=?", new String[]{id_produto});
     }
 
-    public void removerAllFavoritosBD()
-    {
-        this.database.delete(TABLE_FAVORITO_NAME,null, null);
+    void removerAllFavoritosBD() {
+        this.database.delete(TABLE_FAVORITO_NAME, null, null);
     }
 
-    public void removerAllProdutosDB()
-    {
+    void removerAllProdutosDB() {
         this.database.delete(TABLE_PRODUTO_NAME, null, null);
     }
 
     //USER
-    public User getUserBD(){
-        User auxUser = new User(0,"","","",0,"","",0);;
+    User getUserBD() {
+        User auxUser = new User(0, "", "", "", 0, "", "", 0);
+        ;
         Cursor cursor = this.database.query(TABLE_USER_NAME, new String[]{
-                ID_USER, NOME,USERNAME, EMAIL, STATUS, MORADA, NIF, NUMPONTOS,
+                ID_USER, NOME, USERNAME, EMAIL, STATUS, MORADA, NIF, NUMPONTOS,
         }, null, null, null, null, null);
 
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             auxUser = new User(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getInt(4), cursor.getString(5), cursor.getString(6), cursor.getInt(7));
             auxUser.setId(cursor.getInt(0));
         }
         return auxUser;
     }
 
-    public void adicionarUserBD(User user)
-    {
+    void adicionarUserBD(User user) {
         ContentValues values = new ContentValues();
         values.put(ID_USER, user.getId());
         values.put(NOME, user.getNome());
@@ -215,13 +205,12 @@ public class BDHelper extends SQLiteOpenHelper {
         this.database.insert(TABLE_USER_NAME, null, values);
     }
 
-    public void removerAllUsersDB()
-    {
+    void removerAllUsersDB() {
         this.database.delete(TABLE_USER_NAME, null, null);
     }
 
     //Venda
-    public ArrayList<Venda> getVenda(){
+    public ArrayList<Venda> getVenda() {
 
         ArrayList<Venda> vendas = new ArrayList<>();
 
@@ -229,22 +218,21 @@ public class BDHelper extends SQLiteOpenHelper {
                 ID_USER, TOTAL, DATA, USER_ID
         }, null, null, null, null, null);
 
-        if(cursor.moveToFirst()){
-            do{
+        if (cursor.moveToFirst()) {
+            do {
                 //Produto user = new Produto(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2), cursor.getInt(3), cursor.getInt(4), cursor.getString(5), cursor.getString(6), cursor.getString(7), cursor.getString(8), cursor.getDouble(9), cursor.getDouble(10));
                 Venda auxVenda = new Venda(cursor.getInt(0), cursor.getDouble(1), cursor.getString(2), cursor.getInt(3));
                 auxVenda.setId(cursor.getInt(0));
                 System.out.println("---> Ree1 (auxVenda): " + auxVenda);
                 vendas.add(auxVenda);
-            }while(cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
         System.out.println("---> Ree2 (cursor): " + cursor);
         System.out.println("---> Ree3 (vendas): " + vendas);
         return vendas;
     }
 
-    public void adicionarVendaBD(Venda venda)
-    {
+    public void adicionarVendaBD(Venda venda) {
         ContentValues values = new ContentValues();
         values.put(ID_USER, venda.getId());
         values.put(TOTAL, venda.getTotalVenda());
@@ -254,13 +242,12 @@ public class BDHelper extends SQLiteOpenHelper {
         this.database.insert(TABLE_VENDA_NAME, null, values);
     }
 
-    public void removerVendaDB()
-    {
+    public void removerVendaDB() {
         this.database.delete(TABLE_VENDA_NAME, null, null);
     }
 
     //LinhaVenda
-    public ArrayList<LinhaVenda> getLinhaVenda(){
+    public ArrayList<LinhaVenda> getLinhaVenda() {
 
         ArrayList<LinhaVenda> LinhaVendas = new ArrayList<>();
 
@@ -268,22 +255,21 @@ public class BDHelper extends SQLiteOpenHelper {
                 ID_USER, TOTAL, DATA, USER_ID
         }, null, null, null, null, null);
 
-        if(cursor.moveToFirst()){
-            do{
+        if (cursor.moveToFirst()) {
+            do {
                 //Produto user = new Produto(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2), cursor.getInt(3), cursor.getInt(4), cursor.getString(5), cursor.getString(6), cursor.getString(7), cursor.getString(8), cursor.getDouble(9), cursor.getDouble(10));
                 LinhaVenda auxlinhaVendas = new LinhaVenda(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2), cursor.getDouble(3), cursor.getInt(4), cursor.getInt(5));
                 auxlinhaVendas.setId(cursor.getInt(0));
                 System.out.println("---> Ree1 (auxlinhaVendas): " + auxlinhaVendas);
                 LinhaVendas.add(auxlinhaVendas);
-            }while(cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
         System.out.println("---> Ree2 (cursor): " + cursor);
         System.out.println("---> Ree3 (LinhaVendas): " + LinhaVendas);
         return LinhaVendas;
     }
 
-    public void adicionarLinhaVendaBD(LinhaVenda linhavenda)
-    {
+    public void adicionarLinhaVendaBD(LinhaVenda linhavenda) {
         ContentValues values = new ContentValues();
         values.put(ID_USER, linhavenda.getId());
         values.put(QUANTIDADE, linhavenda.getQuantidade());
@@ -295,8 +281,7 @@ public class BDHelper extends SQLiteOpenHelper {
         this.database.insert(TABLE_LINHAVENDA_NAME, null, values);
     }
 
-    public void removerLinhaVendaDB()
-    {
+    public void removerLinhaVendaDB() {
         this.database.delete(TABLE_LINHAVENDA_NAME, null, null);
     }
 }

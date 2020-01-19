@@ -18,7 +18,6 @@ import amsi.dei.estg.ipleiria.infortec_android.models.User;
 public class UserProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText Etnome;
-    private EditText EtUsername;
     private EditText EtEmail;
     private EditText EtMorada;
     private EditText EtNif;

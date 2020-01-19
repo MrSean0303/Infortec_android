@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import amsi.dei.estg.ipleiria.infortec_android.models.SingletonGestorTabelas;
-import amsi.dei.estg.ipleiria.infortec_android.models.User;
 
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -76,7 +75,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("username", username);
         editor.putString("password", password);
-        editor.commit();
+        editor.apply();
 
         finish();
     }

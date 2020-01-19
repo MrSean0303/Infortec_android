@@ -2,6 +2,7 @@ package amsi.dei.estg.ipleiria.infortec_android;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -19,16 +20,15 @@ import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.Objects;
+
 import amsi.dei.estg.ipleiria.infortec_android.models.SingletonGestorTabelas;
-import amsi.dei.estg.ipleiria.infortec_android.models.User;
-import amsi.dei.estg.ipleiria.infortec_android.utils.UserJsonParser;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private NavigationView navigationView;
     private DrawerLayout drawer;
     private FragmentManager fragmentManager;
-    private String username;
     private TextView tvUsername;
 
     @Override
@@ -69,12 +69,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void changeLogin(){
-        //Verificar se a algo nas SharedPreferences
+        //Verificar se há algo nas SharedPreferences
         SharedPreferences pref = SingletonGestorTabelas.getInstance(getApplicationContext()).readPreferences(getApplicationContext());
-        username = pref.getString("username", null);
+        String username = pref.getString("username", null);
         System.out.println("--> User: " + username);
 
-        //Se existir SharedPreferences e pk o login já foi efetuado
+        //Se existir SharedPreferences é porque o login já foi efetuado
         if (username != null){
             navigationView.getMenu().findItem(R.id.nav_login).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_loginOut).setVisible(true);
@@ -120,7 +120,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_Perfil:
                 activity = new Activity();
-                setTitle(menuItem.getTitle());
+                setTitle(R.string.app_name);
+                break;
+            case R.id.nav_sobre:
+                androidx.appcompat.app.AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(this));
+                builder.setMessage("Somos uma pequena empresa que vende Equipamentos Informáticos. Qualquer dúvida envia email para *infortec.ipl@gmail.com*")
+                        .setTitle("Sobre Nós");
+
+                builder.show();
+
                 break;
         }
         if (fragment != null) {
