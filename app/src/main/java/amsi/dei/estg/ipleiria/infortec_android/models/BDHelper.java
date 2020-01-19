@@ -88,7 +88,6 @@ public class BDHelper extends SQLiteOpenHelper {
         String createLinhaVendaTable = "CREATE TABLE " + TABLE_LINHAVENDA_NAME + " (" + ID_LINHAVENDA + " INTEGER PRIMARY KEY AUTOINCREMENT, "+ QUANTIDADE + " INTEGER NOT NULL, "+ ISPONTOS + " INTEGER, "  + PRECO + " DECIMAL NOT NULL, " + VENDA_ID + " INTEGER NOT NULL, "+ PRODUTO_ID + " INTEGER NOT NULL" +");";
         String createFavoritoTable = "CREATE TABLE " + TABLE_FAVORITO_NAME + " (" + ID_FAVORITO + " INTEGER PRIMARY KEY AUTOINCREMENT, " + PRODUTO_ID_FAVORITO + " INTEGER NOT NULL, " + USER_ID_FAVORITO + " INTEGER NOT NULL" + ");";
 
-
         db.execSQL(createProdutoTable);
         db.execSQL(createUserTable);
         db.execSQL(createVendaTable);

@@ -1,6 +1,7 @@
 package amsi.dei.estg.ipleiria.infortec_android;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -60,15 +61,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         editTextUserName = viewRoot.findViewById(R.id.editTextUserName);
         editTextPassword = viewRoot.findViewById(R.id.editTextPassword);
 
-        SharedPreferences pref = getActivity().getSharedPreferences("MyPref", 0);
-
-        String username = pref.getString("username", null);
-        String password = pref.getString("password", null);
-
-        editTextUserName.setText(username);
-        editTextPassword.setText(password);
-
-
 
         final View buttonRegist = viewRoot.findViewById(R.id.buttonRegist);
         buttonRegist.setOnClickListener(
@@ -89,8 +81,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     public void onStart(){
         super.onStart();
 
-        pref = getActivity().getSharedPreferences("MyPref", 0);
-
+        SharedPreferences pref = SingletonGestorTabelas.getInstance(getContext()).readPreferences(getContext());
         String username = pref.getString("username", null);
         String password = pref.getString("password", null);
 
