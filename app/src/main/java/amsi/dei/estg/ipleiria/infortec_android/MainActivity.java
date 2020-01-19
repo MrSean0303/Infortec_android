@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentManager;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +28,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private NavigationView navigationView;
     private DrawerLayout drawer;
     private FragmentManager fragmentManager;
+    private String username;
+    private TextView tvUsername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         navigationView = findViewById(R.id.nav_view);
         drawer = findViewById(R.id.drawer_layout);
+
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer,
                 toolbar, R.string.navigation_drawer_open,
@@ -51,21 +55,49 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         SingletonGestorTabelas.getInstance(getApplicationContext()).initialize(this);
 
+        //Vai buscar o tvUsername ao header da navbar e muda o nome
+        View headerLayout = navigationView.getHeaderView(0);
+        tvUsername = headerLayout.findViewById(R.id.tvUsername);
+        changeLogin();
     }
+
     private void carregarFragmentoInicial(){
         navigationView.setCheckedItem(R.id.nav_home);
         Fragment fragment = new HomeFragment();
         fragmentManager.beginTransaction().replace(R.id.contentFragment, fragment).commit();
 
     }
+
+    public void changeLogin(){
+        //Verificar se a algo nas SharedPreferences
+        SharedPreferences pref = SingletonGestorTabelas.getInstance(getApplicationContext()).readPreferences(getApplicationContext());
+        username = pref.getString("username", null);
+        System.out.println("--> User: " + username);
+
+        //Se existir SharedPreferences e pk o login já foi efetuado
+        if (username != null){
+            navigationView.getMenu().findItem(R.id.nav_login).setVisible(false);
+            navigationView.getMenu().findItem(R.id.nav_loginOut).setVisible(true);
+            navigationView.getMenu().findItem(R.id.nav_Perfil).setVisible(true);
+            tvUsername.setText(username);
+        }else{
+            navigationView.getMenu().findItem(R.id.nav_login).setVisible(true);
+            navigationView.getMenu().findItem(R.id.nav_loginOut).setVisible(false);
+            navigationView.getMenu().findItem(R.id.nav_Perfil).setVisible(false);
+        }
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
         Fragment fragment = null;
         Activity activity = null;
         switch (menuItem.getItemId()) {
             case R.id.nav_home:
                 fragment = new HomeFragment();
                 setTitle(menuItem.getTitle());
+
+                this.changeLogin();
                 break;
             case R.id.nav_favoritos:
                 fragment = new FavoritoFragment();
@@ -79,9 +111,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 fragment = new LoginFragment();
                 setTitle(menuItem.getTitle());
                 break;
+            case R.id.nav_loginOut:
+                SingletonGestorTabelas.getInstance(getApplicationContext()).removePreference("username");
+                SingletonGestorTabelas.getInstance(getApplicationContext()).removePreference("password");
+                SingletonGestorTabelas.getInstance(getApplicationContext()).removerUserDB();
+
+                this.changeLogin();
+                break;
             case R.id.nav_Perfil:
                 activity = new Activity();
                 setTitle(menuItem.getTitle());
+                break;
         }
         if (fragment != null) {
             fragmentManager.beginTransaction().replace(R.id.contentFragment,

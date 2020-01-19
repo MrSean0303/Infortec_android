@@ -377,6 +377,10 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
         bdHelper.adicionarUserBD(user);
     }
 
+    public void removerUserDB(){
+        bdHelper.removerAllUsersDB();
+    }
+
     public void adicionarProdutosBD(ArrayList<Produto> listaProdutos) {
         bdHelper.removerAllProdutosDB();
         for (Produto produto : listaProdutos) {
@@ -501,6 +505,13 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
         sharedPreferences.getString("password", null);
 
         return sharedPreferences;
+    }
+
+    public void removePreference(String key){
+        SharedPreferences.Editor editor = mMyPreferences.edit();
+        editor.remove(key);
+        editor.apply();
+
     }
 
 
