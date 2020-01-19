@@ -43,6 +43,7 @@ public class ProdutoActivity extends AppCompatActivity {
     private ImageView ivFoto;
     private String urlImg = "http://188.81.6.107/Infortec/infortec_site/frontend/web/imagens/";
     private FloatingActionButton fabFav;
+    private boolean fav = false;
 
     public ProdutoActivity() {
     }
@@ -137,6 +138,25 @@ public class ProdutoActivity extends AppCompatActivity {
         txtDescGeral.setText(produto.getDescricaoGeral());
         txtDescricao.setText(produto.getDescricao());
 
+        ArrayList<Favorito> favoritos;
+        try {
+            favoritos = SingletonGestorTabelas.getInstance(getApplicationContext()).getFavoritosDB();
+
+            for (Favorito favorito : favoritos)
+            {
+                if(id == favorito.getProduto_id())
+                {
+                    fav = true;
+                    fabFav.setImageResource(R.drawable.ic_favorite_black_24dp);
+                }
+            }
+        }
+
+        catch (Exception e)
+        {
+
+        }
+
         fabFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -145,9 +165,11 @@ public class ProdutoActivity extends AppCompatActivity {
                 String username = pref.getString("username", null);
                 String password = pref.getString("password", null);
 
-
                 try {
-                    SingletonGestorTabelas.getInstance(getApplicationContext()).postNovoFavorito(getApplicationContext(), FavoritosJsonParser.isConnectionInternet(getApplicationContext()), produto.getId());
+                        if(fav)
+                            SingletonGestorTabelas.getInstance(getApplicationContext()).removerFavorito(getApplicationContext(), FavoritosJsonParser.isConnectionInternet(getApplicationContext()), produto.getId());
+                        else
+                            SingletonGestorTabelas.getInstance(getApplicationContext()).postNovoFavorito(getApplicationContext(), FavoritosJsonParser.isConnectionInternet(getApplicationContext()), produto.getId());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

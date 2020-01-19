@@ -24,6 +24,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import amsi.dei.estg.ipleiria.infortec_android.models.SingletonGestorTabelas;
 import amsi.dei.estg.ipleiria.infortec_android.models.User;
+import amsi.dei.estg.ipleiria.infortec_android.utils.FavoritosJsonParser;
 import amsi.dei.estg.ipleiria.infortec_android.utils.ProdutoJsonParser;
 import amsi.dei.estg.ipleiria.infortec_android.utils.UserJsonParser;
 
@@ -108,6 +109,5 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         SingletonGestorTabelas.getInstance(getContext()).writePreferences("password", password);
 
         SingletonGestorTabelas.getInstance(getContext()).getUserAPI(getContext(), UserJsonParser.isConnectionInternet(getContext()), username, password);
-
     }
 }

@@ -88,7 +88,6 @@ public class BDHelper extends SQLiteOpenHelper {
         String createLinhaVendaTable = "CREATE TABLE " + TABLE_LINHAVENDA_NAME + " (" + ID_LINHAVENDA + " INTEGER PRIMARY KEY AUTOINCREMENT, "+ QUANTIDADE + " INTEGER NOT NULL, "+ ISPONTOS + " INTEGER, "  + PRECO + " DECIMAL NOT NULL, " + VENDA_ID + " INTEGER NOT NULL, "+ PRODUTO_ID + " INTEGER NOT NULL" +");";
         String createFavoritoTable = "CREATE TABLE " + TABLE_FAVORITO_NAME + " (" + ID_FAVORITO + " INTEGER PRIMARY KEY AUTOINCREMENT, " + PRODUTO_ID_FAVORITO + " INTEGER NOT NULL, " + USER_ID_FAVORITO + " INTEGER NOT NULL" + ");";
 
-
         db.execSQL(createProdutoTable);
         db.execSQL(createUserTable);
         db.execSQL(createVendaTable);
@@ -102,6 +101,7 @@ public class BDHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_VENDA_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_LINHAVENDA_NAME );
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_FAVORITO_NAME );
         this.onCreate(db);
     }
 
@@ -121,6 +121,24 @@ public class BDHelper extends SQLiteOpenHelper {
             }while(cursor.moveToNext());
         }
         return produtos;
+    }
+
+    public ArrayList<Favorito> getAllFavoritosDB()
+    {
+        ArrayList<Favorito> favoritos = new ArrayList<>();
+
+        Cursor cursor = this.database.query(TABLE_FAVORITO_NAME, new String[]{
+                ID_FAVORITO, PRODUTO_ID_FAVORITO, USER_ID_FAVORITO
+        }, null, null, null, null, null);
+
+        if(cursor.moveToFirst()){
+            do{
+                Favorito auxFavorito = new Favorito(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2));
+                auxFavorito.setIdFavorito(cursor.getInt(0));
+                favoritos.add(auxFavorito);
+            }while(cursor.moveToNext());
+        }
+        return favoritos;
     }
 
     public void adicionarProdutoBD(Produto produto)
@@ -156,6 +174,11 @@ public class BDHelper extends SQLiteOpenHelper {
     public void removerFavoritoBD(String id_produto)
     {
         this.database.delete(TABLE_FAVORITO_NAME,PRODUTO_ID_FAVORITO+"=?",new String[]{id_produto});
+    }
+
+    public void removerAllFavoritosBD()
+    {
+        this.database.delete(TABLE_FAVORITO_NAME,null, null);
     }
 
     public void removerAllProdutosDB()

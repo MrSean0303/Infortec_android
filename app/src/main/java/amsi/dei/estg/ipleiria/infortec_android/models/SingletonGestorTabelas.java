@@ -141,6 +141,54 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
         }
     }
 
+    public void getAllFavoritosAPI(final Context context, boolean isConnected) {
+        SharedPreferences pref = readPreferences(context);
+
+        final String username = pref.getString("username", null);
+        final String password = pref.getString("password", null);
+
+        if (!isConnected) {
+            getFavoritosDB();
+            Toast toast = Toast.makeText(context, "No Internet Available", Toast.LENGTH_LONG);
+            toast.show();
+        } else {
+            JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, mUrlApiFavoritos, null, new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    try {
+                        Toast toast = Toast.makeText(context, "Products Refreshed", Toast.LENGTH_LONG);
+                        toast.show();
+                        ArrayList<Favorito> favoritos = FavoritosJsonParser.FavoritoJsonParser(response, context);
+
+                        adicionarAllFavoritosBD(favoritos);
+
+                        if (listener != null) {
+                            listener.onRefreshProdutos(produtos);
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        System.out.println("---> ERRO: " + e.getMessage());
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    System.out.println("---> ERRO: GetAllProdutosAPI: " + error.getMessage());
+                }
+            })   {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                String credentials = username + ":" + password;
+                String base64EncodedCredentials = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                headers.put("Authorization", "Basic " + base64EncodedCredentials);
+                return headers;
+            }};
+            volleyQueue.add(req);
+        }
+    }
+
     public void postNovoFavorito(final Context context, boolean isConnected, int id_prod) throws JSONException {
         SharedPreferences pref = readPreferences(context);
         final String id_produto = String.valueOf(id_prod);
@@ -205,10 +253,15 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
         bdHelper.removerFavoritoBD(id);
     }
 
+    public void adicionarAllFavoritosBD(ArrayList<Favorito> listaFavoritos) {
+        bdHelper.removerAllFavoritosBD();
+        for (Favorito favorito : listaFavoritos) {
+            bdHelper.adicionarFavoritoBD(favorito);
+        }
+    }
 
-    public void removerFavorito(final Context context, boolean isConnected, int id_prod) throws JSONException {
+    public void removerFavorito(final Context context, boolean isConnected, final int id_prod) throws JSONException {
         SharedPreferences pref = readPreferences(context);
-        final String id_produto = String.valueOf(id_prod);
 
         final String username = pref.getString("username", null);
         final String password = pref.getString("password", null);
@@ -218,31 +271,21 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
             toast.show();
         } else {
             JSONObject body = new JSONObject();
-            body.put("idProduto", id_produto);
+            body.put("idProduto", id_prod);
 
-            JsonObjectRequest req = new JsonObjectRequest(Request.Method.DELETE, mUrlApiFavoritos + "/remove", body, new Response.Listener<JSONObject>() {
+            JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, mUrlApiFavoritos + "/remove", body, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
 
-                    try {
-                        Favorito fav = FavoritosJsonParser.FavoritoJsonParserObj(response, context);
-
-                        removerFavoritoDB(fav.getProduto_id());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    Toast toast = Toast.makeText(context, "Favorito Removido", Toast.LENGTH_SHORT);
-                    toast.show();
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    String erro = new String(error.networkResponse.data, StandardCharsets.UTF_8);
-                    System.out.println("ERRRRO: " + erro);
-                    Toast toast = Toast.makeText(context, "Favorito não removido", Toast.LENGTH_SHORT);
+                    //String erro = new String(error.networkResponse.data, StandardCharsets.UTF_8);
+                    //System.out.println("ERRRRO: " + erro);
+                    removerFavoritoDB(id_prod);
+                    Toast toast = Toast.makeText(context, "Favorito removido", Toast.LENGTH_SHORT);
                     toast.show();
-
                 }
             }) {
                 @Override
@@ -260,10 +303,11 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
     }
 
 
+
     public ArrayList<Favorito> getFavoritosDB()
     {
-        ArrayList<Favorito> favoritos = new ArrayList<>();
-        //favoritos = bdHelper
+        ArrayList<Favorito> favoritos;
+        favoritos = bdHelper.getAllFavoritosDB();
 
         return favoritos;
     }

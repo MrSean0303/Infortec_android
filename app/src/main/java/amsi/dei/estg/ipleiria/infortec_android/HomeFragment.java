@@ -33,6 +33,7 @@ import amsi.dei.estg.ipleiria.infortec_android.listeners.ApiCallBack;
 import amsi.dei.estg.ipleiria.infortec_android.models.Produto;
 import amsi.dei.estg.ipleiria.infortec_android.models.SingletonGestorTabelas;
 import amsi.dei.estg.ipleiria.infortec_android.models.User;
+import amsi.dei.estg.ipleiria.infortec_android.utils.FavoritosJsonParser;
 import amsi.dei.estg.ipleiria.infortec_android.utils.ProdutoJsonParser;
 
 
@@ -106,6 +107,8 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public void onRefresh() {
         SingletonGestorTabelas.getInstance(getContext()).getAllProdutosAPI(getContext(), ProdutoJsonParser.isConnectionInternet(getContext()));
+        SingletonGestorTabelas.getInstance(getContext()).getAllFavoritosAPI(getContext(), FavoritosJsonParser.isConnectionInternet(getContext()));
+
         swipeRefreshLayout.setRefreshing(false);
     }
 

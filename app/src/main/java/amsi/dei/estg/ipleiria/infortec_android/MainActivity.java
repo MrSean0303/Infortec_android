@@ -67,10 +67,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 fragment = new HomeFragment();
                 setTitle(menuItem.getTitle());
                 break;
-            /*case R.id.nav_ead:
-                fragment = new EadFragment();
+            case R.id.nav_favoritos:
+                fragment = new FavoritoFragment();
                 setTitle(menuItem.getTitle());
-                break;*/
+                break;
             case R.id.nav_promocoes:
                 fragment = new PromocoesFragment();
                 setTitle(menuItem.getTitle());

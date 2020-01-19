@@ -28,6 +28,30 @@ public class FavoritosJsonParser {
 
         return auxFavorito;
     }
+
+    public static ArrayList<Favorito> FavoritoJsonParser(JSONArray response, Context context) throws JSONException
+    {
+        System.out.println("--> PARSER LISTA PRODUTOS: "+ response);
+
+        ArrayList<Favorito> tempListaFavoritos = new ArrayList<Favorito>();
+
+        Favorito auxFavorito = null;
+
+        for(int i = 0; i < response.length(); i++)
+        {
+            JSONObject favorito = response.getJSONObject(i);
+
+            int produto_id = favorito.getInt("produto_id");
+            int idFavorito = favorito.getInt("idFavorito");
+            int utilizador_id = favorito.getInt("utilizador_id");
+
+            auxFavorito = new Favorito(idFavorito, produto_id, utilizador_id);
+            tempListaFavoritos.add(auxFavorito);
+        }
+
+
+        return tempListaFavoritos;
+    }
     public static boolean isConnectionInternet(Context context)
     {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
