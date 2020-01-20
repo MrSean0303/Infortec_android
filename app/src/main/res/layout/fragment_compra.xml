@@ -34,7 +34,6 @@
 
     <EditText
         android:id="@+id/editText"
-        pp:layout_constraintEnd_toEndOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
