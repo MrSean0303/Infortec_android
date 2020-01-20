@@ -87,7 +87,6 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         SingletonGestorTabelas.getInstance(getContext()).setListener(this);
         SingletonGestorTabelas.getInstance(getContext()).getAllProdutosAPI(getContext(), ProdutoJsonParser.isConnectionInternet(Objects.requireNonNull(getContext())));
-        System.out.println("--> epahyah: " + produtos);
         return viewRoot;
     }
 
