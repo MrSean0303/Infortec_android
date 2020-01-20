@@ -10,14 +10,17 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -25,6 +28,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import amsi.dei.estg.ipleiria.infortec_android.models.Favorito;
 import amsi.dei.estg.ipleiria.infortec_android.models.Produto;
@@ -39,6 +44,8 @@ public class ProdutoActivity extends AppCompatActivity  {
     private DialogFragment dialogFragment;
     private boolean fav = false;
     private Context context = this;
+    private EditText textView;
+    private TextView txtPreco;
 
     private void showAlertDialog() {
         FragmentManager fm = getSupportFragmentManager();
@@ -54,7 +61,7 @@ public class ProdutoActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_produto);
         TextView txtTitulo = findViewById(R.id.txtTitulo);
-        TextView txtPreco = findViewById(R.id.txtPreco);
+        txtPreco = findViewById(R.id.txtPreco);
         ImageView ivFoto = findViewById(R.id.ivFotoProduto);
         TextView txtDescGeral = findViewById(R.id.txtDescGeral);
         TextView txtDescricao = findViewById(R.id.txtDesc);
@@ -69,6 +76,8 @@ public class ProdutoActivity extends AppCompatActivity  {
                 LayoutInflater inflater = LayoutInflater.from(context);
                 View dialogLayout = inflater.inflate(R.layout.fragment_compra, null);
                 Button btnBuy =  dialogLayout.findViewById(R.id.btnBuy);
+                textView = dialogLayout.findViewById(R.id.EtQuant);
+
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setView(dialogLayout);
@@ -78,16 +87,59 @@ public class ProdutoActivity extends AppCompatActivity  {
                 customAlertDialog.show();
 
                 btnBuy.setOnClickListener(new View.OnClickListener() {
-
                     @Override
                     public void onClick(View v) {
-                        System.out.println("---> Esta a funcionar " + v);
-                        if (v.getId() == R.id.btnBuy)
-                            System.out.println("---> Esta a funcionar ");
-                        if (v.getId() == R.id.btnCancel)
-                            System.out.println("---> Esta a funcionar ");
+                        int quantidade = 0 ;
+                        String textView = ProdutoActivity.this.textView.getText().toString();
+                        System.out.println("---> textView " + textView);
+
+                        if (textView.isEmpty()){
+                            quantidade = 0;
+                        }else {
+                            quantidade = Integer.parseInt(textView);
+                            if (quantidade < 1){
+                                quantidade = 0;
+                            }
+                        }
+                        System.out.println("---> quantidade " + quantidade);
+
+                        SharedPreferences pref = SingletonGestorTabelas.getInstance(getApplicationContext()).readPreferences(getApplicationContext());
+                        String username = pref.getString("username", null);
+                        String password = pref.getString("password", null);
+
+                        Map<String, String> venda = new HashMap<>();
+                        venda.put("username", username);
+                        venda.put("password", password);
+                        venda.put("total", txtPreco.getText().toString());
+
+                        int a = 1;
+                        try {
+                            a = SingletonGestorTabelas.getInstance(getBaseContext()).adicionarVendaAPI(venda,getBaseContext());
+                            System.out.println("---> a " + a);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        int id = getIntent().getIntExtra("ID_PRODUTO", 0);
+
+                        System.out.println("---> id " + id);
+
+                        Map<String, String> Linhavenda = new HashMap<>();
+                        Linhavenda.put("username", username);
+                        Linhavenda.put("password", password);
+                        Linhavenda.put("quantidade", String.valueOf(quantidade));
+                        Linhavenda.put("preco", txtPreco.getText().toString());
+                        Linhavenda.put("venda_id", String.valueOf(a));
+                        Linhavenda.put("produto_id",  String.valueOf(id));
+
+                        try {
+                            SingletonGestorTabelas.getInstance(getBaseContext()).adicionarLinhaVendaAPI(Linhavenda,getBaseContext());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
                     }
                 });
+
             }
         });
         //produtos = SingletonGestorTabelas.getInstance(getContext()).getProdutosBD();

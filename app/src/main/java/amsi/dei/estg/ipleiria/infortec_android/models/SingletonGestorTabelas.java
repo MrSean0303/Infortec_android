@@ -39,6 +39,8 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
     private static String mUrlApiProdutos = "http://188.81.6.107/Infortec/infortec_site/frontend/web/api/produto";
     private static String mUrlApiUsers = "http://188.81.6.107/Infortec/infortec_site/frontend/web/api/user";
     private static String mUrlApiFavoritos = "http://188.81.6.107/Infortec/infortec_site/frontend/web/api/favorito";
+    private static String mUrlApiVenda = "http://188.81.6.107/Infortec/infortec_site/frontend/web/api/venda";
+    private static String mUrlApiLinhaVenda = "http://188.81.6.107/Infortec/infortec_site/frontend/web/api/linhavenda";
 
     private SharedPreferences mMyPreferences;
 
@@ -484,6 +486,87 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
             }
         }
         return null;
+    }
+    //endregion
+
+    //region Venda
+    public int adicionarVendaAPI(final Map<String, String> venda, final Context context)throws JSONException {
+
+        final int a[] = new int[0];
+        JSONObject body = new JSONObject();
+        body.put("total", venda.get("total"));
+
+        System.out.println("--> RESPOSTA Edit PUT: " + body);
+
+        JsonArrayRequest req = new JsonArrayRequest(Request.Method.POST, mUrlApiVenda + "/createvenda", null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                System.out.println("--> RESPOSTA Edit PUT: " + response);
+                /*if (listener != null) {
+                    try {
+                        System.out.println("--> abc ");
+                        a[0] = response.getInt("idVenda");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } */
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("--> ERRO Editar User: " + error.getMessage());
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                String credentials = venda.get("username") + ":" + venda.get("password");
+                String base64EncodedCredentials = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                headers.put("Authorization", "Basic " + base64EncodedCredentials);
+                headers.put("content-type", "application/json; charset=UTF-8");
+                return headers;
+            }
+        };
+        volleyQueue.add(req);
+
+        return a[0];
+    }
+    //endregion
+
+    //region LinhaVenda
+    public void adicionarLinhaVendaAPI(final Map<String, String> linhaVenda, final Context context)throws JSONException {
+
+        JSONObject body = new JSONObject();
+        body.put("quantidade", linhaVenda.get("quantidade"));
+        body.put("preco", linhaVenda.get("preco"));
+        body.put("venda_id", linhaVenda.get("venda_id"));
+        body.put("produto_id", linhaVenda.get("produto_id"));
+
+
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, mUrlApiLinhaVenda + "/add", body,new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                System.out.println("--> RESPOSTA Edit PUT: " + response);
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("--> ERRO Editar User: " + error.getMessage());
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                String credentials = linhaVenda.get("username") + ":" + linhaVenda.get("password");
+                String base64EncodedCredentials = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                headers.put("Authorization", "Basic " + base64EncodedCredentials);
+                headers.put("content-type", "application/json; charset=UTF-8");
+                return headers;
+            }
+        };
+        volleyQueue.add(req);
+
     }
     //endregion
 
