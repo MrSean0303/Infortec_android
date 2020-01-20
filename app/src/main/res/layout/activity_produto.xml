@@ -70,7 +70,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/txtTitulo" />
 
             <Button
-                android:id="@+id/buttonComprar"
+                android:id="@+id/btnCompra"
                 style="@android:style/Widget.Material.Button.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
