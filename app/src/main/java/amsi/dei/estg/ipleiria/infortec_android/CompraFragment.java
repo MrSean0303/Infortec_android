@@ -32,15 +32,12 @@ public class CompraFragment extends DialogFragment implements View.OnClickListen
         View view = inflater.inflate(R.layout.fragment_compra, container, false);
 
         System.out.println("---> Nao a funcionar ");
-
-        btnNao =  (Button) view.findViewById(R.id.btnCancel);
         btnSim =  (Button) view.findViewById(R.id.btnBuy);
 
-        btnNao.setOnClickListener(this);
         btnSim.setOnClickListener(this);
 
 
-        setCancelable(false);
+        setCancelable(true);
         return view;
     }
 

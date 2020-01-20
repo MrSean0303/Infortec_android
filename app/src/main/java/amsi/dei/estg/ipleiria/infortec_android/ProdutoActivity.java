@@ -68,12 +68,26 @@ public class ProdutoActivity extends AppCompatActivity  {
                 System.out.println("---> Esta a funcionar ");
                 LayoutInflater inflater = LayoutInflater.from(context);
                 View dialogLayout = inflater.inflate(R.layout.fragment_compra, null);
+                Button btnBuy =  dialogLayout.findViewById(R.id.btnBuy);
+
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setView(dialogLayout);
 
 
                 AlertDialog customAlertDialog = builder.create();
                 customAlertDialog.show();
+
+                btnBuy.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        System.out.println("---> Esta a funcionar " + v);
+                        if (v.getId() == R.id.btnBuy)
+                            System.out.println("---> Esta a funcionar ");
+                        if (v.getId() == R.id.btnCancel)
+                            System.out.println("---> Esta a funcionar ");
+                    }
+                });
             }
         });
         //produtos = SingletonGestorTabelas.getInstance(getContext()).getProdutosBD();
