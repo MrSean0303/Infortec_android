@@ -490,26 +490,28 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
     //endregion
 
     //region Venda
-    public int adicionarVendaAPI(final Map<String, String> venda, final Context context)throws JSONException {
+    public void adicionarVendaAPI(final Map<String, String> venda, final Context context)throws JSONException {
 
-        final int a[] = new int[0];
+        //final int a[] = new int[0];
         JSONObject body = new JSONObject();
         body.put("total", venda.get("total"));
 
         System.out.println("--> RESPOSTA Edit PUT: " + body);
+        System.out.println("--> abc: " + venda.get("username") + ":" + venda.get("password"));
 
-        JsonArrayRequest req = new JsonArrayRequest(Request.Method.POST, mUrlApiVenda + "/createvenda", null, new Response.Listener<JSONArray>() {
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, mUrlApiVenda + "/createvenda", null, new Response.Listener<JSONObject>() {
             @Override
-            public void onResponse(JSONArray response) {
+            public void onResponse(JSONObject response) {
                 System.out.println("--> RESPOSTA Edit PUT: " + response);
-                /*if (listener != null) {
+                if (listener != null) {
                     try {
-                        System.out.println("--> abc ");
-                        a[0] = response.getInt("idVenda");
+                        venda.put("venda_id", response.getString("idVenda"));
+
+                        adicionarLinhaVendaAPI(venda, context);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                } */
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -529,7 +531,6 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
         };
         volleyQueue.add(req);
 
-        return a[0];
     }
     //endregion
 

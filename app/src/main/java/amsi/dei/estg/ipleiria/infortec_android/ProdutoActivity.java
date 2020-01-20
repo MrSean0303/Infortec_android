@@ -107,35 +107,22 @@ public class ProdutoActivity extends AppCompatActivity  {
                         String username = pref.getString("username", null);
                         String password = pref.getString("password", null);
 
+                        int id = getIntent().getIntExtra("ID_PRODUTO", 0);
+
                         Map<String, String> venda = new HashMap<>();
                         venda.put("username", username);
                         venda.put("password", password);
                         venda.put("total", txtPreco.getText().toString());
+                        venda.put("quantidade", String.valueOf(quantidade));
+                        venda.put("preco", txtPreco.getText().toString());
+                        venda.put("produto_id",  String.valueOf(id));
 
-                        int a = 1;
                         try {
-                            a = SingletonGestorTabelas.getInstance(getBaseContext()).adicionarVendaAPI(venda,getBaseContext());
-                            System.out.println("---> a " + a);
+                            SingletonGestorTabelas.getInstance(getBaseContext()).adicionarVendaAPI(venda,context);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        int id = getIntent().getIntExtra("ID_PRODUTO", 0);
 
-                        System.out.println("---> id " + id);
-
-                        Map<String, String> Linhavenda = new HashMap<>();
-                        Linhavenda.put("username", username);
-                        Linhavenda.put("password", password);
-                        Linhavenda.put("quantidade", String.valueOf(quantidade));
-                        Linhavenda.put("preco", txtPreco.getText().toString());
-                        Linhavenda.put("venda_id", String.valueOf(a));
-                        Linhavenda.put("produto_id",  String.valueOf(id));
-
-                        try {
-                            SingletonGestorTabelas.getInstance(getBaseContext()).adicionarLinhaVendaAPI(Linhavenda,getBaseContext());
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
 
                     }
                 });
