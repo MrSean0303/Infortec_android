@@ -496,10 +496,7 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
         JSONObject body = new JSONObject();
         body.put("total", venda.get("total"));
 
-        System.out.println("--> RESPOSTA Edit PUT: " + body);
-        System.out.println("--> abc: " + venda.get("username") + ":" + venda.get("password"));
-
-        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, mUrlApiVenda + "/createvenda", null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, mUrlApiVenda + "/createvenda", body, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 System.out.println("--> RESPOSTA Edit PUT: " + response);

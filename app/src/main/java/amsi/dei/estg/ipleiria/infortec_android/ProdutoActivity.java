@@ -112,9 +112,9 @@ public class ProdutoActivity extends AppCompatActivity  {
                         Map<String, String> venda = new HashMap<>();
                         venda.put("username", username);
                         venda.put("password", password);
-                        venda.put("total", txtPreco.getText().toString());
+                        venda.put("total", String.valueOf(produto.getPreco()-produto.getValorDesconto()));
                         venda.put("quantidade", String.valueOf(quantidade));
-                        venda.put("preco", txtPreco.getText().toString());
+                        venda.put("preco", String.valueOf(produto.getPreco()-produto.getValorDesconto()));
                         venda.put("produto_id",  String.valueOf(id));
 
                         try {
