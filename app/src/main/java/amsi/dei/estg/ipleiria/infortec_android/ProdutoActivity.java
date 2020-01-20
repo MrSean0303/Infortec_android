@@ -2,10 +2,18 @@
 package amsi.dei.estg.ipleiria.infortec_android;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,11 +30,20 @@ import amsi.dei.estg.ipleiria.infortec_android.models.Produto;
 import amsi.dei.estg.ipleiria.infortec_android.models.SingletonGestorTabelas;
 import amsi.dei.estg.ipleiria.infortec_android.utils.FavoritosJsonParser;
 
-public class ProdutoActivity extends AppCompatActivity {
+public class ProdutoActivity extends AppCompatActivity  {
     private Produto produto;
     private String urlImg = "http://188.81.6.107/Infortec/infortec_site/frontend/web/imagens/";
     private FloatingActionButton fabFav;
+    private Button buttonComprar;
+    private DialogFragment dialogFragment;
     private boolean fav = false;
+    private Context context = this;
+
+    private void showAlertDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        DialogFragment alertDialog = new DialogFragment();
+        alertDialog.show(fm, "fragment_alert");
+    }
 
     public ProdutoActivity() {
     }
@@ -42,6 +59,22 @@ public class ProdutoActivity extends AppCompatActivity {
         TextView txtDescricao = findViewById(R.id.txtDesc);
         TextView txtValorDesconto = findViewById(R.id.txtValorDesconto);
         fabFav = findViewById(R.id.favFlb);
+        buttonComprar = findViewById(R.id.btnCompra);
+
+        buttonComprar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("---> Esta a funcionar ");
+                LayoutInflater inflater = LayoutInflater.from(context);
+                View dialogLayout = inflater.inflate(R.layout.fragment_compra, null);
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setView(dialogLayout);
+
+
+                AlertDialog customAlertDialog = builder.create();
+                customAlertDialog.show();
+            }
+        });
         //produtos = SingletonGestorTabelas.getInstance(getContext()).getProdutosBD();
 /*
         final MqttAndroidClient client;
