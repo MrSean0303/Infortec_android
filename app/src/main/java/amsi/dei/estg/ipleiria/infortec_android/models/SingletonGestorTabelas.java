@@ -60,42 +60,7 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
         bdHelper = new BDHelper(context);
     }
 
-    public void getAllProdutosAPI(final Context context, boolean isConnected) {
-        if (!isConnected) {
-            produtos = getProdutosBD();
-            Toast toast = Toast.makeText(context, "No Internet Available", Toast.LENGTH_SHORT);
-            toast.show();
-        } else {
-            JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, mUrlApiProdutos, null, new Response.Listener<JSONArray>() {
-                @Override
-                public void onResponse(JSONArray response) {
-                    try {
-                        Toast toast = Toast.makeText(context, "Products Refreshed", Toast.LENGTH_SHORT);
-                        toast.show();
-                        produtos = ProdutoJsonParser.ProdutoJsonParser(response, context);
-
-                        adicionarProdutosBD(produtos);
-
-                        if (listener != null) {
-                            listener.onRefreshProdutos(produtos);
-                        }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        System.out.println("---> ERRO: " + e.getMessage());
-                    }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    System.out.println("---> ERRO: GetAllProdutosAPI: " + error.getMessage());
-                }
-            });
-            volleyQueue.add(req);
-        }
-    }
-
-
+    //region User
     public void getUserAPI(final Context context, boolean isConnected, String username, String password) {
         final String user = username;
         final String pass = password;
@@ -141,6 +106,96 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
         }
     }
 
+    public User getUser() {
+
+        return bdHelper.getUserBD();
+    }
+
+    //User
+    public void adicionarUserAPI(final Map<String, String> user, final Context context) {
+        StringRequest req = new StringRequest(Request.Method.POST, mUrlApiUsers+"/registar", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("--> RESPOSTA ADD POST: " + response);
+                if(listener != null)
+                {
+                    try {
+                        User auxUser;
+
+                        JSONObject resp = new JSONObject(response);
+
+                        auxUser = UserJsonParser.parserJsonUserObject(resp, context);
+                        System.out.println("--> Sai do parser: " + auxUser);
+                        adicionarUserBD(auxUser);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("--> ERRO ADD User: " + error.getMessage());
+            }
+        }){protected Map<String, String> getParams(){
+            Map<String, String> params = new HashMap<>();
+            params.put("nome", user.get("nome"));
+            params.put("username", user.get("username"));
+            params.put("email", user.get("email"));
+            params.put("nif", user.get("nif"));
+            params.put("password", user.get("password"));
+
+            return params;
+        }
+        };
+        volleyQueue.add(req);
+    }
+
+    public void editUserAPI(final Map<String, String> user, final Context context) throws JSONException {
+
+        JSONObject body = new JSONObject();
+        body.put("nome", user.get("nome"));
+        body.put("morada",user.get("morada"));
+        body.put("email", user.get("email"));
+        body.put("nif", user.get("nif"));
+
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.PUT, mUrlApiUsers + "/edit", body,new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                System.out.println("--> RESPOSTA Edit PUT: " + response);
+                if (listener != null) {
+                    try {
+                        User auxUser;
+
+                        auxUser = UserJsonParser.parserJsonUserObject(response, context);
+                        System.out.println("--> Sai do parser: " + auxUser);
+                        adicionarUserBD(auxUser);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("--> ERRO Editar User: " + error.getMessage());
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                String credentials = user.get("username") + ":" + user.get("password");
+                String base64EncodedCredentials = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                headers.put("Authorization", "Basic " + base64EncodedCredentials);
+                headers.put("content-type", "application/json; charset=UTF-8");
+                return headers;
+            }
+        };
+        volleyQueue.add(req);
+    }
+//endregion
+
+    //region Favorito
     public void getAllFavoritosAPI(final Context context, boolean isConnected) {
         SharedPreferences pref = readPreferences(context);
 
@@ -312,6 +367,44 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
         return favoritos;
     }
 
+    //endregion
+
+    //region Produto
+    public void getAllProdutosAPI(final Context context, boolean isConnected) {
+        if (!isConnected) {
+            produtos = getProdutosBD();
+            Toast toast = Toast.makeText(context, "No Internet Available", Toast.LENGTH_SHORT);
+            toast.show();
+        } else {
+            JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, mUrlApiProdutos, null, new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    try {
+                        Toast toast = Toast.makeText(context, "Products Refreshed", Toast.LENGTH_SHORT);
+                        toast.show();
+                        produtos = ProdutoJsonParser.ProdutoJsonParser(response, context);
+
+                        adicionarProdutosBD(produtos);
+
+                        if (listener != null) {
+                            listener.onRefreshProdutos(produtos);
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        System.out.println("---> ERRO: " + e.getMessage());
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    System.out.println("---> ERRO: GetAllProdutosAPI: " + error.getMessage());
+                }
+            });
+            volleyQueue.add(req);
+        }
+    }
+
     public ArrayList<Produto> getProdutosBD() {
         produtos = bdHelper.getAllProdutosDB();
 
@@ -362,11 +455,6 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
         }
     }
 
-
-    public void setListener(ApiCallBack listener) {
-        this.listener = listener;
-    }
-
     @Override
     public void onRefreshProdutos(ArrayList<Produto> produtos) {
 
@@ -397,95 +485,9 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
         }
         return null;
     }
+    //endregion
 
-    public User getUser() {
-
-        return bdHelper.getUserBD();
-    }
-
-    //User
-    public void adicionarUserAPI(final Map<String, String> user, final Context context) {
-        StringRequest req = new StringRequest(Request.Method.POST, mUrlApiUsers+"/registar", new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                System.out.println("--> RESPOSTA ADD POST: " + response);
-                if(listener != null)
-                {
-                    try {
-                        User auxUser;
-
-                        JSONObject resp = new JSONObject(response);
-
-                        auxUser = UserJsonParser.parserJsonUserObject(resp, context);
-                        System.out.println("--> Sai do parser: " + auxUser);
-                        adicionarUserBD(auxUser);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                System.out.println("--> ERRO ADD User: " + error.getMessage());
-            }
-        }){protected Map<String, String> getParams(){
-            Map<String, String> params = new HashMap<>();
-            params.put("nome", user.get("nome"));
-            params.put("username", user.get("username"));
-            params.put("email", user.get("email"));
-            params.put("nif", user.get("nif"));
-            params.put("password", user.get("password"));
-
-            return params;
-        }
-        };
-        volleyQueue.add(req);
-    }
-
-    public void editUserAPI(final Map<String, String> user, final Context context) throws JSONException {
-
-        JSONObject body = new JSONObject();
-        body.put("nome", user.get("nome"));
-        body.put("morada",user.get("morada"));
-        body.put("email", user.get("email"));
-        body.put("nif", user.get("nif"));
-
-        JsonObjectRequest req = new JsonObjectRequest(Request.Method.PUT, mUrlApiUsers + "/edit", body,new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                System.out.println("--> RESPOSTA Edit PUT: " + response);
-                if (listener != null) {
-                    try {
-                        User auxUser;
-
-                        auxUser = UserJsonParser.parserJsonUserObject(response, context);
-                        System.out.println("--> Sai do parser: " + auxUser);
-                        adicionarUserBD(auxUser);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                System.out.println("--> ERRO Editar User: " + error.getMessage());
-            }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() {
-                Map<String, String> headers = new HashMap<>();
-                String credentials = user.get("username") + ":" + user.get("password");
-                String base64EncodedCredentials = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
-                headers.put("Authorization", "Basic " + base64EncodedCredentials);
-                headers.put("content-type", "application/json; charset=UTF-8");
-                return headers;
-            }
-        };
-        volleyQueue.add(req);
-    }
-
+    //region SharedPreferences
     public void initialize (Context context)
     {
         mMyPreferences = context.getSharedPreferences(context.getResources().getString(R.string.preference_file), Context.MODE_PRIVATE);
@@ -512,6 +514,11 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
         editor.remove(key);
         editor.apply();
 
+    }
+    //endregion
+
+    public void setListener(ApiCallBack listener) {
+        this.listener = listener;
     }
 }
 
