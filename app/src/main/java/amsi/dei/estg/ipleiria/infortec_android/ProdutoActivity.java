@@ -122,11 +122,8 @@ public class ProdutoActivity extends AppCompatActivity  {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
-
                     }
                 });
-
             }
         });
         //produtos = SingletonGestorTabelas.getInstance(getContext()).getProdutosBD();
