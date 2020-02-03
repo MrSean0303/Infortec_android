@@ -13,9 +13,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".UserProfileActivity"></activity>
-        <activity android:name=".SignupActivity" />
-        <activity android:name=".ProdutoActivity" />
+        <activity android:name=".UserProfileActivity"
+            android:parentActivityName=".MainActivity"></activity>
+        <activity android:name=".SignupActivity"
+            android:parentActivityName=".MainActivity">
+        </activity>
+        <activity android:name=".ProdutoActivity"
+            android:parentActivityName=".MainActivity"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

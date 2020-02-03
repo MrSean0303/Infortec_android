@@ -25,7 +25,7 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
     private OnProdutoListener mOnProdutoListener;
     private Context context;
 
-    public String urlImg = "http://188.81.6.107/Infortec/infortec_site/frontend/web/imagens/";
+    public String urlImg = "http://192.168.1.124/Infortec/infortec_site/frontend/web/imagens/";
 
     public ListProductAdapter(Context context, ArrayList<Produto> produtos, OnProdutoListener onProdutoListener) {
         this.inflater = inflater.from(context);

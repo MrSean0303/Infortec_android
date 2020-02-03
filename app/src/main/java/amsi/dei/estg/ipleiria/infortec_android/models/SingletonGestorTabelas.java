@@ -36,11 +36,11 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
     private ArrayList<Produto> produtos;
     private static RequestQueue volleyQueue = null;
     private BDHelper bdHelper;
-    private static String mUrlApiProdutos = "http://188.81.6.107/Infortec/infortec_site/frontend/web/api/produto";
-    private static String mUrlApiUsers = "http://188.81.6.107/Infortec/infortec_site/frontend/web/api/user";
-    private static String mUrlApiFavoritos = "http://188.81.6.107/Infortec/infortec_site/frontend/web/api/favorito";
-    private static String mUrlApiVenda = "http://188.81.6.107/Infortec/infortec_site/frontend/web/api/venda";
-    private static String mUrlApiLinhaVenda = "http://188.81.6.107/Infortec/infortec_site/frontend/web/api/linhavenda";
+    private static String mUrlApiProdutos = "http://192.168.1.124/Infortec/infortec_site/frontend/web/api/produto";
+    private static String mUrlApiUsers = "http://192.168.1.124/Infortec/infortec_site/frontend/web/api/user";
+    private static String mUrlApiFavoritos = "http://192.168.1.124/Infortec/infortec_site/frontend/web/api/favorito";
+    private static String mUrlApiVenda = "http://192.168.1.124/Infortec/infortec_site/frontend/web/api/venda";
+    private static String mUrlApiLinhaVenda = "http://192.168.1.124/Infortec/infortec_site/frontend/web/api/linhavenda";
 
     private SharedPreferences mMyPreferences;
 
@@ -514,6 +514,9 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
             @Override
             public void onErrorResponse(VolleyError error) {
                 System.out.println("--> ERRO Editar User: " + error.getMessage());
+
+                Toast toast = Toast.makeText(context, "Compra Não Efetuada", Toast.LENGTH_SHORT);
+                toast.show();
             }
         }) {
             @Override
@@ -546,11 +549,17 @@ public class SingletonGestorTabelas extends Application implements ApiCallBack {
             public void onResponse(JSONObject response) {
                 System.out.println("--> RESPOSTA Edit PUT: " + response);
 
+                Toast toast = Toast.makeText(context, "Compra Efetuada", Toast.LENGTH_SHORT);
+                toast.show();
+
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 System.out.println("--> ERRO Editar User: " + error.getMessage());
+
+                Toast toast = Toast.makeText(context, "Compra Não Efetuada", Toast.LENGTH_SHORT);
+                toast.show();
             }
         }) {
             @Override

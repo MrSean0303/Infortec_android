@@ -28,6 +28,8 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         Etnome = findViewById(R.id.EtNome);
         EtEmail = findViewById(R.id.EtEmail);

@@ -38,7 +38,7 @@ import amsi.dei.estg.ipleiria.infortec_android.utils.FavoritosJsonParser;
 
 public class ProdutoActivity extends AppCompatActivity  {
     private Produto produto;
-    private String urlImg = "http://188.81.6.107/Infortec/infortec_site/frontend/web/imagens/";
+    private String urlImg = "http://192.168.1.124/Infortec/infortec_site/frontend/web/imagens/";
     private FloatingActionButton fabFav;
     private Button buttonComprar;
     private DialogFragment dialogFragment;
@@ -60,6 +60,8 @@ public class ProdutoActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_produto);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         TextView txtTitulo = findViewById(R.id.txtTitulo);
         txtPreco = findViewById(R.id.txtPreco);
         ImageView ivFoto = findViewById(R.id.ivFotoProduto);
@@ -112,13 +114,14 @@ public class ProdutoActivity extends AppCompatActivity  {
                         Map<String, String> venda = new HashMap<>();
                         venda.put("username", username);
                         venda.put("password", password);
-                        venda.put("total", String.valueOf(produto.getPreco()-produto.getValorDesconto()));
+                        venda.put("total", String.valueOf((produto.getPreco()-produto.getValorDesconto()) * quantidade));
                         venda.put("quantidade", String.valueOf(quantidade));
-                        venda.put("preco", String.valueOf(produto.getPreco()-produto.getValorDesconto()));
+                        venda.put("preco", String.valueOf((produto.getPreco()-produto.getValorDesconto()) * quantidade));
                         venda.put("produto_id",  String.valueOf(id));
 
                         try {
-                            SingletonGestorTabelas.getInstance(getBaseContext()).adicionarVendaAPI(venda,context);
+                            if(quantidade != 0)
+                                SingletonGestorTabelas.getInstance(getBaseContext()).adicionarVendaAPI(venda,context);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
